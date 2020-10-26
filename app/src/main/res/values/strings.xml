@@ -2,4 +2,18 @@
     <string name="app_name">Profitclub</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="btn_create_account">Создать аккаунт</string>
+
+    <string name="already_have_an_account">Уже есть аккаунт?</string>
+    <string name="enter">Войти</string>
+
+<!--    экран регистрации-->
+    <string name="confirm_password">Подтвердите пароль</string>
+    <string name="enter_password">Введите пароль</string>
+    <string name="enter_login">Введите логин</string>
+    <string name="example_gmail">Example@gmail</string>
+    <string name="register">Зарегестрироваться</string>
+    <string name="registration">Регистрация</string>
+
+
 </resources>

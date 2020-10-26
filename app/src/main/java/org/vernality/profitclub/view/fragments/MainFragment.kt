@@ -1,10 +1,13 @@
-package org.vernality.profitclub
+package org.vernality.profitclub.view.fragments
 
+import android.graphics.Paint
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
+import kotlinx.android.synthetic.main.fragment_main.view.*
+import org.vernality.profitclub.R
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -13,10 +16,10 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [RoleFragment.newInstance] factory method to
+ * Use the [MainFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class RoleFragment : Fragment() {
+class MainFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -34,7 +37,26 @@ class RoleFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_role, container, false)
+        val root = inflater.inflate(R.layout.fragment_main, container, false)
+
+        initViews(root)
+
+        return root
+    }
+
+
+    fun initViews (root: View){
+        //добавляем подчеркивание
+        root.tv_enter.paintFlags =
+            root.tv_enter.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+
+        root.btn_create_account.setOnClickListener {
+            findNavController().navigate(R.id.action_mainFragment_to_registrationFragment2)
+        }
+
+        root.tv_enter.setOnClickListener {
+
+        }
     }
 
     companion object {
@@ -44,12 +66,12 @@ class RoleFragment : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment RoleFragment.
+         * @return A new instance of fragment MainFragment.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            RoleFragment().apply {
+            MainFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

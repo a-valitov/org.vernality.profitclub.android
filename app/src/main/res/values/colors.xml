@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="colorPrimary"> #F5C891</color>
+    <color name="colorPrimaryDark"> #F1E7E4</color>
+    <color name="colorAccent">  #FFFFFF</color>
+    <color name="color"> #191818</color>
+    <color name="colorText"> #FFFFFF</color>
+    <color name="colorStatusBar"> #00191818</color>
+    <color name="colorPip">#80FFFFFF</color>
+
+
+<!--Поля ввода -->
+
+    <color name="colorInputField"> #4D888888</color>
+    <color name="colorInputFieldText"> #F3EAE7</color>
+
+
 </resources>
