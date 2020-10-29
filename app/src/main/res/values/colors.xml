@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="colorPrimary"> #F5C891</color>
+    <color name="colorPrimaryDark"> #F1E7E4</color>
+    <color name="colorAccent">  #FFFFFF</color>
+    <color name="colorStatusBarDark"> #191818</color>
+    <color name="colorText"> #FFFFFF</color>
+    <color name="colorStatusBarTransparent"> #00191818</color>
+    <color name="colorPip">#80FFFFFF</color>
+    <color name="colorTransient"> #00FFFFFF</color>
+
+<!--Поля ввода -->
+
+    <color name="colorInputField"> #4D888888</color>
+    <color name="colorInputFieldText"> #F3EAE7</color>
+
+<!--    Диалог регистрации-->
+    <color name="colorDialogLine"> #64545458</color>
+    <color name="colorDialogBackground"> #1E1E1E</color>
+
+
+    <color name="color_description">#DFCAC3</color>
+
+
 </resources>
