@@ -9,6 +9,9 @@ import android.view.animation.AnimationUtils
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.jakewharton.rxbinding2.view.RxView
@@ -20,6 +23,7 @@ import kotlinx.android.synthetic.main.card.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.vernality.profitclub.R
 import org.vernality.profitclub.view_model.RegistrationViewModel
+import org.vernality.profitclub.view_model.Result
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -60,7 +64,7 @@ class RegistrationFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_registration, container, false)
 
         init(root)
-        showAnimation(root)
+        if(savedInstanceState == null) showAnimation(root)
         return root
     }
 
@@ -87,6 +91,38 @@ class RegistrationFragment : Fragment() {
         setRxToRegBtn(registrBTN)
         setRxToEnterAccTV(enterAccountTV)
 
+        initResultRegistration()
+
+    }
+
+    private fun initResultRegistration(){
+        viewModel.resultLiveData.observe(viewLifecycleOwner, androidx.lifecycle.Observer{
+            if(it == Result.Success) {
+                Toast.makeText(requireActivity(), "Registration is success", Toast.LENGTH_LONG).show()
+                showSuccessDialog()
+            }
+            else {
+                Toast.makeText(requireActivity(), "Registration is error", Toast.LENGTH_LONG).show()
+            }
+        })
+    }
+
+    private fun showSuccessDialog(){
+        val successResultDialog
+                = SuccessResultDialogFragment.newInstance(View.OnClickListener {
+            navig()
+
+        })
+        successResultDialog.show(parentFragmentManager, "ggg")
+
+
+    }
+
+    fun navig(){
+
+        //findNavController().navigate(R.id.action_registrationFragment_to_roleFragment)
+        findNavController().navigate(R.id.action_registrationFragment_to_mainFragment)
+        Toast.makeText(requireActivity(), "TV resume clicked ", Toast.LENGTH_LONG).show()
     }
 
     private fun setRxToEnterAccTV(enterAccountTV: TextView) {
@@ -94,6 +130,7 @@ class RegistrationFragment : Fragment() {
             .subscribe {
                 Toast.makeText(requireActivity(), "TV enter clicked ", Toast.LENGTH_LONG).show()
                 viewModel.enterInAccount()
+                findNavController().navigate(R.id.action_registrationFragment_to_roleFragment)
             }
 
         compos.add(disposableTvEnter)
@@ -115,7 +152,7 @@ class RegistrationFragment : Fragment() {
                 @Throws(Exception::class)
                 override fun accept(charSequence: CharSequence?) {
                     //Add your logic to work on the Charsequence
-                    Toast.makeText(requireActivity(), "password 2 enter", Toast.LENGTH_LONG).show()
+                    if(charSequence!!.isEmpty())Toast.makeText(requireActivity(), "password 2 enter", Toast.LENGTH_LONG).show()
                     viewModel.checkPassword(charSequence.toString())
                 }
             })
@@ -129,7 +166,7 @@ class RegistrationFragment : Fragment() {
                 @Throws(Exception::class)
                 override fun accept(charSequence: CharSequence?) {
                     //Add your logic to work on the Charsequence
-                    Toast.makeText(requireActivity(), "password 1 enter", Toast.LENGTH_LONG).show()
+                    //Toast.makeText(requireActivity(), "password 1 enter", Toast.LENGTH_LONG).show()
                     viewModel.setPassword(charSequence.toString())
                 }
             })
@@ -143,7 +180,7 @@ class RegistrationFragment : Fragment() {
                 @Throws(Exception::class)
                 override fun accept(charSequence: CharSequence?) {
                     //Add your logic to work on the Charsequence
-                    Toast.makeText(requireActivity(), "password 1 enter", Toast.LENGTH_LONG).show()
+                    //Toast.makeText(requireActivity(), "password 1 enter", Toast.LENGTH_LONG).show()
                     viewModel.setGmail(charSequence.toString())
                 }
             })
@@ -157,7 +194,7 @@ class RegistrationFragment : Fragment() {
                 @Throws(Exception::class)
                 override fun accept(charSequence: CharSequence?) {
                     //Add your logic to work on the Charsequence
-                    Toast.makeText(requireActivity(), "password 1 enter", Toast.LENGTH_LONG).show()
+                    //Toast.makeText(requireActivity(), "password 1 enter", Toast.LENGTH_LONG).show()
                     viewModel.setLogin(charSequence.toString())
                 }
             })

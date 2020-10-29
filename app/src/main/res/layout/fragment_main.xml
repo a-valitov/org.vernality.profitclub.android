@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context=".view.activities.MainActivity"
     tools:ignore="ExtraText"
     >
 
@@ -23,7 +22,7 @@
             android:layout_width="354dp"
             android:layout_height="52dp"
             android:textSize="15sp"
-            android:textColor="@color/color"
+            android:textColor="@color/colorStatusBarDark"
             android:textAllCaps="false"
             android:layout_marginBottom="15dp"
             android:background="@color/colorPrimary"

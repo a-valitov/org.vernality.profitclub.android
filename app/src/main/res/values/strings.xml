@@ -7,13 +7,24 @@
     <string name="already_have_an_account">Уже есть аккаунт?</string>
     <string name="enter">Войти</string>
 
-<!--    экран регистрации-->
+    <!--    экран регистрации-->
     <string name="confirm_password">Подтвердите пароль</string>
     <string name="enter_password">Введите пароль</string>
     <string name="enter_login">Введите логин</string>
-    <string name="example_gmail">Example@gmail</string>
-    <string name="register">Зарегестрироваться</string>
+    <string name="example_gmail">Введите почту</string>
+    <string name="register">Зарегистрироваться</string>
     <string name="registration">Регистрация</string>
+    <string name="resume">Продолжить</string>
+
+    <!--    экран выбора роли-->
+    <string name="Exit">Выход</string>
+    <string name="selecting_role">Выбор роли</string>
+    <string name="provider">Поставщик</string>
+    <string name="organization">Организация</string>
+    <string name="participant_of_the_organization">Участник организации</string>
+    <string name="provider_description">юридическое или физическое лицо, поставляющие товары или услуги заказчикам. Регистрация в роли поставщика даст вам возможность рассылать свои комерческие предложения, а так же создавать акции и рассылать их организациям вступившим в клуб.</string>
+    <string name="organization_description">организационно-правовая форма юридического лица преследующая прибыль в качестве основной цели своей деятельности.Регистрация в роли организации даст вам возможность участвовать в акциях от поставщиков и принимать или отклонять их коммерческие предложения для успешного ведения вашего бизнесса. Так же организация может приглашать в клуб своих физических участников.</string>
+    <string name="participant_of_the_organization_description">участником является лицо обладающее правом членства в конкретной организации. Стать участником организации в клубе вы можете только по предварительному приглашению.</string>
 
 
 </resources>

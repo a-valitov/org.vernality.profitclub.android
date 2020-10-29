@@ -11,12 +11,23 @@ import java.util.*
 
 enum class Field{Login, Gmail, Password1, Password2}
 
+enum class Result{
+    Success, Error;
+    var text:String? = null
+
+}
+
 class RegistrationViewModel(appContext: Application) : BaseViewModel(appContext) {
 
     private val context = appContext
 
     private val registration: MutableMap<Field, String?> =
         mutableMapOf(Field.Login to null, Field.Gmail to null, Field.Password1 to null, Field.Password2 to null)
+
+
+    val resultLiveData: MutableLiveData<Result> by lazy {
+        MutableLiveData<Result>()
+    }
 
 
     fun setLogin(login: String){
@@ -44,11 +55,12 @@ class RegistrationViewModel(appContext: Application) : BaseViewModel(appContext)
 
     fun registration(){
 
-        checkFields()
+        if (checkFields() == Result.Success) resultLiveData.value = Result.Success
+        else resultLiveData.value = Result.Error
     }
 
-    private fun checkFields() {
-        TODO("Not yet implemented")
+    private fun checkFields():Result {
+        return Result.Success
     }
 
     fun enterInAccount(){
