@@ -27,4 +27,33 @@
     <string name="participant_of_the_organization_description">участником является лицо обладающее правом членства в конкретной организации. Стать участником организации в клубе вы можете только по предварительному приглашению.</string>
 
 
+    <!--    Экран ввода данных роли-->
+    <string name="provider_input_hint">Укажите дополнительные данные для вступления в клуб в роли поставщика</string>
+    <string name="organization_input_hint">Укажите дополнительные данные для вступления в клуб в роли организации</string>
+    <string name="participant_of_the_organization_input_hint">Укажите дополнительные данные для вступления в клуб в роли участника организации</string>
+    <string name="enter_name_of_organization">Введите наименование организации</string>
+    <string name="enter_INN">Введите ИНН</string>
+    <string name="enter_FCS">Введите ФИО</string>
+    <string name="enter_your_phone_number">Введите номер телефона</string>
+    <string name="agree_to_terms">Я согласен  условиями</string>
+    <string name="privacy_policy">политики конфеденциальности</string>
+    <string name="send_data">Отправить данные</string>
+
+    <!--    Экран Роль алерт-->
+    <string name="data_sent_processing">Ваши данные отправлены в обработку</string>
+    <string name="wait_administrator_approval">Дождитесь пока администратор одобрит вашу заявку на вступление в клуб</string>
+    <string name="thanks">Спасибо</string>
+
+    <!--    Экран Данные в обработке-->
+    <string name="INN">ИНН: </string>
+    <string name="INN_value">значение ИНН</string>
+    <string name="contact_person">Контактное лицо: </string>
+    <string name="contact_person_value">ФИО</string>
+    <string name="phone">Телефон: </string>
+    <string name="phone_value">Номер телефона</string>
+    <string name="role">Роль</string>
+    <string name="status">Статус</string>
+    <string name="name_of_organization">Название организации</string>
+    <string name="status_under_consideration">На рассмотрении</string>
+
 </resources>

@@ -12,14 +12,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.activities.ActivityWithStatusBar"
+        <activity android:name=".view.activities.SelectOrganizationActivity"
+            android:theme="@style/AppTheme.DarkStatusBar">
+
+        </activity>
+        <activity android:name=".view.activities.EnterRoleActivity"
             android:theme="@style/AppTheme.DarkStatusBar">
 
         </activity>
         <activity
             android:name=".view.activities.MainActivity"
-            android:orientation="horizontal"
-            android:screenOrientation="portrait"
+
             android:usesCleartextTraffic="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

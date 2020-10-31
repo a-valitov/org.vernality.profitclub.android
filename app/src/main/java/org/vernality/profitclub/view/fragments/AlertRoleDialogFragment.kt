@@ -13,13 +13,14 @@ import fr.tvbarthel.lib.blurdialogfragment.SupportBlurDialogFragment
 import kotlinx.android.synthetic.main.dialog_fragment_registration_success.view.*
 import org.vernality.profitclub.R
 import org.vernality.profitclub.view.activities.EnterRoleActivity
+import org.vernality.profitclub.view.activities.SelectOrganizationActivity
 
 
-class SuccessResultDialogFragment(_clickListener: View.OnClickListener) : SupportBlurDialogFragment() {
+class AlertRoleDialogFragment(_clickListener: View.OnClickListener) : SupportBlurDialogFragment() {
 
     companion object {
-        fun newInstance(clickListener: View.OnClickListener): SuccessResultDialogFragment {
-            return SuccessResultDialogFragment(clickListener)
+        fun newInstance(clickListener: View.OnClickListener): AlertRoleDialogFragment {
+            return AlertRoleDialogFragment(clickListener)
         }
     }
 
@@ -34,11 +35,11 @@ class SuccessResultDialogFragment(_clickListener: View.OnClickListener) : Suppor
         savedInstanceState: Bundle?
     ): View? {
 
-        val root = inflater.inflate(R.layout.dialog_fragment_registration_success, container, false)
+        val root = inflater.inflate(R.layout.dialog_fragment_role_alert, container, false)
         root.tv_resume.setOnClickListener {
             Toast.makeText(requireActivity(), "TV resume clicked ", Toast.LENGTH_LONG).show()
             //findNavController().navigate(R.id.action_registrationFragment_to_roleFragment)
-            val intent = Intent(requireActivity(), EnterRoleActivity::class.java)
+            val intent = Intent(requireActivity(), SelectOrganizationActivity::class.java)
             requireActivity().startActivity(intent)
             dismiss()
             requireActivity().finish()

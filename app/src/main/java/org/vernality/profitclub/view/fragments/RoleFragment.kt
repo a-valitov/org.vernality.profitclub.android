@@ -11,6 +11,7 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.button.MaterialButton
 import com.vansuita.gaussianblur.GaussianBlur
 import jp.wasabeef.blurry.Blurry
@@ -96,6 +97,8 @@ class RoleFragment : Fragment() {
         resumeBTN.setOnClickListener {
             Toast.makeText(requireActivity(), "button resume is checked", Toast.LENGTH_LONG).show()
             viewModel.resume()
+            findNavController().navigate(R.id.action_roleFragment_to_enterRoleFragment)
+            println("--------nav to enter role---------")
         }
     }
 

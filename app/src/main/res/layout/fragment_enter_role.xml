@@ -54,7 +54,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:id="@+id/exit">
+                    android:id="@+id/exit_enter_role">
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/iv_add"
@@ -97,7 +97,7 @@
             android:layout_weight="1"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" >
 
-            <include layout="@layout/item_select_role"/>
+            <include layout="@layout/item_enter_role"/>
 
         </androidx.core.widget.NestedScrollView>
 
@@ -107,14 +107,14 @@
             android:orientation="vertical">
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_resume"
+                android:id="@+id/btn_send"
                 android:layout_width="354dp"
                 android:layout_height="52dp"
                 android:layout_marginBottom="66dp"
                 android:background="@color/colorPrimary"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="@string/resume"
+                android:text="@string/send_data"
                 android:textAllCaps="false"
                 android:textColor="@color/colorStatusBarDark"
                 android:textSize="15sp" />
