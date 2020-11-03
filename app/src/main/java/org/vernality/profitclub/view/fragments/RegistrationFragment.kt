@@ -1,6 +1,5 @@
 package org.vernality.profitclub.view.fragments
 
-import android.R.attr.button
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,8 +8,6 @@ import android.view.animation.AnimationUtils
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
@@ -91,6 +88,7 @@ class RegistrationFragment : Fragment() {
         setRxToEnterAccTV(enterAccountTV)
 
         initResultRegistration()
+        initMessageLiveData()
 
     }
 
@@ -106,6 +104,14 @@ class RegistrationFragment : Fragment() {
         })
     }
 
+    private fun initMessageLiveData(){
+        viewModel.messageLiveData.observe(viewLifecycleOwner, androidx.lifecycle.Observer{
+            if(it != null) {
+                Toast.makeText(requireActivity(), it, Toast.LENGTH_LONG).show()
+            }
+        })
+    }
+
     private fun showSuccessDialog(){
         val successResultDialog
                 = SuccessResultDialogFragment.newInstance(View.OnClickListener {
@@ -113,8 +119,12 @@ class RegistrationFragment : Fragment() {
 
         })
         successResultDialog.show(parentFragmentManager, "ggg")
+    }
 
 
+    fun showMessage(message: String){
+
+        Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()
     }
 
     fun navig(){
@@ -123,6 +133,12 @@ class RegistrationFragment : Fragment() {
         findNavController().navigate(R.id.action_registrationFragment_to_mainFragment)
         Toast.makeText(requireActivity(), "TV resume clicked ", Toast.LENGTH_LONG).show()
     }
+
+
+
+
+
+
 
     private fun setRxToEnterAccTV(enterAccountTV: TextView) {
         val disposableTvEnter = RxView.clicks(enterAccountTV)
@@ -152,7 +168,7 @@ class RegistrationFragment : Fragment() {
                 override fun accept(charSequence: CharSequence?) {
                     //Add your logic to work on the Charsequence
                     if(charSequence!!.isEmpty())Toast.makeText(requireActivity(), "password 2 enter", Toast.LENGTH_LONG).show()
-                    viewModel.checkPassword(charSequence.toString())
+                    viewModel.setPassword2(charSequence.toString())
                 }
             })
 

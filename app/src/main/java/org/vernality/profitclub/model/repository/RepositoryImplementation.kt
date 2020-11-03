@@ -2,9 +2,11 @@ package org.vernality.profitclub.model.repository
 
 import org.vernality.profitclub.model.data.Organization
 import org.vernality.profitclub.model.data.User
+import org.vernality.profitclub.model.datasource.DataSource
+import org.vernality.profitclub.model.datasource.ParseImplementation
 
 
-class RepositoryImplementation() :
+class RepositoryImplementation(private val dataSource: DataSource) :
     Repository<List<Organization>> {
 
     override fun getData(user: User): ArrayList<Organization> {
@@ -15,4 +17,12 @@ class RepositoryImplementation() :
 
         )
     }
+
+    override fun getUser(password: String, email: String): User? {
+        return ParseImplementation().getData(password, email)
+    }
+
+
+    fun registration(userName: String, password: String, email: String)
+            = dataSource.registration(userName, password, email)
 }

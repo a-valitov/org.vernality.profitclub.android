@@ -1,15 +1,13 @@
 package org.vernality.profitclub.view_model
 
 import android.app.Application
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
-import org.koin.android.viewmodel.ext.android.viewModel
-import org.koin.core.get
 import org.koin.core.inject
-import org.vernality.profitclub.di.application
-import java.util.*
+import org.vernality.profitclub.model.repository.RepositoryImplementation
+import org.vernality.profitclub.utils.ui.RegistrationStatus
+import org.vernality.profitclub.utils.ui.UIUtils
 
-enum class Field{Login, Gmail, Password1, Password2}
+enum class Field{Login, Gmail, Password, Password2}
 
 enum class Result{
     Success, Error;
@@ -17,58 +15,131 @@ enum class Result{
 
 }
 
+const val message = "некорректное зхаполнение поля "
+
 class RegistrationViewModel(appContext: Application) : BaseViewModel(appContext) {
 
     private val context = appContext
 
-    private val registration: MutableMap<Field, String?> =
-        mutableMapOf(Field.Login to null, Field.Gmail to null, Field.Password1 to null, Field.Password2 to null)
+    private val repository: RepositoryImplementation by inject()
+
+    private val registrationFields: MutableMap<Field, String?> =
+        mutableMapOf(Field.Login to null, Field.Gmail to null, Field.Password to null, Field.Password2 to null)
 
 
     val resultLiveData: MutableLiveData<Result> by lazy {
         MutableLiveData<Result>()
     }
 
+    val messageLiveData: MutableLiveData<String?> by lazy {
+        MutableLiveData<String?>()
+    }
+
 
     fun setLogin(login: String){
-        registration[Field.Login] = login
+        registrationFields[Field.Login] = login
     }
 
     fun setGmail(gmail: String){
-        registration[Field.Gmail] = gmail
+        registrationFields[Field.Gmail] = gmail
     }
 
     fun setPassword(password1: String){
-        registration[Field.Password1]=password1
+        registrationFields[Field.Password]=password1
     }
 
-    fun checkPassword(password2: String){
+    fun setPassword2(password2: String){
+        registrationFields[Field.Password2]=password2
+        checkPassword(password2)
+    }
 
-        if(registration.get(Field.Password1) == null) {
-            Toast.makeText(context, "fill in the previous password field", Toast.LENGTH_LONG).show()
+    fun checkPassword(password2: String):Boolean{
+
+        if(registrationFields.get(Field.Password) == null) {
+            messageLiveData.value = "fill in the previous password field"
+            return false
         } else {
-            if(!registration.get(Field.Password1)?.contains(password2)!!) {
-                Toast.makeText(context, "the passwords you entered don't match", Toast.LENGTH_LONG).show()
-            }
+            if(!registrationFields.get(Field.Password)?.contains(password2)!!) {
+                messageLiveData.value = "the passwords you entered don't match"
+                return false
+            } else return true
         }
     }
 
     fun registration(){
 
-        if (checkFields() == Result.Success) resultLiveData.value = Result.Success
-        else resultLiveData.value = Result.Error
+        if (checkFields() == Result.Success)
+
+            repository.registration(
+                registrationFields[Field.Login]!!,
+                registrationFields[Field.Password]!!,
+                registrationFields[Field.Gmail]!!
+            ).subscribe(
+                {
+                    UIUtils.setRegistrationStatus(RegistrationStatus.Registered)
+                    resultLiveData.value = Result.Success
+                    println("-----registration is Succes-----")
+                },
+                {e ->
+                    println(e)
+                    resultLiveData.value = Result.Error
+                    messageLiveData.value = e.toString()})
+
+        else {
+
+        }
+
     }
 
     private fun checkFields():Result {
-        return Result.Success
+
+        if(
+            checkLogin(registrationFields[Field.Login])
+            && checlGmail(registrationFields[Field.Gmail])
+            && checkPassword(registrationFields[Field.Password2]!!)
+            && checkFinishPassword(registrationFields[Field.Password])
+          ) {
+            println("---check is Succes---")
+            return Result.Success}
+        else return Result.Error
     }
+
+    private fun checkLogin(login: String?):Boolean{
+        if(!login.isNullOrEmpty() && !login.isNullOrBlank()){
+            return true
+        } else {
+            messageLiveData.value = message + Field.Login.name
+            return false
+        }
+
+    }
+
+    private fun checlGmail(gmail: String?):Boolean{
+        if(!gmail.isNullOrBlank() && !gmail.isNullOrEmpty() && UIUtils.checkGmail(gmail)){
+            return true
+        } else {
+            messageLiveData.value = message + Field.Gmail.name
+            return false
+        }
+    }
+
+    private fun checkFinishPassword(password: String?):Boolean{
+        val PASSWORD_REGEX = """^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#${'$'}%!\-_?&])(?=\S+${'$'}).{6,40}""".toRegex()
+        if(!password.isNullOrBlank() && !password.isNullOrEmpty() && PASSWORD_REGEX.matches(password)){
+            return true
+        } else {
+            messageLiveData.value = message + Field.Password.name
+            return false
+        }
+    }
+
 
     fun enterInAccount(){
 
     }
 
     fun clear(){
-        for (field in registration){
+        for (field in registrationFields){
            field.setValue(null)
         }
     }

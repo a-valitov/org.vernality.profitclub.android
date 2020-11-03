@@ -2,8 +2,7 @@ package org.vernality.profitclub.view.fragments
 
 import android.os.Bundle
 import android.view.*
-import android.widget.ImageView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +16,7 @@ import org.vernality.profitclub.model.repository.RepositoryImplementation
 import org.vernality.profitclub.view.adapters.RequestRVAdapter
 import org.vernality.profitclub.view_model.EnterRoleDataViewModel
 import org.vernality.profitclub.view_model.Result
+import java.lang.reflect.Field
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -26,11 +26,6 @@ private const val ARG_PARAM2 = "param2"
 
 
 
-/**
- * A simple [Fragment] subclass.
- * Use the [RoleFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class DataProcessingFragment : Fragment() {
 
     val compos = CompositeDisposable()
@@ -74,11 +69,6 @@ class DataProcessingFragment : Fragment() {
 
         initResultSendData()
 
-        println("-------viewModel = " +viewModel)
-
-//        setFields(viewModel.getFields())
-
-
         return root
     }
 
@@ -99,24 +89,48 @@ class DataProcessingFragment : Fragment() {
             Toast.makeText(requireActivity(), "add clicked", Toast.LENGTH_LONG).show()
         }
         settingsIV.setOnClickListener {
-            popupMenu.show()
+
+            var tv:LinearLayout = requireActivity().findViewById(R.layout.popup)
+            val popupWindow = PopupWindow(requireActivity())
+            popupWindow.contentView = tv // customview with list of textviews (with gravity inside)
+
+            popupWindow.showAsDropDown(settingsIV)
+
+
+//            val menuHelper: Any
+//            val argTypes: Array<Class<*>?>
+//            try {
+//                val fMenuHelper: Field =
+//                    PopupMenu::class.java.getDeclaredField("mPopup")
+//                fMenuHelper.setAccessible(true)
+//                menuHelper = fMenuHelper.get(popupMenu)
+//                argTypes = arrayOf(Boolean::class.javaPrimitiveType)
+//                menuHelper.javaClass.getDeclaredMethod("setForceShowIcon", *argTypes)
+//                    .invoke(menuHelper, true)
+//                menuHelper.javaClass.getDeclaredMethod("setLayoutGravity", *argTypes)
+//                    .invoke(menuHelper, Gravity.END)
+//            } catch (e: Exception) {
+//            }
+//            popupMenu.show()
         }
 
     }
 
 
     private fun initPopupMenu(view: View){
-        popupMenu = PopupMenu(requireActivity(), view)
-        popupMenu.inflate(R.menu.main_toolbar_menu)
-        popupMenu.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.item_menu_exit -> {
-                    Toast.makeText(requireActivity(), "exit clicked", Toast.LENGTH_LONG).show()
-                    true
-                }
-                else -> false
-            }
-        }
+//        val wrapper = ContextThemeWrapper(requireActivity(), R.style.AppTheme_PopupOverlay)
+//        popupMenu = PopupMenu(wrapper, view)
+//        popupMenu.inflate(R.menu.main_toolbar_menu)
+//        popupMenu.setOnMenuItemClickListener {
+//            when (it.itemId) {
+//                R.id.item_menu_exit -> {
+//                    Toast.makeText(requireActivity(), "exit clicked", Toast.LENGTH_LONG).show()
+//                    true
+//                }
+//                else -> false
+//            }
+//        }
+
     }
 
 
