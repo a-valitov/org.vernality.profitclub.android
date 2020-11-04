@@ -87,12 +87,12 @@ class RegistrationFragment : Fragment() {
         setRxToRegBtn(registrBTN)
         setRxToEnterAccTV(enterAccountTV)
 
-        initResultRegistration()
+        initResult()
         initMessageLiveData()
 
     }
 
-    private fun initResultRegistration(){
+    private fun initResult(){
         viewModel.resultLiveData.observe(viewLifecycleOwner, androidx.lifecycle.Observer{
             if(it == Result.Success) {
                 Toast.makeText(requireActivity(), "Registration is success", Toast.LENGTH_LONG).show()
@@ -107,7 +107,8 @@ class RegistrationFragment : Fragment() {
     private fun initMessageLiveData(){
         viewModel.messageLiveData.observe(viewLifecycleOwner, androidx.lifecycle.Observer{
             if(it != null) {
-                Toast.makeText(requireActivity(), it, Toast.LENGTH_LONG).show()
+                showMessage(it)
+                viewModel.deleteShowedMessage()
             }
         })
     }

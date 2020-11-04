@@ -1,31 +1,28 @@
 package org.vernality.profitclub.view.fragments
 
-import android.graphics.Bitmap
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.jakewharton.rxbinding2.widget.RxTextView
-import com.vansuita.gaussianblur.GaussianBlur
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
-import jp.wasabeef.blurry.Blurry
-import kotlinx.android.synthetic.main.card.view.*
 import kotlinx.android.synthetic.main.fragment_enter_role.view.*
-import kotlinx.android.synthetic.main.fragment_role.view.*
 import kotlinx.android.synthetic.main.item_enter_role.view.*
-import kotlinx.android.synthetic.main.item_select_role.view.*
+import org.koin.android.viewmodel.ext.android.getViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.vernality.profitclub.R
+import org.vernality.profitclub.view.activities.EnterRoleActivity
 import org.vernality.profitclub.view_model.*
 
 
@@ -46,9 +43,13 @@ class EnterRoleDataFragment : Fragment() {
 
     private val viewModel by viewModel<EnterRoleDataViewModel>()
 
+
+
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+
+    private lateinit var fields:MutableMap<FieldOrg, String?>
 
     lateinit var sendDataBtn:  MaterialButton
     lateinit var nameOfOrganizationET: TextInputEditText
@@ -57,6 +58,8 @@ class EnterRoleDataFragment : Fragment() {
     lateinit var phoneET: TextInputEditText
     lateinit var privacyPolicyTV: TextInputEditText
     lateinit var exit: ConstraintLayout
+    lateinit var roleTV: TextView
+    lateinit var roleHideTV: TextView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,7 +68,10 @@ class EnterRoleDataFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
+
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -74,28 +80,27 @@ class EnterRoleDataFragment : Fragment() {
         // Inflate the layout for this fragment
         val root = inflater.inflate(R.layout.fragment_enter_role, container, false)
 
-
         init(root)
 
         initResultSendData()
 
-        println("-------viewModel = " +viewModel)
+        initMessageLiveData()
 
-//        setFields(viewModel.getFields())
+        if (savedInstanceState == null) {
+            fields = viewModel.getFields()
+            setFields(fields)
+        } else {
 
+        }
 
         return root
     }
 
-    private fun setFields(fields: MutableMap<RoleField, String?>) {
-        for (a in fields){
-
-            println("-----" + a.value + "   "+ a.key)
-        }
-        nameOfOrganizationET.setText(fields[RoleField.Name])
-        INNOfOrganizationET.setText(fields[RoleField.INN])
-        FCSET.setText(fields[RoleField.FCS])
-        phoneET.setText(fields[RoleField.Phone])
+    private fun setFields(fields: MutableMap<FieldOrg, String?>) {
+        nameOfOrganizationET.setText(fields[FieldOrg.Name])
+        INNOfOrganizationET.setText(fields[FieldOrg.INN])
+        FCSET.setText(fields[FieldOrg.ContactName])
+        phoneET.setText(fields[FieldOrg.Phone])
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -111,6 +116,8 @@ class EnterRoleDataFragment : Fragment() {
         phoneET = root.et_enter_phone
         privacyPolicyTV = root.et_enter_phone
         exit = root.exit_enter_role
+        roleTV = root.tittle_role
+        roleHideTV = root.tv_input_hint
 
         setRxToNameOfOrgET(nameOfOrganizationET)
         setRxToINNET(INNOfOrganizationET)
@@ -120,7 +127,34 @@ class EnterRoleDataFragment : Fragment() {
         setListenerExit(exit)
         setListenerSendDataBtn(sendDataBtn)
 
+        val activityViewModel = (requireActivity() as EnterRoleActivity).viewModelRoleActivity
 
+        setObserverActivityLivedata(activityViewModel)
+
+
+    }
+
+    private fun setObserverActivityLivedata(activityViewModel: EnterRoleActivityViewModel) {
+        activityViewModel.getRoleLiveData().observe(viewLifecycleOwner, Observer {
+
+            when (it) {
+                Role.Provider -> {
+                    roleTV.setText(R.string.provider)
+                    roleHideTV.setText(R.string.provider_description)
+                    viewModel.setRole(Role.Provider)
+                }
+                Role.Organization -> {
+                    roleTV.setText(R.string.organization)
+                    roleHideTV.setText(R.string.organization_description)
+                    viewModel.setRole(Role.Organization)
+                }
+                Role.Participant -> {
+                    roleTV.setText(R.string.participant_of_the_organization)
+                    roleHideTV.setText(R.string.participant_of_the_organization_description)
+                    viewModel.setRole(Role.Participant)
+                }
+            }
+        })
     }
 
     private fun showAlertDialog(){
@@ -136,9 +170,6 @@ class EnterRoleDataFragment : Fragment() {
 
     fun navig(){
 
-        //findNavController().navigate(R.id.action_registrationFragment_to_roleFragment)
-//        findNavController().navigate(R.id.action_registrationFragment_to_mainFragment)
-//        Toast.makeText(requireActivity(), "TV resume clicked ", Toast.LENGTH_LONG).show()
     }
 
 
@@ -153,6 +184,26 @@ class EnterRoleDataFragment : Fragment() {
             }
         })
     }
+
+    private fun initMessageLiveData(){
+        viewModel.messageLiveData.observe(viewLifecycleOwner, androidx.lifecycle.Observer{
+            if(it != null) {
+                showMessage(it)
+                viewModel.deleteShowedMessage()
+            }
+        })
+    }
+
+    fun showMessage(message: String){
+
+        Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()
+    }
+
+
+
+
+
+
 
 
     private fun setRxToNameOfOrgET(nameOfOrganizationET: TextInputEditText) {
@@ -204,7 +255,7 @@ class EnterRoleDataFragment : Fragment() {
                 override fun accept(charSequence: CharSequence?) {
                     //Add your logic to work on the Charsequence
                     if(charSequence!!.isEmpty())Toast.makeText(requireActivity(), "password 2 enter", Toast.LENGTH_LONG).show()
-                    viewModel.setFCS(charSequence.toString())
+                    viewModel.setPhone(charSequence.toString())
                 }
             })
 
@@ -213,9 +264,8 @@ class EnterRoleDataFragment : Fragment() {
 
     private fun setListenerSendDataBtn(sendDataBTN: MaterialButton) {
         sendDataBTN.setOnClickListener {
-            Toast.makeText(requireActivity(), "button resume is checked", Toast.LENGTH_LONG).show()
             viewModel.sendData()
-            findNavController().navigate(R.id.action_enterRoleFragment_to_BlankFragment)
+
         }
     }
 
@@ -231,6 +281,7 @@ class EnterRoleDataFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        println("------EnterRoleDataFragment onDestroyView()")
         compos.clear()
     }
 

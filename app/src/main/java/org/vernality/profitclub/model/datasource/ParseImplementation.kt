@@ -1,16 +1,11 @@
 package org.vernality.profitclub.model.datasource
 
 
-import android.content.Context
-import com.parse.Parse
 import com.parse.ParseObject
-import com.parse.ParseQuery
 import com.parse.ParseUser
 import io.reactivex.Completable
-import okhttp3.Interceptor
-import okhttp3.OkHttpClient
+import org.vernality.profitclub.model.data.Role
 import org.vernality.profitclub.model.data.User
-import java.lang.Exception
 
 
 class ParseImplementation() : DataSource {
@@ -18,25 +13,6 @@ class ParseImplementation() : DataSource {
     override fun getData(password: String, email: String): User? {
 
        var user: User? = null
-//       val query = ParseQuery.getQuery<ParseObject>("User")
-//        query.whereEqualTo("username", email)
-//        query.findInBackground { _user, e ->
-//            if(e == null){
-//                println("--------объект  ="+ _user)
-//                val obj = _user[0]
-//
-//                user = User(
-//                    obj.getString("objectId")!!,
-//                    obj.getString("username")!!,
-//                    obj.getString("email")!!,
-//                    obj.getString("password")!!
-//                )
-//
-//            } else{
-//                println("--------объект с именем ="+ email + " не найден")
-//            }
-//        }
-
         return user
     }
 
@@ -71,6 +47,82 @@ class ParseImplementation() : DataSource {
         }
 
     }
+
+
+    override fun createOrganization(role: Role): Completable {
+
+        return Completable.create {
+            val currentUser = ParseUser.getCurrentUser()
+            if (currentUser != null) {
+                println("------currentUser is not null-----name = " + currentUser.username)
+                println("------Role name =  "+ role.name)
+
+                val organization = ParseObject("Organization")
+                organization.put("name", role.name)
+                organization.put("inn", role.INN)
+                organization.put("contact", role.contactName)
+                organization.put("phone", role.phone)
+
+
+                currentUser.put("organization", organization)
+                currentUser.saveInBackground { e-> if(e == null) it.onComplete()
+                else it.onError(e)
+                }
+            } else {
+                // Вызов окна входа
+                println("------необходимо войти в систему---")
+            }
+        }
+    }
+
+    override fun createSupplier(role: Role): Completable {
+
+        return Completable.create {
+            val currentUser = ParseUser.getCurrentUser()
+            if (currentUser != null) {
+                println("------currentUser is not null-----")
+
+                val supplier = ParseObject("Supplier")
+                supplier.put("name", role.name)
+                supplier.put("inn", role.INN)
+                supplier.put("contact", role.contactName)
+                supplier.put("phone", role.phone)
+
+                currentUser.put("suppliers", supplier)
+                currentUser.saveInBackground { e-> if(e == null) it.onComplete()
+                else it.onError(e)
+                }
+            } else {
+                // Вызов окна входа
+                println("------необходимо войти в систему---")
+            }
+        }
+    }
+
+    override fun createMember(role: Role): Completable {
+
+        return Completable.create {
+            val currentUser = ParseUser.getCurrentUser()
+            if (currentUser != null) {
+                println("------currentUser is not null-----")
+
+//                val member = ParseObject("Member")
+//                member.put("name", role.name)
+//                member.put("inn", role.INN)
+//                member.put("contact", role.contactName)
+//                member.put("phone", role.phone)
+//
+//                currentUser.put("member", member)
+//                currentUser.saveInBackground { e-> if(e == null) it.onComplete()
+//                else it.onError(e)
+//                }
+            } else {
+                // Вызов окна входа
+                println("------необходимо войти в систему---")
+            }
+        }
+    }
+
 
     companion object {
         private const val BASE_URL_LOCATIONS = ""

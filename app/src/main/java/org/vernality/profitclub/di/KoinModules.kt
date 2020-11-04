@@ -7,6 +7,7 @@ import org.koin.dsl.module
 import org.vernality.profitclub.model.datasource.ParseImplementation
 import org.vernality.profitclub.model.repository.RepositoryImplementation
 import org.vernality.profitclub.utils.ui.MyPreferences
+import org.vernality.profitclub.view_model.EnterRoleActivityViewModel
 import org.vernality.profitclub.view_model.EnterRoleDataViewModel
 import org.vernality.profitclub.view_model.RegistrationViewModel
 import org.vernality.profitclub.view_model.RoleSelectViewModel
@@ -44,6 +45,10 @@ val viewModelDependency = module {
 
     viewModel {
         EnterRoleDataViewModel(androidApplication())
+    }
+
+    viewModel {
+        EnterRoleActivityViewModel(androidApplication())
     }
 
 }

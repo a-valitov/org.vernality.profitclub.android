@@ -91,11 +91,16 @@ class RegistrationViewModel(appContext: Application) : BaseViewModel(appContext)
 
     }
 
+
+    fun deleteShowedMessage(){
+        messageLiveData.value = null
+    }
+
     private fun checkFields():Result {
 
         if(
             checkLogin(registrationFields[Field.Login])
-            && checlGmail(registrationFields[Field.Gmail])
+            && checkGmail(registrationFields[Field.Gmail])
             && checkPassword(registrationFields[Field.Password2]!!)
             && checkFinishPassword(registrationFields[Field.Password])
           ) {
@@ -114,7 +119,7 @@ class RegistrationViewModel(appContext: Application) : BaseViewModel(appContext)
 
     }
 
-    private fun checlGmail(gmail: String?):Boolean{
+    private fun checkGmail(gmail: String?):Boolean{
         if(!gmail.isNullOrBlank() && !gmail.isNullOrEmpty() && UIUtils.checkGmail(gmail)){
             return true
         } else {

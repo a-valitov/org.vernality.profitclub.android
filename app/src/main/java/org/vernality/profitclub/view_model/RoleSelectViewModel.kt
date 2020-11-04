@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 
 enum class Role{Provider, Organization, Participant}
 
+enum class FieldOrg{Name, INN, ContactName, Phone}
 
 class RoleSelectViewModel(appContext: Application) : BaseViewModel(appContext) {
 
@@ -12,12 +13,12 @@ class RoleSelectViewModel(appContext: Application) : BaseViewModel(appContext) {
 
     private var role: Role? = null
 
-    private val registration: MutableMap<Field, String?> =
-        mutableMapOf(Field.Login to null, Field.Gmail to null, Field.Password to null, Field.Password2 to null)
+    val resultLiveData: MutableLiveData<Result?> by lazy {
+        MutableLiveData<Result?>()
+    }
 
-
-    val resultLiveData: MutableLiveData<Result> by lazy {
-        MutableLiveData<Result>()
+    val messageLiveData: MutableLiveData<String?> by lazy {
+        MutableLiveData<String?>()
     }
 
 
@@ -41,8 +42,27 @@ class RoleSelectViewModel(appContext: Application) : BaseViewModel(appContext) {
 
     fun resume(){
 
+        if(checkBox()) resultLiveData.value = Result.Success
+
     }
 
+    fun checkBox():Boolean{
+        return role != null
+    }
+
+    fun deleteShowedMessage(){
+        messageLiveData.value = null
+    }
+
+    fun clearResult() {resultLiveData.value = null}
+
+
+    override fun onCleared() {
+        println("-------onCleared in RoleSelectViewModel")
+        super.onCleared()
+
+        resultLiveData.value = null
+    }
 
 
 

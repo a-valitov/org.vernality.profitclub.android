@@ -12,6 +12,8 @@ import fr.tvbarthel.lib.blurdialogfragment.BlurDialogEngine
 import fr.tvbarthel.lib.blurdialogfragment.SupportBlurDialogFragment
 import kotlinx.android.synthetic.main.dialog_fragment_registration_success.view.*
 import org.vernality.profitclub.R
+import org.vernality.profitclub.utils.ui.RegistrationStatus
+import org.vernality.profitclub.utils.ui.UIUtils
 import org.vernality.profitclub.view.activities.EnterRoleActivity
 import org.vernality.profitclub.view.activities.SelectOrganizationActivity
 
@@ -39,6 +41,7 @@ class AlertRoleDialogFragment(_clickListener: View.OnClickListener) : SupportBlu
         root.tv_resume.setOnClickListener {
             Toast.makeText(requireActivity(), "TV resume clicked ", Toast.LENGTH_LONG).show()
             //findNavController().navigate(R.id.action_registrationFragment_to_roleFragment)
+            UIUtils.setRegistrationStatus(RegistrationStatus.SelectedRole)
             val intent = Intent(requireActivity(), SelectOrganizationActivity::class.java)
             requireActivity().startActivity(intent)
             dismiss()

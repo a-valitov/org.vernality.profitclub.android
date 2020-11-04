@@ -20,9 +20,8 @@ import kotlinx.android.synthetic.main.fragment_role.view.*
 import kotlinx.android.synthetic.main.item_select_role.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.vernality.profitclub.R
-import org.vernality.profitclub.view_model.RegistrationViewModel
-import org.vernality.profitclub.view_model.Role
-import org.vernality.profitclub.view_model.RoleSelectViewModel
+import org.vernality.profitclub.view.activities.EnterRoleActivity
+import org.vernality.profitclub.view_model.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -38,6 +37,8 @@ private const val ARG_PARAM2 = "param2"
 class RoleFragment : Fragment() {
 
     private val viewModel by viewModel<RoleSelectViewModel>()
+
+    private val activityViewModel by viewModel<EnterRoleActivityViewModel>()
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -67,6 +68,10 @@ class RoleFragment : Fragment() {
 
         init(root)
 
+        initResult()
+
+        initMessageLiveData()
+
         initCheckBox(viewModel.getRole())
 
         return root
@@ -93,11 +98,61 @@ class RoleFragment : Fragment() {
 
     }
 
+    private fun initResult(){
+        viewModel.resultLiveData.observe(viewLifecycleOwner, androidx.lifecycle.Observer{
+            if(it == Result.Success) {
+                Toast.makeText(requireActivity(), "Registration is success", Toast.LENGTH_LONG).show()
+
+                (requireActivity() as EnterRoleActivity).viewModelRoleActivity.setRole(viewModel.getRole()!!)
+
+                viewModel.clearResult()
+                navigateTo()
+            }
+            else {
+
+            }
+        })
+    }
+
+    private fun initMessageLiveData(){
+        viewModel.messageLiveData.observe(viewLifecycleOwner, androidx.lifecycle.Observer{
+            if(it != null) {
+                showMessage(it)
+                viewModel.deleteShowedMessage()
+            }
+        })
+    }
+
+    fun initCheckBox(role: Role?){
+        when(role){
+            Role.Provider -> setCheckBoxGroup(providerCB)
+            Role.Organization -> setCheckBoxGroup(organizationCB)
+            Role.Participant -> setCheckBoxGroup(participantCB)
+        }
+    }
+
+    fun navigateTo(){
+
+        findNavController().navigate(R.id.action_roleFragment_to_enterRoleFragment)
+    }
+
+    fun showMessage(message: String){
+
+        Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()
+    }
+
+
+
+
+
+
+
+
     private fun setListenerResumeBtn(resumeBTN: MaterialButton) {
         resumeBTN.setOnClickListener {
             Toast.makeText(requireActivity(), "button resume is checked", Toast.LENGTH_LONG).show()
             viewModel.resume()
-            findNavController().navigate(R.id.action_roleFragment_to_enterRoleFragment)
+
             println("--------nav to enter role---------")
         }
     }
@@ -105,6 +160,7 @@ class RoleFragment : Fragment() {
     private fun setListenerParticipant(participantCB: CheckBox) {
         participantCB.setOnClickListener {
             Toast.makeText(requireActivity(), "Participant is checked", Toast.LENGTH_LONG).show()
+            activityViewModel.setRoleParticipant()
             viewModel.setRoleParticipant()
             setCheckBoxGroup(participantCB)
         }
@@ -114,6 +170,7 @@ class RoleFragment : Fragment() {
     private fun setListenerOrganization(organizationCB: CheckBox) {
         organizationCB.setOnClickListener {
             Toast.makeText(requireActivity(), "Organization is checked", Toast.LENGTH_LONG).show()
+            activityViewModel.setRoleOrganization()
             viewModel.setRoleOrganization()
             setCheckBoxGroup(organizationCB)
         }
@@ -123,6 +180,7 @@ class RoleFragment : Fragment() {
     private fun setListenerProvider(providerCB: CheckBox) {
         providerCB.setOnClickListener {
             Toast.makeText(requireActivity(), "Provider is checked", Toast.LENGTH_LONG).show()
+            activityViewModel.setRoleProvider()
             viewModel.setRoleProvider()
             setCheckBoxGroup(providerCB)
         }
@@ -152,13 +210,6 @@ class RoleFragment : Fragment() {
         }
     }
 
-    fun initCheckBox(role: Role?){
-        when(role){
-            Role.Provider -> setCheckBoxGroup(providerCB)
-            Role.Organization -> setCheckBoxGroup(organizationCB)
-            Role.Participant -> setCheckBoxGroup(participantCB)
-        }
-    }
 
 
     companion object {
