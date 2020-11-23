@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="Registration">
+        <item>Вы прошли регистрацию</item>
+        <item>Осталось выбрать роль в клубе</item>
+        <item>Продолжить</item>
+        <item>Назад</item>
+    </string-array>
+
+    <string-array name="ResetPassword">
+        <item>Вы сбросили пароль</item>
+        <item>Проверьте вашу почту</item>
+        <item>Спасибо</item>
+        <item>Назад</item>
+    </string-array>
+
+    <string-array name="RoleApproveAdmin">
+        <item>Ваши данные отправлены в обработку</item>
+        <item>Дождитесь пока администратор одобрит вашу заявку на вступление в клуб</item>
+        <item>Спасибо</item>
+        <item>Назад</item>
+    </string-array>
+
+    <string-array name="LogOrgAccount">
+        <item>Войти?</item>
+        <item>Войти через аккаунт организации ООО «Верналити»</item>
+        <item>Одобрить</item>
+        <item>Назад</item>
+    </string-array>
+
+    <string-array name="RequestApprovedAdmin">
+        <item>Вы в клубе</item>
+        <item>Администрация одобрила вашу заявку на вступление в клуб</item>
+        <item>Спасибо</item>
+        <item>Назад</item>
+    </string-array>
+
+    <string-array name="ApprovePromotion">
+        <item>Одобрить акцию?</item>
+        <item>Одобрить акцию от name?</item>
+        <item>Одобрить</item>
+        <item>Назад</item>
+    </string-array>
+
+    <string-array name="SubmitCommercialOffer">
+        <item>Отправить в обработку?</item>
+        <item>Перед публикацией комерческого предложения, его должен проверить аминистратор</item>
+        <item>Отправить</item>
+        <item>Назад</item>
+    </string-array>
+
+    <string-array name="ApproveRequestIntoOrg">
+        <item>Одобрить заявку?</item>
+        <item>Одобрить заявку на вступление name в организацию?</item>
+        <item>Одобрить</item>
+        <item>Назад</item>
+    </string-array>
+
+    <string-array name="ApproveDelivery">
+        <item>Одобрить поставку?</item>
+        <item>Одобрить поставку от name?</item>
+        <item>Одобрить</item>
+        <item>Назад</item>
+    </string-array>
+
+
+</resources>

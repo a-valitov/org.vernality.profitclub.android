@@ -30,9 +30,12 @@
     <color name="colorRequestUnderConsideration">@color/colorPrimary</color>
     <color name="colorRequestApproved">@color/colorTransient</color>
     <color name="colorRequestRejected">@color/colorAlert</color>
+    <color name="colorRequestExcluded">@color/colorAlert</color>
 
 
-
+    <color name="color_bottomNav">#F8F8F8</color>
+    <color name="color_bottomIconDisable"> #80191818</color>
+    <color name="color_stocksSubTittle">#757474</color>
 
 
 

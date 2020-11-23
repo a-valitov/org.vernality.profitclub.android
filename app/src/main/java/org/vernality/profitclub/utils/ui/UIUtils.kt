@@ -1,8 +1,23 @@
 package org.vernality.profitclub.utils.ui
 
+import android.content.Context
+import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
+import android.os.Bundle
+import android.util.Log
+import android.view.View
+import android.widget.ImageView
+import androidx.core.content.ContextCompat.startActivity
+import androidx.navigation.Navigation
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import org.vernality.profitclub.R
 import org.vernality.profitclub.utils.ui.RegistrationStatus.*
+import org.vernality.profitclub.view.fragments.SuccessResultDialogFragment
+import org.vernality.profitclub.view.fragments.TypeDialogFragment
 
 
 enum class RegistrationStatus{
@@ -33,6 +48,63 @@ class UIUtils {
         public fun checkGmail(gmail: String):Boolean{
             return android.util.Patterns.EMAIL_ADDRESS.matcher(gmail).matches()
         }
+
+        public fun openWebPage(context: Context, address: String){
+            val uri = Uri.parse(address)
+            val openLinkIntent = Intent(Intent.ACTION_VIEW, uri).addFlags(FLAG_ACTIVITY_NEW_TASK)
+
+            if (openLinkIntent.resolveActivity(context.packageManager) != null) {
+                startActivity(context, openLinkIntent, Bundle.EMPTY)
+            } else {
+                Log.d("Intent", "Не получается обработать намерение!")
+            }
+        }
+
+
+        public fun configureDialogFragment(fragment: SuccessResultDialogFragment, type: TypeDialogFragment): SuccessResultDialogFragment {
+
+            when (type) {
+                TypeDialogFragment.Registration -> return configureRegistrationDialog(fragment)
+                TypeDialogFragment.RoleApproveAdmin -> return configureRoleApproveAdminDialog(fragment)
+                TypeDialogFragment.LogOrgAccount -> return configureLogOrgAccountDialog(fragment)
+                TypeDialogFragment.ResetPassword -> return configureResetPasswordDialog(fragment)
+                else -> throw Throwable("недопустимый тип диалогового фрагмента")
+
+            }
+
+
+        }
+
+
+
+
+        private fun configureRegistrationDialog(fragment: SuccessResultDialogFragment): SuccessResultDialogFragment{
+           return fragment.apply {
+               setTitleOnViews(resources.getStringArray(R.array.Registration))
+               backTV?.visibility = View.GONE
+           }
+        }
+
+        private fun configureRoleApproveAdminDialog(fragment: SuccessResultDialogFragment): SuccessResultDialogFragment{
+            return fragment.apply {
+                setTitleOnViews(resources.getStringArray(R.array.RoleApproveAdmin))
+                backTV?.visibility = View.GONE
+            }
+        }
+
+        private fun configureLogOrgAccountDialog(fragment: SuccessResultDialogFragment): SuccessResultDialogFragment{
+            return fragment.apply {
+                setTitleOnViews(resources.getStringArray(R.array.LogOrgAccount))
+            }
+        }
+
+        private fun configureResetPasswordDialog(fragment: SuccessResultDialogFragment): SuccessResultDialogFragment{
+            return fragment.apply {
+                setTitleOnViews(resources.getStringArray(R.array.ResetPassword))
+            }
+        }
+
+
 
     }
 }

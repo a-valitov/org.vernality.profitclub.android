@@ -1,22 +1,44 @@
 package org.vernality.profitclub.model.datasource
 
 import io.reactivex.Completable
-import org.vernality.profitclub.model.data.Role
-import org.vernality.profitclub.model.data.User
+import io.reactivex.Observable
+import io.reactivex.Single
+import org.vernality.profitclub.model.data.*
 
 interface DataSource {
 
     fun getData(password: String, email:String):User?
 
-    fun setData(user: User)
 
-    fun registration(userName: String, password: String, email: String):Completable
 
-    fun createOrganization(role: Role):Completable
+    fun registration(user: User):Completable
 
-    fun createSupplier(role: Role): Completable
+    fun logOut():Completable
 
-    fun createMember(role: Role): Completable
+    fun signIn(user: User):Completable
 
+    fun resetPassword(email: String):Completable
+
+    fun createOrganization(organization: Organization):Completable
+
+    fun createSupplier(supplier: Supplier): Completable
+
+    fun createMember(member: Member): Completable
+
+    fun getUserName():Single<String>
+
+    fun getOrganization():Observable<List<Organization>>
+
+    fun getMyOrganization():Single<List<Organization>>
+
+    fun becameMemberOfOrganization(member: Member, organization: Organization): Completable
+
+    fun getActions():Single<List<Action>>
+
+    fun getMembersOfOrganization(organization: Organization):Single<List<Member>>
+
+    fun getRequestOfOrganization(organization: Organization): Single<List<Member>>
+
+    fun getCommercialOffers(): Single<List<CommercialOffer>>
 
 }

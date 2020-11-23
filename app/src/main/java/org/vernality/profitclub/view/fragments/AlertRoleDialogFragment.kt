@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import fr.tvbarthel.lib.blurdialogfragment.BlurDialogEngine
 import fr.tvbarthel.lib.blurdialogfragment.SupportBlurDialogFragment
-import kotlinx.android.synthetic.main.dialog_fragment_registration_success.view.*
+import kotlinx.android.synthetic.main.dialog_fragment_success.view.*
 import org.vernality.profitclub.R
 import org.vernality.profitclub.utils.ui.RegistrationStatus
 import org.vernality.profitclub.utils.ui.UIUtils
@@ -38,15 +38,15 @@ class AlertRoleDialogFragment(_clickListener: View.OnClickListener) : SupportBlu
     ): View? {
 
         val root = inflater.inflate(R.layout.dialog_fragment_role_alert, container, false)
-        root.tv_resume.setOnClickListener {
-            Toast.makeText(requireActivity(), "TV resume clicked ", Toast.LENGTH_LONG).show()
-            //findNavController().navigate(R.id.action_registrationFragment_to_roleFragment)
-            UIUtils.setRegistrationStatus(RegistrationStatus.SelectedRole)
-            val intent = Intent(requireActivity(), SelectOrganizationActivity::class.java)
-            requireActivity().startActivity(intent)
-            dismiss()
-            requireActivity().finish()
-        }
+//        root.tv_resume.setOnClickListener {
+//            Toast.makeText(requireActivity(), "TV resume clicked ", Toast.LENGTH_LONG).show()
+//            //findNavController().navigate(R.id.action_registrationFragment_to_roleFragment)
+//            UIUtils.setRegistrationStatus(RegistrationStatus.SelectedRole)
+//            val intent = Intent(requireActivity(), SelectOrganizationActivity::class.java)
+//            requireActivity().startActivity(intent)
+//            dismiss()
+//            requireActivity().finish()
+//        }
 
         dialog?.window?.setDimAmount(1f)
 

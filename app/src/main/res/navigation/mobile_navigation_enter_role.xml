@@ -7,31 +7,42 @@
 
     <fragment
         android:id="@+id/roleFragment"
-        android:name="org.vernality.profitclub.view.fragments.RoleFragment"
+        android:name="org.vernality.profitclub.view.fragments.RoleSelectFragment"
         android:label="fragment_role"
         tools:layout="@layout/fragment_role" >
 
         <action
             android:id="@+id/action_roleFragment_to_enterRoleFragment"
             app:destination="@id/enterRoleFragment" />
+        <action
+            android:id="@+id/action_roleFragment_to_enterMemberFragment"
+            app:destination="@id/enterMemberFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/enterRoleFragment"
-        android:name="org.vernality.profitclub.view.fragments.EnterRoleDataFragment"
+        android:name="org.vernality.profitclub.view.fragments.EnterOrganizationDataFragment"
         android:label="fragment_enter_role"
-        tools:layout="@layout/fragment_enter_role" >
+        tools:layout="@layout/fragment_enter_organization" >
 
-        <action
-            android:id="@+id/action_enterRoleFragment_to_BlankFragment"
-            app:destination="@id/BlankFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/BlankFragment"
-        android:name="org.vernality.profitclub.view.fragments.BlankFragment"
+        android:id="@+id/enterMemberFragment"
+        android:name="org.vernality.profitclub.view.fragments.EnterMemberDataFragment"
         android:label="fragment_blank"
-        tools:layout="@layout/fragment_blank" >
+        tools:layout="@layout/fragment_enter_member" >
+
+        <action
+            android:id="@+id/action_enterMemberFragment_to_selectOrgForMemberFragment"
+            app:destination="@id/selectOrgForMemberFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/selectOrgForMemberFragment"
+        android:name="org.vernality.profitclub.view.fragments.SelectOrgForMemberFragment"
+        android:label="fragment_select_org_for_member"
+        tools:layout="@layout/fragment_select_organization_for_member" >
 
     </fragment>
 

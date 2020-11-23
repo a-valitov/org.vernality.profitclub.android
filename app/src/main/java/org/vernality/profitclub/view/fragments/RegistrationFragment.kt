@@ -1,13 +1,17 @@
 package org.vernality.profitclub.view.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
@@ -16,11 +20,13 @@ import com.jakewharton.rxbinding2.widget.RxTextView
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
-import kotlinx.android.synthetic.main.card.view.*
+import kotlinx.android.synthetic.main.card_registration.view.*
+import kotlinx.android.synthetic.main.fragment_registration.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.vernality.profitclub.R
-import org.vernality.profitclub.view_model.RegistrationViewModel
-import org.vernality.profitclub.view_model.Result
+import org.vernality.profitclub.model.data.AppState
+import org.vernality.profitclub.view.activities.EnterRoleActivity
+import org.vernality.profitclub.view_model.RegistrationFragmentViewModel
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -36,11 +42,18 @@ private const val ARG_PARAM2 = "param2"
  */
 class RegistrationFragment : Fragment() {
 
-    private val viewModel by viewModel<RegistrationViewModel>()
+    private val viewModel by viewModel<RegistrationFragmentViewModel>()
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+
+    private lateinit var successResultDialog: SuccessResultDialogFragment
+    private lateinit var errorResultDialog: ErrorResultDialogFragment
+    private lateinit var loadingDialog: LoadingDialogFragment
+    private lateinit var loadingLayout: FrameLayout
+
+    private val observer = Observer<AppState> { renderData(it) }
 
     val compos = CompositeDisposable()
 
@@ -79,6 +92,7 @@ class RegistrationFragment : Fragment() {
         val editPassword2ET = root.et_confirm_password
         val registrBTN = root.btn_registr
         val enterAccountTV = root.tv_enter
+        loadingLayout = root.loading_frame_layout
 
         setRxToLoginET(loginET)
         setRxToGmailET(gmailET)
@@ -87,39 +101,36 @@ class RegistrationFragment : Fragment() {
         setRxToRegBtn(registrBTN)
         setRxToEnterAccTV(enterAccountTV)
 
-        initResult()
-        initMessageLiveData()
-
     }
 
-    private fun initResult(){
-        viewModel.resultLiveData.observe(viewLifecycleOwner, androidx.lifecycle.Observer{
-            if(it == Result.Success) {
-                Toast.makeText(requireActivity(), "Registration is success", Toast.LENGTH_LONG).show()
-                showSuccessDialog()
+    private fun renderData(appState: AppState) {
+        when (appState) {
+            is AppState.Success<*> -> {
+                loadingLayout.visibility = View.GONE
+                successResultDialog =
+                    SuccessResultDialogFragment.newInstance(TypeDialogFragment.Registration
+                ) { navigateTo() }
+
+                successResultDialog.show(parentFragmentManager, this@RegistrationFragment.toString())
+
             }
-            else {
-                Toast.makeText(requireActivity(), "Registration is error", Toast.LENGTH_LONG).show()
+            is AppState.Loading -> {
+                Toast.makeText(requireActivity(), "Loading", Toast.LENGTH_LONG).show()
+                loadingLayout.visibility = View.VISIBLE
             }
-        })
+            is AppState.Error -> {
+                loadingLayout.visibility = View.GONE
+                errorResultDialog =
+                    ErrorResultDialogFragment.newInstance(description = appState.error.message.toString())
+                Toast.makeText(requireActivity(), "Error \n ${appState.error}", Toast.LENGTH_LONG).show()
+                errorResultDialog.show(parentFragmentManager, this@RegistrationFragment.toString())
+            }
+        }
     }
 
-    private fun initMessageLiveData(){
-        viewModel.messageLiveData.observe(viewLifecycleOwner, androidx.lifecycle.Observer{
-            if(it != null) {
-                showMessage(it)
-                viewModel.deleteShowedMessage()
-            }
-        })
-    }
 
     private fun showSuccessDialog(){
-        val successResultDialog
-                = SuccessResultDialogFragment.newInstance(View.OnClickListener {
-            navig()
 
-        })
-        successResultDialog.show(parentFragmentManager, "ggg")
     }
 
 
@@ -128,15 +139,14 @@ class RegistrationFragment : Fragment() {
         Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()
     }
 
-    fun navig(){
+    fun navigateTo(){
+         val intent = Intent(requireActivity(), EnterRoleActivity::class.java)
+         requireActivity().startActivity(intent)
 
         //findNavController().navigate(R.id.action_registrationFragment_to_roleFragment)
-        findNavController().navigate(R.id.action_registrationFragment_to_mainFragment)
+//        findNavController().navigate(R.id.action_registrationFragment_to_mainFragment)
         Toast.makeText(requireActivity(), "TV resume clicked ", Toast.LENGTH_LONG).show()
     }
-
-
-
 
 
 
@@ -146,7 +156,7 @@ class RegistrationFragment : Fragment() {
             .subscribe {
                 Toast.makeText(requireActivity(), "TV enter clicked ", Toast.LENGTH_LONG).show()
                 viewModel.enterInAccount()
-                findNavController().navigate(R.id.action_registrationFragment_to_roleFragment)
+                findNavController().navigate(R.id.action_registrationFragment_to_loginFragment)
             }
 
         compos.add(disposableTvEnter)
@@ -156,7 +166,9 @@ class RegistrationFragment : Fragment() {
         val disposableBtnReg = RxView.clicks(registrBTN)
             .subscribe {
                 Toast.makeText(requireActivity(), "button registration clicked ", Toast.LENGTH_LONG).show()
-                viewModel.registration()
+
+
+                viewModel.getLiveDataAndStartGetResult().observe(requireActivity(), observer)
             }
 
         compos.add(disposableBtnReg)

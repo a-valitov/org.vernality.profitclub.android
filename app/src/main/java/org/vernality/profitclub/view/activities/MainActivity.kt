@@ -3,6 +3,8 @@ package org.vernality.profitclub.view.activities
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.Navigation
+import androidx.navigation.Navigation.findNavController
 import com.parse.Parse
 import com.parse.ParseObject
 import com.parse.ParseQuery
@@ -12,6 +14,8 @@ import org.vernality.profitclub.R
 import org.vernality.profitclub.model.repository.RepositoryImplementation
 import org.vernality.profitclub.utils.ui.ActionBottomDialogFragment
 import org.vernality.profitclub.utils.ui.MyPreferences
+import org.vernality.profitclub.utils.ui.RegistrationStatus
+import org.vernality.profitclub.utils.ui.UIUtils
 
 
 class MainActivity : AppCompatActivity() , ActionBottomDialogFragment.ItemClickListener{
@@ -20,6 +24,7 @@ class MainActivity : AppCompatActivity() , ActionBottomDialogFragment.ItemClickL
         setContentView(R.layout.activity_main)
 
         val pref = get<MyPreferences> ()
+
 
     }
 

@@ -9,7 +9,7 @@
         android:id="@+id/dataProcessingFragment"
         android:name="org.vernality.profitclub.view.fragments.DataProcessingFragment"
         android:label="fragment_data_processing"
-        tools:layout="@layout/fragment_data_processing" >
+        tools:layout="@layout/fragment_my_organizations_list" >
 
     </fragment>
 

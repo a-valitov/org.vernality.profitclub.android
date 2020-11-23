@@ -12,6 +12,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity
+            android:name="org.vernality.profitclub.view.organization.OrganizationActivity"
+            android:label="@string/title_activity_organization"
+            android:theme="@style/AppTheme.DarkStatusBarNoTranslucentNavigation">
+
+        </activity>
 
         <activity android:name=".view.activities.ContainerActivity">
             <intent-filter>
@@ -21,23 +27,34 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".view.activities.SelectOrganizationActivity"
+        <activity
+            android:name=".view.activities.SelectOrganizationActivity"
             android:theme="@style/AppTheme.DarkStatusBar">
 
         </activity>
-        <activity android:name=".view.activities.EnterRoleActivity"
+
+        <activity
+            android:name=".view.activities.EnterRoleActivity"
             android:theme="@style/AppTheme.DarkStatusBar">
 
         </activity>
+
+        <activity
+            android:name=".view.activities.ResetPasswordActivity"
+            android:theme="@style/AppTheme.DarkStatusBar">
+
+        </activity>
+
         <activity
             android:name=".view.activities.MainActivity"
-
             android:usesCleartextTraffic="true">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
 
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
     </application>
 

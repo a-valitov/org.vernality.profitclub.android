@@ -1,61 +1,54 @@
 package org.vernality.profitclub.model.repository
 
-import org.vernality.profitclub.model.data.Organization
-import org.vernality.profitclub.model.data.Role
-import org.vernality.profitclub.model.data.User
+import io.reactivex.Completable
+import io.reactivex.Single
+import org.vernality.profitclub.model.data.*
 import org.vernality.profitclub.model.datasource.DataSource
 import org.vernality.profitclub.model.datasource.ParseImplementation
+import java.util.concurrent.TimeUnit
 
 
 class RepositoryImplementation(private val dataSource: DataSource) :
-    Repository<List<Organization>> {
+    Repository{
 
-    override fun getData(user: User): ArrayList<Organization> {
-        return arrayListOf(
-            Organization(
-                "1",
-                0,
-                "ООО \" Газпромефть\" ",
-                "123456445",
-                "Ivanov A.E.",
-                "+79168653890",
-                "Поставщик"
-            ),
-            Organization(
-                "2",
-                1,
-                "ЗАО \" НефтьГазАлмаз\" ",
-                "765345768",
-                "Dudko S.A.",
-                "+79456653890",
-                "Организация"
-            ),
-            Organization(
-                "3",
-                2,
-                "ПАО \" Газпром\" ",
-                "3534545768",
-                "Miller A.B.",
-                "+7945198890",
-                "Участник организации"
-            )
-
-        )
-    }
 
     override fun getUser(password: String, email: String): User? {
         return ParseImplementation().getData(password, email)
     }
 
+    override fun registration(user: User) = dataSource.registration(user)
 
-    fun registration(userName: String, password: String, email: String) =
-        dataSource.registration(userName, password, email)
+    override fun signIn(user: User) = dataSource.signIn(user)
+
+    override fun logOut()= dataSource.logOut()
+
+    override fun resetPassword(email: String): Completable = dataSource.resetPassword(email)
+
+    override fun createOrganization(organization: Organization) = dataSource.createOrganization(organization)
+
+    override fun createSupplier(supplier: Supplier) = dataSource.createSupplier(supplier)
+
+    override fun createMember(member: Member) = dataSource.createMember(member)
+
+    override fun getUserName() = dataSource.getUserName()
+
+    override fun getOrganization() = dataSource.getOrganization()
 
 
-    fun createOrganization(role: Role) = dataSource.createOrganization(role)
+    override fun getMyOrganization() = dataSource.getMyOrganization()
 
-    fun createSupplier(role: Role) = dataSource.createSupplier(role)
+    override fun becameMemberOfOrganization(member: Member, organization: Organization)
+            = dataSource.becameMemberOfOrganization(member, organization)
 
-    fun createMember(role: Role) = dataSource.createMember(role)
 
+    override fun getActions(): Single<List<Action>> = dataSource.getActions()
+
+    override fun getMembersOfOrganization(organization: Organization): Single<List<Member>> =
+        dataSource.getMembersOfOrganization(organization)
+
+    override fun getRequestOfOrganization(organization: Organization): Single<List<Member>> =
+        dataSource.getRequestOfOrganization(organization)
+
+    override fun getCommercialOffers(): Single<List<CommercialOffer>> =
+        dataSource.getCommercialOffers()
 }

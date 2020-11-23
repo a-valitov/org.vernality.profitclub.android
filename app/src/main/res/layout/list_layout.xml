@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorAccent">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/loading_frame_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <androidx.core.widget.ContentLoadingProgressBar
+            android:id="@+id/progress_circular"
+            style="?android:attr/progressBarStyleLarge"
+            android:theme="@style/ContentLoadingProgressForWhiteBackground"
+            android:layout_width="270dp"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:layout_gravity="center">
+
+
+        </androidx.core.widget.ContentLoadingProgressBar>
+
+    </FrameLayout>
+
+</FrameLayout>

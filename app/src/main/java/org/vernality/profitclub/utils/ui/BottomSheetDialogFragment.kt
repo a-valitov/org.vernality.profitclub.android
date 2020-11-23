@@ -1,7 +1,6 @@
 package org.vernality.profitclub.utils.ui
 
 import android.content.Context
-import android.graphics.fonts.FontStyle
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,7 +21,7 @@ class ActionBottomDialogFragment : BottomSheetDialogFragment(),View.OnClickListe
 
     ): View? {
 
-        val fr = inflater.inflate(R.layout.card, container, false)
+        val fr = inflater.inflate(R.layout.card_registration, container, false)
 
         getDialog()?.getWindow()?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         return fr

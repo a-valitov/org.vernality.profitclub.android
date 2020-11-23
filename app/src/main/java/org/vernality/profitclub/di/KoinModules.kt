@@ -7,10 +7,11 @@ import org.koin.dsl.module
 import org.vernality.profitclub.model.datasource.ParseImplementation
 import org.vernality.profitclub.model.repository.RepositoryImplementation
 import org.vernality.profitclub.utils.ui.MyPreferences
-import org.vernality.profitclub.view_model.EnterRoleActivityViewModel
-import org.vernality.profitclub.view_model.EnterRoleDataViewModel
-import org.vernality.profitclub.view_model.RegistrationViewModel
-import org.vernality.profitclub.view_model.RoleSelectViewModel
+import org.vernality.profitclub.interactors.MainInteractor
+import org.vernality.profitclub.view.organization.members.MembersPageViewModel
+import org.vernality.profitclub.view.organization.stocks.StocksPageViewModel
+import org.vernality.profitclub.view.organization.supplies.SuppliesFragmentViewModel
+import org.vernality.profitclub.view_model.*
 
 val application = module {
 
@@ -31,24 +32,56 @@ val application = module {
         MyPreferences(androidApplication())
     }
 
+    factory {
+        MainInteractor(repository = get<RepositoryImplementation>())
+    }
+
 }
 
 val viewModelDependency = module {
 
     viewModel {
-        RegistrationViewModel(androidApplication())
+        RegistrationFragmentViewModel(androidApplication())
     }
 
     viewModel {
-        RoleSelectViewModel(androidApplication())
+        LoginFragmentViewModel(androidApplication())
     }
 
     viewModel {
-        EnterRoleDataViewModel(androidApplication())
+        ResetPasswordFragmentViewModel(androidApplication())
     }
 
     viewModel {
-        EnterRoleActivityViewModel(androidApplication())
+        RoleSelectFragmentViewModel(androidApplication())
+    }
+
+    viewModel {
+        EnterOrganizationDataFragmentViewModel(androidApplication())
+    }
+
+    viewModel {
+        EnterMemberDataFragmentViewModel(androidApplication())
+    }
+
+    viewModel {
+        SelectOrgForMemberFragmentViewModel(androidApplication())
+    }
+
+    viewModel {
+        MembersPageViewModel(androidApplication())
+    }
+
+    viewModel {
+        StocksPageViewModel(androidApplication())
+    }
+
+    viewModel {
+        SuppliesFragmentViewModel(androidApplication())
+    }
+
+    viewModel {
+        MyOrganizationsListFragmentViewModel(androidApplication())
     }
 
 }

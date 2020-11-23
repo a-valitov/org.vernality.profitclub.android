@@ -2,10 +2,13 @@ package org.vernality.profitclub.model.datasource
 
 
 import com.parse.ParseObject
+import com.parse.ParseQuery
+import com.parse.ParseRelation
 import com.parse.ParseUser
 import io.reactivex.Completable
-import org.vernality.profitclub.model.data.Role
-import org.vernality.profitclub.model.data.User
+import io.reactivex.Observable
+import io.reactivex.Single
+import org.vernality.profitclub.model.data.*
 
 
 class ParseImplementation() : DataSource {
@@ -16,20 +19,12 @@ class ParseImplementation() : DataSource {
         return user
     }
 
-    override fun setData(_user: User) {
-        val user = ParseObject("User")
-        user.put("objectId", _user.hashCode())
-        user.put("username", _user.login)
-        user.put("password", _user.password)
-        user.put("email", _user.email)
-        user.saveInBackground()
-    }
 
-    override fun registration(userName: String, password: String, email: String):Completable {
+    override fun registration(_user: User):Completable {
         val user = ParseUser()
-        user.username = userName
-        user.setPassword(password)
-        user.email = email
+        user.username = _user.username
+        user.setPassword(_user.password)
+        user.email = _user.email
 
         return Completable.create {
             user.signUpInBackground { e ->
@@ -48,25 +43,74 @@ class ParseImplementation() : DataSource {
 
     }
 
+    override fun logOut(): Completable {
 
-    override fun createOrganization(role: Role): Completable {
+        return Completable.create {
+
+            ParseUser.logOut();
+            if(null == ParseUser.getCurrentUser()) it.onComplete()
+            else it.onError(Throwable("Не удалось выйти из профиля"))
+        }
+
+
+    }
+
+    override fun signIn(user: User): Completable {
+
+        return Completable.create {
+
+            ParseUser.logInInBackground(user.login, user.password) { user, e ->
+                if (user != null) {
+                    println("вход в аккаунт прошел успешно")
+                    it.onComplete()
+                } else {
+                    println("ошибка входа в аккаунт  "+e)
+                    it.onError(e)
+                }
+            }
+
+        }
+    }
+
+    override fun resetPassword(email: String): Completable {
+        return Completable.create {
+
+            ParseUser.requestPasswordResetInBackground(email) { e ->
+                if (e == null) {
+                    println("инструкции по сбросу пароля отправлены на указанную почту")
+                    it.onComplete()
+                } else {
+                    println("ошибка сброса пароля  "+e)
+                    it.onError(e)
+                }
+            }
+
+        }
+    }
+
+
+    override fun createOrganization(organization: Organization): Completable {
 
         return Completable.create {
             val currentUser = ParseUser.getCurrentUser()
             if (currentUser != null) {
-                println("------currentUser is not null-----name = " + currentUser.username)
-                println("------Role name =  "+ role.name)
+                organization.saveInBackground{ e->
+                    if(e == null)
+                    {
+                        val relation: ParseRelation<ParseObject> = currentUser.getRelation("organizations")
+                        relation.add(organization)
+                        currentUser.saveInBackground{ e->
+                            if(e == null)
+                            {
+                                it.onComplete()
+                            }
+                            else
+                            {   it.onError(e)
+                            }
+                        }
 
-                val organization = ParseObject("Organization")
-                organization.put("name", role.name)
-                organization.put("inn", role.INN)
-                organization.put("contact", role.contactName)
-                organization.put("phone", role.phone)
-
-
-                currentUser.put("organization", organization)
-                currentUser.saveInBackground { e-> if(e == null) it.onComplete()
-                else it.onError(e)
+                    }
+                    else it.onError(e)
                 }
             } else {
                 // Вызов окна входа
@@ -75,23 +119,32 @@ class ParseImplementation() : DataSource {
         }
     }
 
-    override fun createSupplier(role: Role): Completable {
+    override fun createSupplier(supplier: Supplier): Completable {
 
         return Completable.create {
             val currentUser = ParseUser.getCurrentUser()
             if (currentUser != null) {
                 println("------currentUser is not null-----")
 
-                val supplier = ParseObject("Supplier")
-                supplier.put("name", role.name)
-                supplier.put("inn", role.INN)
-                supplier.put("contact", role.contactName)
-                supplier.put("phone", role.phone)
+                supplier.saveInBackground{ e->
+                    if(e == null)
+                    {
+                        val relation: ParseRelation<ParseObject> = currentUser.getRelation("suppliers")
+                        relation.add(supplier)
+                        currentUser.saveInBackground{ e->
+                            if(e == null)
+                            {
+                                it.onComplete()
+                            }
+                            else
+                            {   it.onError(e)
+                            }
+                        }
 
-                currentUser.put("suppliers", supplier)
-                currentUser.saveInBackground { e-> if(e == null) it.onComplete()
-                else it.onError(e)
+                    }
+                    else it.onError(e)
                 }
+
             } else {
                 // Вызов окна входа
                 println("------необходимо войти в систему---")
@@ -99,23 +152,178 @@ class ParseImplementation() : DataSource {
         }
     }
 
-    override fun createMember(role: Role): Completable {
+    override fun createMember(member: Member): Completable {
 
         return Completable.create {
             val currentUser = ParseUser.getCurrentUser()
             if (currentUser != null) {
                 println("------currentUser is not null-----")
 
-//                val member = ParseObject("Member")
-//                member.put("name", role.name)
-//                member.put("inn", role.INN)
-//                member.put("contact", role.contactName)
-//                member.put("phone", role.phone)
+//                member.put("member", member)
+                member.saveInBackground{ e->
+                    if(e == null)
+                    {
+                        val relation: ParseRelation<ParseObject> = currentUser.getRelation("member")
+                        relation.add(member)
+                        currentUser.saveInBackground{ e->
+                            if(e == null)
+                            {
+                                it.onComplete()
+                            }
+                            else
+                            { it.onError(e)
+                            }
+                        }
+
+                    }
+                    else it.onError(e)
+                    }
+
+            }
+            else
+            {
+                // Вызов окна входа
+                println("------необходимо войти в систему---")
+            }
+        }
+    }
+
+    override fun getUserName(): Single<String> {
+        return Single.create {
+            val currentUser = ParseUser.getCurrentUser()
+            if (currentUser != null) {
+                println("------currentUser is not null-----")
+
+                val userName = currentUser.username
+                it.onSuccess(userName)
+            } else {
+                // Вызов окна входа
+                println("------необходимо войти в систему---")
+                it.onError(Exception("Не удалось войти в систему"))
+            }
+        }
+    }
+
+    override fun getOrganization(): Observable<List<Organization>> {
+
+
+        return Observable.create {
+            val currentUser = ParseUser.getCurrentUser()
+            if (currentUser != null) {
+                println("------currentUser is not null-----")
+
+                val query: ParseQuery<Organization> = ParseQuery.getQuery(Organization::class.java)
+                query.findInBackground { list, e ->
+                    if(e == null){
+                        println("----OK get Organization-----")
+                        list.forEach {
+                            val objectId: String = it.getObjectId()
+                            println("object =${it.name}")
+
+                        }
+                        it.onNext(list)
+                    } else {
+                        println("----Error get Organization-----")
+                        it.onError(e)
+                    }
+                }
+
+            } else {
+                // Вызов окна входа
+                println("------необходимо войти в систему---")
+                it.onError(Exception("Не удалось войти в систему"))
+            }
+        }
+    }
+
+    override fun getMyOrganization():Single<List<Organization>>{
+        return Single.create {
+            val currentUser = ParseUser.getCurrentUser()
+            if (currentUser != null) {
+                println("------currentUser is not null-----")
+
+                val relation: ParseRelation<Organization> = currentUser.getRelation("organizations")
+                relation.query.findInBackground { results, e ->
+                    if (e != null) {
+                        it.onError(e)
+                    } else {
+                        it.onSuccess(results)
+                    }
+                }
+
+//                val query: ParseQuery<Organization> = ParseQuery.getQuery(Organization::class.java)
+//                query.whereEqualTo("createdBy", ParseUser.getCurrentUser())
+//                query.findInBackground { list, e ->
+//                    if(e == null){
+//                        println("----OK get Organization-----")
+//                        list.forEach {
+//                            val objectId: String = it.getObjectId()
+//                            println("object =${it.name}")
 //
-//                currentUser.put("member", member)
-//                currentUser.saveInBackground { e-> if(e == null) it.onComplete()
-//                else it.onError(e)
+//                        }
+//                        it.onSuccess(list)
+//                    } else {
+//                        println("----Error get Organization-----")
+//                        it.onError(e)
+//                    }
 //                }
+//
+//            } else {
+//                // Вызов окна входа
+//                println("------необходимо войти в систему---")
+//                it.onError(Exception("Не удалось войти в систему"))
+            }
+        }
+    }
+
+
+    override fun becameMemberOfOrganization(member: Member, organization: Organization): Completable {
+
+        return Completable.create {
+            val currentUser = ParseUser.getCurrentUser()
+            if (currentUser != null) {
+                println("------currentUser is not null-----")
+                println("------member= " +member.firstName)
+                println("------organization= " +organization.name)
+
+                member.saveInBackground{ e->
+                    if(e == null)
+                    {
+                        val relation: ParseRelation<ParseObject> = currentUser.getRelation("member")
+                        relation.add(member)
+                        currentUser.saveInBackground{ e->
+                            if(e == null)
+                            {
+
+                            }
+                            else
+                            { it.onError(e)
+                            }
+                        }
+
+                        Thread.sleep(1000)
+
+                        val relation2: ParseRelation<ParseObject> = organization.getRelation("members")
+                        relation2.add(member)
+                        println("organization = "+organization.name)
+                        organization.saveInBackground{ e->
+                            if(e == null)
+                            {
+                                it.onComplete()
+                            }
+                            else
+                            { it.onError(e)
+                                println(e)
+                            }
+                        }
+
+
+
+                    }
+                    else it.onError(e)
+                }
+
+
             } else {
                 // Вызов окна входа
                 println("------необходимо войти в систему---")
@@ -123,6 +331,153 @@ class ParseImplementation() : DataSource {
         }
     }
 
+
+    override fun getActions(): Single<List<Action>> {
+
+        return Single.create {
+
+            val currentUser = ParseUser.getCurrentUser()
+            if (currentUser != null) {
+
+                val query: ParseQuery<Action> = ParseQuery.getQuery(Action::class.java)
+                query.findInBackground { list, e ->
+                    if (e == null) {
+
+                        it.onSuccess( list )
+                        list.forEach {
+
+                            val objectId: String = it.getObjectId()
+                            println("++++++object =${it.message}")
+                            println("++++++object =${it.startDate}")
+
+                        }
+
+                    } else {
+
+                    }
+                }
+
+            } else {
+                // Вызов окна входа
+                println("------необходимо войти в систему---")
+
+            }
+        }
+    }
+
+    override fun getMembersOfOrganization(organization: Organization): Single<List<Member>> {
+        return Single.create {
+
+            val currentUser = ParseUser.getCurrentUser()
+            if (currentUser == null) {
+                println("------currentUser is not null-----")
+
+                val relation = organization.getRelation<Member>("members")
+
+                val query: ParseQuery<Member> = relation.getQuery()
+                query.whereEqualTo("approved", "statusString")
+                query.findInBackground { list, e ->
+                    if (e == null) {
+
+                        it.onSuccess( list )
+                        println("----OK get Organization-----")
+                        println("++++++list size =${list.size}")
+                        list.forEach {
+
+                            val objectId: String = it.getObjectId()
+                            println("++++++object =${it.firstName + it.lastName}")
+
+                        }
+
+                    } else {
+                        println("----Error get Organization-----")
+
+                    }
+                }
+
+            } else {
+                // Вызов окна входа
+                println("------необходимо войти в систему---")
+
+            }
+        }
+    }
+
+    override fun getRequestOfOrganization(organization: Organization): Single<List<Member>> {
+        return Single.create {
+
+            val currentUser = ParseUser.getCurrentUser()
+            if (currentUser == null) {
+                println("------currentUser is not null-----")
+
+                val relation = organization.getRelation<Member>("members")
+
+                val query: ParseQuery<Member> = relation.getQuery()
+                query.whereEqualTo("onReview", "statusString")
+                query.findInBackground { list, e ->
+                    if (e == null) {
+
+                        it.onSuccess( list )
+                        println("----OK get Organization-----")
+                        println("++++++list size =${list.size}")
+                        list.forEach {
+
+                            val objectId: String = it.getObjectId()
+                            println("++++++object =${it.firstName + it.lastName}")
+
+                        }
+
+                    } else {
+                        println("----Error get Organization-----")
+
+                    }
+                }
+
+            } else {
+                // Вызов окна входа
+                println("------необходимо войти в систему---")
+
+            }
+        }
+    }
+
+    override fun getCommercialOffers(): Single<List<CommercialOffer>> {
+        return Single.create {
+
+            val currentUser = ParseUser.getCurrentUser()
+            if (currentUser != null) {
+                println("------currentUser is not null-----")
+
+                val query: ParseQuery<CommercialOffer> = ParseQuery.getQuery(CommercialOffer::class.java)
+                query.findInBackground { list, e ->
+                    if (e == null) {
+
+
+                        println("----OK get Organization-----")
+                        println("++++++list size =${list.size}")
+                        list.forEach {
+
+                            it.contact = it.getParseObject("supplier")?.fetchIfNeeded<Supplier>()?.contactName
+                            val objectId: String = it.getObjectId()
+                            println("++++++object =${it.message}")
+
+                        }
+
+                        it.onSuccess( list )
+
+                    } else {
+                        println("----Error get Organization-----")
+
+                    }
+                }
+
+            } else {
+                // Вызов окна входа
+                println("------необходимо войти в систему---")
+
+            }
+        }
+    }
 
     companion object {
         private const val BASE_URL_LOCATIONS = ""

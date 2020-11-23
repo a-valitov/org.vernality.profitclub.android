@@ -55,7 +55,7 @@ class MainFragment : Fragment() {
         }
 
         root.tv_enter.setOnClickListener {
-
+            findNavController().navigate(R.id.action_mainFragment_to_loginFragment)
         }
     }
 
