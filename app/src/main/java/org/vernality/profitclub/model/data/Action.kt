@@ -5,6 +5,7 @@ import com.parse.ParseClassName
 import com.parse.ParseFile
 import com.parse.ParseObject
 import kotlinx.android.parcel.Parcelize
+import java.util.*
 
 @ParseClassName("Action")
 class Action: ParseObject(){
@@ -15,12 +16,12 @@ class Action: ParseObject(){
         get() = getString("message")
         set(value){ if(value != null) put("message", value)}
 
-    var startDate: String?
-        get() = getString("startDate")
+    var startDate: Date?
+        get() = getDate("startDate")
         set(value){ if(value != null) put("startDate", value)}
 
-    var endDate: String?
-        get() = getString("endDate")
+    var endDate: Date?
+        get() = getDate("endDate")
         set(value){ if(value != null) put("endDate", value)}
 
     var descriptionOf: String?

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_list_stocks.view.*
 import org.vernality.profitclub.R
 import org.vernality.profitclub.model.data.Action
+import org.vernality.profitclub.utils.Utils
 import org.vernality.profitclub.utils.ui.setImageToImageView
 
 
@@ -47,7 +48,12 @@ public class StocksListRVAdapter(
         @SuppressLint("SetTextI18n")
         fun bind(action: Action) {
             itemView.tv_title_stocks.setText(action.message)
-            itemView.tv_period_stocks.setText(action.startDate +"-"+action.endDate)
+            action.startDate?.let {startDate ->
+                action.endDate?.let {endDate ->
+                    itemView.tv_period_stocks.setText(Utils.getDataOfMyFormat(startDate) +"-"+Utils.getDataOfMyFormat(endDate))
+                }
+            }
+
             itemView.tv_description_stocks.setText(action.descriptionOf)
             itemView.tv_linkn_stocks.setText(action.link)
 

@@ -23,5 +23,11 @@ class Member: ParseObject(){
         get() = getString("lastName")
         set(value){ if(value != null) put("lastName", value)}
 
+    var statusString: String?
+        get() = getString("statusString")
+        set(value){ if(value != null) put("statusString", value)}
+
+    var listOrganizations = mutableListOf<Organization>()
+
 
 }

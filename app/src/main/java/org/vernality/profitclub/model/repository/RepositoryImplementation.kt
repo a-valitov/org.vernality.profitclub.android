@@ -1,6 +1,7 @@
 package org.vernality.profitclub.model.repository
 
 import io.reactivex.Completable
+import io.reactivex.Observable
 import io.reactivex.Single
 import org.vernality.profitclub.model.data.*
 import org.vernality.profitclub.model.datasource.DataSource
@@ -35,7 +36,13 @@ class RepositoryImplementation(private val dataSource: DataSource) :
     override fun getOrganization() = dataSource.getOrganization()
 
 
-    override fun getMyOrganization() = dataSource.getMyOrganization()
+    override fun getMyOrganizations() = dataSource.getMyOrganizations()
+
+    override fun getMySuppliers() = dataSource.getMySuppliers()
+
+    override fun getMyMembers() = dataSource.getMyMembers()
+
+    override fun getOrganizationsForMyMembers() = dataSource.getOrganizationsForMyMembers()
 
     override fun becameMemberOfOrganization(member: Member, organization: Organization)
             = dataSource.becameMemberOfOrganization(member, organization)

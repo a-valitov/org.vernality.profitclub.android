@@ -21,7 +21,6 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.fragment_enter_organization.view.*
 import kotlinx.android.synthetic.main.fragment_enter_organization.view.loading_frame_layout
-import kotlinx.android.synthetic.main.fragment_registration.view.*
 import kotlinx.android.synthetic.main.item_enter_organization.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.vernality.profitclub.R
@@ -172,7 +171,7 @@ class EnterOrganizationDataFragment : Fragment() {
 
             when (viewModel.role) {
                 Role.Supplier -> {
-                    roleTV.setText(R.string.provider)
+                    roleTV.setText(R.string.supplier)
                     roleHideTV.setText(R.string.provider_description)
 
                 }

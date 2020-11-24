@@ -7,15 +7,14 @@ import androidx.lifecycle.ViewModel
 import io.reactivex.observers.DisposableCompletableObserver
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.observers.DisposableSingleObserver
-import org.vernality.profitclub.model.data.Action
-import org.vernality.profitclub.model.data.AppState
-import org.vernality.profitclub.model.data.CommercialOffer
-import org.vernality.profitclub.model.data.Organization
+import org.vernality.profitclub.model.data.*
 import org.vernality.profitclub.utils.DataSaver
 import org.vernality.profitclub.view_model.BaseViewModel
 
 class MyOrganizationsListFragmentViewModel(appContext: Application) : BaseViewModel<AppState>(appContext) {
 
+
+    data class MyOrganizationsData(val dataOrg:List<Organization>, val dataSup:List<Supplier>, val dataMem:List<Organization>)
 
     fun getLiveDataAndStartGetResult(): LiveData<AppState> {
 
@@ -27,7 +26,7 @@ class MyOrganizationsListFragmentViewModel(appContext: Application) : BaseViewMo
 
     private fun getResult(){
         compositeDisposable.add(
-            interactor.getMyOrganizations()
+            interactor.getDataForMyOrganizations()
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .doOnSubscribe { liveDataForViewToObserve.value = AppState.Loading(null) }
@@ -39,11 +38,14 @@ class MyOrganizationsListFragmentViewModel(appContext: Application) : BaseViewMo
         DataSaver.setData(organization)
     }
 
-    private fun getObserver(): DisposableSingleObserver<AppState> {
-        return object : DisposableSingleObserver<AppState>() {
+    private fun getObserver(): DisposableObserver<AppState> {
+        return object : DisposableObserver<AppState>() {
+            override fun onComplete() {
 
-            override fun onSuccess(state: AppState) {
-                liveDataForViewToObserve.value = state
+            }
+
+            override fun onNext(t: AppState) {
+                liveDataForViewToObserve.value = t
             }
 
             override fun onError(e: Throwable) {

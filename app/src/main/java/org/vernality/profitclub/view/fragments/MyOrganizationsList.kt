@@ -21,10 +21,12 @@ import org.vernality.profitclub.interactors.MainInteractor
 import org.vernality.profitclub.model.data.AppState
 import org.vernality.profitclub.model.data.CommercialOffer
 import org.vernality.profitclub.model.data.Organization
+import org.vernality.profitclub.model.data.Supplier
 import org.vernality.profitclub.model.repository.RepositoryImplementation
 import org.vernality.profitclub.view.activities.EnterRoleActivity
 import org.vernality.profitclub.view.activities.MainActivity
 import org.vernality.profitclub.view.adapters.MyOrganizationsListRVAdapter
+import org.vernality.profitclub.view.adapters.MyRolesListDataAdapter
 import org.vernality.profitclub.view.organization.OrganizationActivity
 import org.vernality.profitclub.view_model.MyOrganizationsListFragmentViewModel
 import java.lang.reflect.Field
@@ -49,6 +51,9 @@ class DataProcessingFragment : Fragment() {
     lateinit var addIV: ImageView
     lateinit var settingsIV: ImageView
     lateinit var popupMenu:PopupMenu
+    lateinit var layoutOrganizationsList: LinearLayout
+    lateinit var layoutSuppliersList: LinearLayout
+    lateinit var layoutMembersList: LinearLayout
 
 
     private val viewModel by viewModel<MyOrganizationsListFragmentViewModel>()
@@ -74,6 +79,35 @@ class DataProcessingFragment : Fragment() {
                 Toast.makeText(requireActivity(),organization.name, Toast.LENGTH_SHORT).show()
                 viewModel.setOrganization(organization)
                 navigateTo()
+            }
+        }
+
+    private val onOrganizationListItemClickListener: MyRolesListDataAdapter.OnListItemClickListener<Organization> =
+        object : MyRolesListDataAdapter.OnListItemClickListener<Organization> {
+            override fun onItemClick(organization: Organization) {
+                viewModel.setOrganization(organization)
+                navigateToMyOrganization()
+                Toast.makeText(requireActivity(),organization.name, Toast.LENGTH_SHORT).show()
+//                viewModel.setOrganization(organization)
+//                navigateTo()
+            }
+        }
+
+    private val onSupplierListItemClickListener: MyRolesListDataAdapter.OnListItemClickListener<Supplier> =
+        object : MyRolesListDataAdapter.OnListItemClickListener<Supplier> {
+            override fun onItemClick(supplier: Supplier) {
+                Toast.makeText(requireActivity(),supplier.name, Toast.LENGTH_SHORT).show()
+//                viewModel.setOrganization(organization)
+//                navigateTo()
+            }
+        }
+
+    private val onMemberListItemClickListener: MyRolesListDataAdapter.OnListItemClickListener<Organization> =
+        object : MyRolesListDataAdapter.OnListItemClickListener<Organization> {
+            override fun onItemClick(organization: Organization) {
+                Toast.makeText(requireActivity(),organization.name, Toast.LENGTH_SHORT).show()
+//                viewModel.setOrganization(organization)
+//                navigateTo()
             }
         }
 
@@ -107,8 +141,12 @@ class DataProcessingFragment : Fragment() {
         loadingLayout = root.loading_frame_layout
         addIV = root.iv_add
         settingsIV = root.iv_more
-        rv = root.rv_myOrganizations_list
-        rv.layoutManager = LinearLayoutManager(requireActivity())
+
+        layoutOrganizationsList = root.layout_OrganizationsList
+        layoutSuppliersList = root.layout_SupplersList
+        layoutMembersList = root.layout_MembersList
+//        rv = root.rv_myOrganizations_list
+//        rv.layoutManager = LinearLayoutManager(requireActivity())
 
         initPopupMenu(settingsIV)
 
@@ -142,9 +180,25 @@ class DataProcessingFragment : Fragment() {
         when (appState) {
             is AppState.Success<*> -> {
                 loadingLayout.visibility = View.GONE
-                val data  = appState.data as List<Organization>
-                rv.adapter = adapter
-                adapter.setData(data = data)
+                val data  = appState.data as MyOrganizationsListFragmentViewModel.MyOrganizationsData
+                val adapter = MyRolesListDataAdapter(
+                    LayoutInflater.from(requireContext()),
+                    layoutOrganizationsList,
+                    R.layout.item_processing_list_recyclerview,
+                    layoutSuppliersList,
+                    R.layout.item_processing_list_recyclerview,
+                    layoutMembersList,
+                    R.layout.item_list_org_for_member_recyclerview,
+                    data,
+                    onOrganizationListItemClickListener,
+                    onSupplierListItemClickListener,
+                    onMemberListItemClickListener
+                )
+                adapter.inflateViews()
+
+//                val data  = appState.data as List<Organization>
+//                rv.adapter = adapter
+//                adapter.setData(data = data)
 
             }
             is AppState.Loading -> {
@@ -208,6 +262,14 @@ class DataProcessingFragment : Fragment() {
 //        findNavController().navigate(R.id.action_registrationFragment_to_mainFragment)
         Toast.makeText(requireActivity(), "TV resume clicked ", Toast.LENGTH_LONG).show()
     }
+
+    fun navigateToMyOrganization(){
+        val intent = Intent(requireActivity(), OrganizationActivity::class.java)
+        requireActivity().startActivity(intent)
+
+    }
+
+
 
     companion object {
         /**

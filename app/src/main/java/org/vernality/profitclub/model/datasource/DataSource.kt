@@ -29,7 +29,13 @@ interface DataSource {
 
     fun getOrganization():Observable<List<Organization>>
 
-    fun getMyOrganization():Single<List<Organization>>
+    fun getMyOrganizations():Observable<List<Organization>>
+
+    fun getMySuppliers():Observable<List<Supplier>>
+
+    fun getMyMembers():Observable<List<Member>>
+
+    fun getOrganizationsForMyMembers(): Observable<List<Organization>>
 
     fun becameMemberOfOrganization(member: Member, organization: Organization): Completable
 

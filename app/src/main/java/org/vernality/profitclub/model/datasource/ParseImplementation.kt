@@ -1,10 +1,7 @@
 package org.vernality.profitclub.model.datasource
 
 
-import com.parse.ParseObject
-import com.parse.ParseQuery
-import com.parse.ParseRelation
-import com.parse.ParseUser
+import com.parse.*
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -236,8 +233,8 @@ class ParseImplementation() : DataSource {
         }
     }
 
-    override fun getMyOrganization():Single<List<Organization>>{
-        return Single.create {
+    override fun getMyOrganizations():Observable<List<Organization>>{
+        return Observable.create {
             val currentUser = ParseUser.getCurrentUser()
             if (currentUser != null) {
                 println("------currentUser is not null-----")
@@ -247,31 +244,88 @@ class ParseImplementation() : DataSource {
                     if (e != null) {
                         it.onError(e)
                     } else {
-                        it.onSuccess(results)
+                        it.onNext(results)
                     }
                 }
 
-//                val query: ParseQuery<Organization> = ParseQuery.getQuery(Organization::class.java)
-//                query.whereEqualTo("createdBy", ParseUser.getCurrentUser())
-//                query.findInBackground { list, e ->
-//                    if(e == null){
-//                        println("----OK get Organization-----")
-//                        list.forEach {
-//                            val objectId: String = it.getObjectId()
-//                            println("object =${it.name}")
-//
-//                        }
-//                        it.onSuccess(list)
-//                    } else {
-//                        println("----Error get Organization-----")
-//                        it.onError(e)
-//                    }
-//                }
-//
-//            } else {
-//                // Вызов окна входа
-//                println("------необходимо войти в систему---")
-//                it.onError(Exception("Не удалось войти в систему"))
+            }
+        }
+    }
+
+    override fun getMySuppliers(): Observable<List<Supplier>> {
+        return Observable.create {
+            val currentUser = ParseUser.getCurrentUser()
+            if (currentUser != null) {
+                println("------currentUser is not null-----")
+
+                val relation: ParseRelation<Supplier> = currentUser.getRelation("suppliers")
+                relation.query.findInBackground { results, e ->
+                    if (e != null) {
+                        it.onError(e)
+                    } else {
+                        it.onNext(results)
+                    }
+                }
+
+            }
+        }
+    }
+
+    override fun getMyMembers(): Observable<List<Member>> {
+        return Observable.create {
+            val currentUser = ParseUser.getCurrentUser()
+            if (currentUser != null) {
+                println("------currentUser is not null-----")
+
+                val relation: ParseRelation<Member> = currentUser.getRelation("member")
+                relation.query.findInBackground { results, e ->
+                    if (e != null) {
+                        it.onError(e)
+                    } else {
+                        it.onNext(results)
+                    }
+                }
+
+            }
+        }
+    }
+
+    override fun getOrganizationsForMyMembers(): Observable<List<Organization>>{
+        return Observable.create {
+            val currentUser = ParseUser.getCurrentUser()
+            if (currentUser != null) {
+                println("------currentUser is not null-----")
+
+                val user = ParseUser.getCurrentUser()
+                val relation = user.getRelation<Member>("member")
+                relation.query.findInBackground{ results, e ->
+                    if (e != null) {
+                        // There was an error
+                        it.onError(e)
+                    } else {
+                        // results have all the Posts the current user liked.
+                        if(!results.isEmpty()){
+                            val query =
+                                ParseQuery.getQuery<Organization>("Organization")
+                            query.whereEqualTo("members", results[0])
+
+                            query.findInBackground { organizationsList, e ->
+                                // commentList now has the comments for myPost
+                                if(e == null){
+                                    it.onNext(organizationsList)
+                                }else{
+                                    it.onError(e)
+                                }
+                            }
+                        }else{
+                            it.onNext(mutableListOf<Organization>())
+                        }
+
+                    }
+                }
+
+
+
             }
         }
     }
@@ -347,8 +401,8 @@ class ParseImplementation() : DataSource {
                         list.forEach {
 
                             val objectId: String = it.getObjectId()
-                            println("++++++object =${it.message}")
-                            println("++++++object =${it.startDate}")
+                            println("++++++action object =${it.message}")
+                            println("++++++action object =${it.startDate}")
 
                         }
 
@@ -478,6 +532,8 @@ class ParseImplementation() : DataSource {
             }
         }
     }
+
+
 
     companion object {
         private const val BASE_URL_LOCATIONS = ""

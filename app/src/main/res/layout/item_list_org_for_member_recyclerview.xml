@@ -5,9 +5,7 @@
     android:id="@+id/cv_task_item_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="16dp"
-    android:layout_marginTop="12dp"
-    android:layout_marginEnd="16dp"
+    android:layout_marginTop="2dp"
     app:cardBackgroundColor="@color/colorAccent">
 
     <LinearLayout
@@ -18,7 +16,7 @@
 
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_name_of_organization"
+            android:id="@+id/tv_name_of_organization_member"
             android:text="@string/name_of_organization"
             android:textColor="@color/colorStatusBarDark"
             android:textSize="20sp"
@@ -42,7 +40,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="start|center_vertical">
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tv_contact_person"
+                        android:id="@+id/tv_contact_person_member"
                         android:text="@string/contact_person"
                         android:paddingStart="30dp"
                         android:paddingBottom="16dp"
@@ -57,7 +55,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="end|center_vertical">
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tv_contact_person_value"
+                        android:id="@+id/tv_contact_person_value_member"
                         android:text="@string/contact_person_value"
                         android:paddingEnd="30dp"
                         android:paddingBottom="16dp"
@@ -77,7 +75,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="start|center_vertical">
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tv_phone"
+                        android:id="@+id/tv_phone_member"
                         android:text="@string/phone"
                         android:paddingStart="30dp"
                         android:paddingBottom="16dp"
@@ -92,7 +90,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="end|center_vertical">
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tv_phone_value"
+                        android:id="@+id/tv_phone_value_member"
                         android:text="@string/phone_value"
                         android:paddingEnd="30dp"
                         android:paddingBottom="16dp"

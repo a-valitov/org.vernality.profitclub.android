@@ -16,7 +16,7 @@
             android:layout_width="353dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="@string/participant_of_the_organization"
+            android:text="@string/member"
             android:textColor="@color/colorInputFieldText"
             android:textSize="36sp"
             android:paddingStart="5dp"
