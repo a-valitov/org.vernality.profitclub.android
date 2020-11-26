@@ -37,7 +37,11 @@ class Action: ParseObject(){
         set(value){ if(value != null) put("statusString", value)}
 
     var imageFile: ParseFile?
-        get() = getParseFile("imageFile")
-        set(value){ if(value != null) put("imageFile", value)}
+    get() = getParseFile("imageFile")
+    set(value){ if(value != null) put("imageFile", value)}
+
+    var supplier: ParseObject?
+        get() = getParseObject("supplier")
+        set(value){ if(value != null) put("supplier", value)}
 
 }

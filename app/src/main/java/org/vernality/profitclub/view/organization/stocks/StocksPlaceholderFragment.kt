@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,7 +16,10 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import org.vernality.profitclub.R
 import org.vernality.profitclub.model.data.Action
 import org.vernality.profitclub.model.data.AppState
+import org.vernality.profitclub.utils.ui.UIUtils
 import org.vernality.profitclub.view.fragments.ErrorResultDialogFragment
+import org.vernality.profitclub.view.fragments.SuccessResultDialogFragment
+import org.vernality.profitclub.view.fragments.TypeDialogFragment
 import org.vernality.profitclub.view.organization.adapter.StocksListRVAdapter
 
 
@@ -29,6 +33,12 @@ class StocksPlaceholderFragment : Fragment() {
 
     private val observer = Observer<AppState> { renderData(it) }
 
+    private val observerForActionResultBtn = Observer<AppState> { renderDataForActionResultBtn(it) }
+    private lateinit var liveDataForActionResult: LiveData<AppState>
+    private lateinit var successResultDialog:SuccessResultDialogFragment
+    private lateinit var searchDialogFragment:ActionBottomDialogFragment
+
+
     private var page:Int = 0
 
     private lateinit var errorResultDialog: ErrorResultDialogFragment
@@ -41,7 +51,52 @@ class StocksPlaceholderFragment : Fragment() {
             override fun onItemClick(action: Action) {
                 println("-----stock on clicked")
                 Toast.makeText(requireActivity(), action.message, Toast.LENGTH_SHORT).show()
+                searchDialogFragment = ActionBottomDialogFragment.newInstance(action)
+                searchDialogFragment.setAcceptClickListener(acceptBtnListener)
+                searchDialogFragment.setRejectClickListener(rejectBtnListener)
+                searchDialogFragment.setLinkClickListener(linkBtnListener)
+                searchDialogFragment.show(parentFragmentManager, "BOTTOM_SHEET_FRAGMENT_DIALOG_TAG")
             }
+        }
+
+    private var acceptBtnListener =
+        object :ActionBottomDialogFragment.OnClickListener{
+            override fun onClick(action: Action) {
+                Toast.makeText(requireActivity(),"accept action clicked", Toast.LENGTH_SHORT).show()
+                successResultDialog =
+                    SuccessResultDialogFragment.newInstance(
+                        TypeDialogFragment.ApproveAction
+                    ) {
+                        liveDataForActionResult = viewModel.getLiveDataForAction(0, action)
+                        liveDataForActionResult.observe(requireActivity(), observerForActionResultBtn)
+                        successResultDialog.dismiss()
+
+                    }
+
+                successResultDialog.show(parentFragmentManager, this.toString())
+
+            }
+
+        }
+
+    private var rejectBtnListener =
+        object :ActionBottomDialogFragment.OnClickListener{
+            override fun onClick(action: Action) {
+                Toast.makeText(requireActivity(),"reject action clicked", Toast.LENGTH_SHORT).show()
+                liveDataForActionResult = viewModel.getLiveDataForAction(1, action)
+                liveDataForActionResult.observe(requireActivity(), observerForActionResultBtn)
+            }
+
+        }
+
+    private var linkBtnListener =
+        object :ActionBottomDialogFragment.OnLinkClickListener{
+            override fun onClick(link: String?) {
+                Toast.makeText(requireActivity(),"actions link clicked", Toast.LENGTH_SHORT).show()
+
+                link?.let{UIUtils.openWebPage(requireActivity(), it)}
+            }
+
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -96,11 +151,34 @@ class StocksPlaceholderFragment : Fragment() {
                 }
             }
             is AppState.Loading -> {
+                println("-----loading")
                 Toast.makeText(requireActivity(), "Loading", Toast.LENGTH_LONG).show()
                 loadingLayout.visibility = View.VISIBLE
             }
             is AppState.Error -> {
                 loadingLayout.visibility = View.GONE
+                errorResultDialog =
+                    ErrorResultDialogFragment.newInstance(description = appState.error.message.toString())
+                Toast.makeText(requireActivity(), "Error \n ${appState.error}", Toast.LENGTH_LONG).show()
+                errorResultDialog.show(parentFragmentManager, this.toString())
+            }
+        }
+    }
+
+    private fun renderDataForActionResultBtn(appState: AppState) {
+        when (appState) {
+            is AppState.Success<*> -> {
+                Toast.makeText(requireActivity(), "Succes", Toast.LENGTH_LONG).show()
+                liveDataForActionResult.removeObservers(requireActivity())
+                searchDialogFragment.dismiss()
+
+            }
+            is AppState.Loading -> {
+                Toast.makeText(requireActivity(), "Loading", Toast.LENGTH_LONG).show()
+
+            }
+            is AppState.Error -> {
+
                 errorResultDialog =
                     ErrorResultDialogFragment.newInstance(description = appState.error.message.toString())
                 Toast.makeText(requireActivity(), "Error \n ${appState.error}", Toast.LENGTH_LONG).show()

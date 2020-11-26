@@ -17,6 +17,7 @@ import org.vernality.profitclub.model.data.AppState
 import org.vernality.profitclub.model.data.CommercialOffer
 import org.vernality.profitclub.view.fragments.ErrorResultDialogFragment
 import org.vernality.profitclub.view.organization.adapter.SuppliesListRVAdapter
+import org.vernality.profitclub.view.organization.stocks.ActionBottomDialogFragment
 
 
 class SuppliesFragment : Fragment() {
@@ -38,8 +39,11 @@ class SuppliesFragment : Fragment() {
         object : SuppliesListRVAdapter.OnListItemClickListener {
             override fun onItemClick(commercialOffer: CommercialOffer) {
                 Toast.makeText(requireActivity(), commercialOffer.message, Toast.LENGTH_SHORT).show()
+
             }
         }
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater,

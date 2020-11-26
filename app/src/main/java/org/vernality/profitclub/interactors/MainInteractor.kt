@@ -226,4 +226,14 @@ class MainInteractor(
 
     }
 
+    fun getResultForAcceptAction(action: Action):Completable{
+
+        return Completable.complete().delay(2000, TimeUnit.MILLISECONDS)
+    }
+
+    fun getResultForRejectAction(action: Action):Completable{
+
+        return Completable.complete().delay(2000, TimeUnit.MILLISECONDS)
+    }
+
 }

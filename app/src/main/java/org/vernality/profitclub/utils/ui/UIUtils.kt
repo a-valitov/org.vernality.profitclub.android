@@ -3,13 +3,10 @@ package org.vernality.profitclub.utils.ui
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.ImageView
 import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.Navigation
 import org.koin.core.KoinComponent
@@ -68,10 +65,10 @@ class UIUtils {
                 TypeDialogFragment.RoleApproveAdmin -> return configureRoleApproveAdminDialog(fragment)
                 TypeDialogFragment.LogOrgAccount -> return configureLogOrgAccountDialog(fragment)
                 TypeDialogFragment.ResetPassword -> return configureResetPasswordDialog(fragment)
+                TypeDialogFragment.ApproveAction -> return configureAcceptActionDialog(fragment)
                 else -> throw Throwable("недопустимый тип диалогового фрагмента")
 
             }
-
 
         }
 
@@ -104,7 +101,11 @@ class UIUtils {
             }
         }
 
-
+        private fun configureAcceptActionDialog(fragment: SuccessResultDialogFragment): SuccessResultDialogFragment{
+            return fragment.apply {
+                setTitleOnViews(resources.getStringArray(R.array.AcceptAction))
+            }
+        }
 
     }
 }

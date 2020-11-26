@@ -86,6 +86,11 @@
     <string name="approve">Одобрить</string>
     <string name="reject">Отклонить</string>
 
+    <!--    Экран акция bottom dialog fragment -->
+    <string name="accept">Принять</string>
+    <string name="link">Ссылка</string>
+
+
 
 
     <!--    Экран диалога Succes-->

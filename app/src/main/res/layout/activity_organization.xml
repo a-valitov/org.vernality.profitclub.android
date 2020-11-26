@@ -7,11 +7,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.activities.MainActivity"
+    tools:context=".view.organization.OrganizationActivity"
     tools:ignore="ExtraText"
     android:background="@color/colorDialogLine"
     app:statusBarBackground="@color/colorPrimary"
-
+    android:theme="@style/AppTheme.DarkStatusBarNoTranslucentNavigation"
     >
 
 <!--    android:layout_marginTop="@dimen/abc_action_bar_default_height_material"-->

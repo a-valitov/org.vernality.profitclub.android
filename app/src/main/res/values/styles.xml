@@ -9,6 +9,7 @@
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:windowTranslucentNavigation">true</item>
         <item name="android:popupMenuStyle">@style/PopupMenu.MyStyle</item>
+        <item name="bottomSheetDialogTheme">@style/BottomSheetDialog</item>
     </style>
 
     <style name="AppTheme.DarkStatusBarNoTranslucentNavigation" parent="AppTheme.DarkStatusBar">
@@ -19,6 +20,8 @@
         <item name="android:statusBarColor">@color/colorStatusBarDark</item>
         <item name="android:windowTranslucentNavigation">false</item>
         <!--        <item name="popupMenuStyle">@style/PopupMenu.MyStyle</item>-->
+
+        <item name="bottomSheetDialogTheme">@style/BottomSheetDialog</item>
     </style>
 
     <style name="AppTheme.DarkStatusBar">
@@ -29,6 +32,7 @@
         <item name="android:statusBarColor">@color/colorStatusBarDark</item>
         <item name="android:windowTranslucentNavigation">true</item>
 <!--        <item name="popupMenuStyle">@style/PopupMenu.MyStyle</item>-->
+        <item name="bottomSheetDialogTheme">@style/BottomSheetDialog</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -49,6 +53,11 @@
 
     <style name="ShapeAppearance.App.CircleImageView" parent="">
         <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="ShapeAppearance.App.CornerImageView" parent="">
+        <item name="cornerFamily">rounded</item>
         <item name="cornerSize">10%</item>
     </style>
 
@@ -61,6 +70,17 @@
 <!--        <item name="windowActionBar">false</item>-->
 <!--        <item name="windowNoTitle">true</item>-->
 <!--    </style>-->
+
+    <style name="BottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/bottomSheetStyleWrapper</item>
+    </style>
+
+    <style name="bottomSheetStyleWrapper" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+
+
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:popupMenuStyle">@style/PopupMenu.MyStyle</item>

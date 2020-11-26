@@ -15,7 +15,7 @@ import org.vernality.profitclub.utils.ui.UIUtils
 
 enum class TypeDialogFragment{
     Registration, RoleApproveAdmin, LogOrgAccount, ResetPassword, RequestApprovedAdmin,
-    ApprovePromotion, ApproveRequestIntoOrg, SubmitCommercialOffer, ApproveDelivery
+    ApproveAction, ApproveRequestIntoOrg, SubmitCommercialOffer, ApproveDelivery
 }
 
 

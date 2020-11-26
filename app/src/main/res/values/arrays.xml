@@ -36,7 +36,7 @@
         <item>Назад</item>
     </string-array>
 
-    <string-array name="ApprovePromotion">
+    <string-array name="AcceptAction">
         <item>Одобрить акцию?</item>
         <item>Одобрить акцию от name?</item>
         <item>Одобрить</item>
