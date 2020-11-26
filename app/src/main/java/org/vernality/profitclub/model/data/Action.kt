@@ -7,6 +7,10 @@ import com.parse.ParseObject
 import kotlinx.android.parcel.Parcelize
 import java.util.*
 
+enum class StatePeriod{
+    Current, Past
+}
+
 @ParseClassName("Action")
 class Action: ParseObject(){
     val id: String?
@@ -43,5 +47,7 @@ class Action: ParseObject(){
     var supplier: ParseObject?
         get() = getParseObject("supplier")
         set(value){ if(value != null) put("supplier", value)}
+
+    var statePeriod: StatePeriod? = null
 
 }

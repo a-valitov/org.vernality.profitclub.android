@@ -36,7 +36,7 @@ class StocksPlaceholderFragment : Fragment() {
     private val observerForActionResultBtn = Observer<AppState> { renderDataForActionResultBtn(it) }
     private lateinit var liveDataForActionResult: LiveData<AppState>
     private lateinit var successResultDialog:SuccessResultDialogFragment
-    private lateinit var searchDialogFragment:ActionBottomDialogFragment
+    private lateinit var actionBottomDialogFragment:ActionBottomDialogFragment
 
 
     private var page:Int = 0
@@ -51,11 +51,14 @@ class StocksPlaceholderFragment : Fragment() {
             override fun onItemClick(action: Action) {
                 println("-----stock on clicked")
                 Toast.makeText(requireActivity(), action.message, Toast.LENGTH_SHORT).show()
-                searchDialogFragment = ActionBottomDialogFragment.newInstance(action)
-                searchDialogFragment.setAcceptClickListener(acceptBtnListener)
-                searchDialogFragment.setRejectClickListener(rejectBtnListener)
-                searchDialogFragment.setLinkClickListener(linkBtnListener)
-                searchDialogFragment.show(parentFragmentManager, "BOTTOM_SHEET_FRAGMENT_DIALOG_TAG")
+                actionBottomDialogFragment = (ActionBottomDialogFragment.newInstance(action))
+                    .apply {
+                    setAcceptClickListener(acceptBtnListener)
+                    setRejectClickListener(rejectBtnListener)
+                    setLinkClickListener(linkBtnListener)
+                }
+                actionBottomDialogFragment.show(parentFragmentManager, "BOTTOM_SHEET_FRAGMENT_DIALOG_TAG")
+
             }
         }
 
@@ -170,7 +173,7 @@ class StocksPlaceholderFragment : Fragment() {
             is AppState.Success<*> -> {
                 Toast.makeText(requireActivity(), "Succes", Toast.LENGTH_LONG).show()
                 liveDataForActionResult.removeObservers(requireActivity())
-                searchDialogFragment.dismiss()
+                actionBottomDialogFragment.dismiss()
 
             }
             is AppState.Loading -> {

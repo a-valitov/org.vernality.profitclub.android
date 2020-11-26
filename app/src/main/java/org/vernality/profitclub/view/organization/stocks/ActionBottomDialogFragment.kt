@@ -16,7 +16,7 @@ import com.google.android.material.textview.MaterialTextView
 import kotlinx.android.synthetic.main.action_bottom_dialog_fragment.*
 import org.vernality.profitclub.R
 import org.vernality.profitclub.model.data.Action
-import org.vernality.profitclub.model.data.Organization
+import org.vernality.profitclub.model.data.StatePeriod
 import org.vernality.profitclub.model.data.Supplier
 import org.vernality.profitclub.utils.Utils
 import org.vernality.profitclub.utils.ui.setImageToImageView
@@ -33,12 +33,14 @@ class ActionBottomDialogFragment : BottomSheetDialogFragment() {
     private lateinit var actionsPeriodTV: MaterialTextView
     private lateinit var acceptActionBTN: MaterialButton
     private lateinit var rejectActionBTN: MaterialButton
+    private lateinit var layoutButtons: LinearLayout
     private var onAcceptClickListener:OnClickListener? = null
     private var onRejectClickListener:OnClickListener? = null
     private var onLinkClickListener:OnLinkClickListener? = null
 
-    lateinit var action: Action
+    private lateinit var action: Action
 
+    private var showButtons = true
 
     private val onAcceptButtonClickListener =
         View.OnClickListener {
@@ -62,9 +64,9 @@ class ActionBottomDialogFragment : BottomSheetDialogFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         dialog!!.setOnShowListener { dialog ->
-            val d = dialog as BottomSheetDialog
+            val bottomSheetDialog = dialog as BottomSheetDialog
             val bottomSheet =
-                d.findViewById<FrameLayout>(
+                bottomSheetDialog.findViewById<FrameLayout>(
                     com.google.android.material.R.id.design_bottom_sheet
                 )
             BottomSheetBehavior.from<View?>(bottomSheet!!).state =
@@ -85,15 +87,17 @@ class ActionBottomDialogFragment : BottomSheetDialogFragment() {
         actionsPeriodTV = tv_actions_period
         acceptActionBTN = btn_accept_action
         rejectActionBTN = btn_reject_action
+        layoutButtons = layout_actions_buttons
 
         actionCloseIV.setOnClickListener { dismiss() }
         acceptActionBTN.setOnClickListener(onAcceptButtonClickListener)
         rejectActionBTN.setOnClickListener(onRejectButtonClickListener)
         link.setOnClickListener(onLinkButtonClickListener)
 
+        if(action.statePeriod == StatePeriod.Past) layoutButtons.visibility = View.GONE
+
         initViews()
 
-//        addOnClearClickListener()
     }
 
     fun initViews(){
@@ -127,12 +131,6 @@ class ActionBottomDialogFragment : BottomSheetDialogFragment() {
         super.onDestroyView()
     }
 
-//    private fun addOnClearClickListener() {
-//        clearTextImageView.setOnClickListener {
-//            searchEditText.setText(String.getEmptyString())
-//            searchButton.isEnabled = false
-//        }
-//    }
 
     interface OnClickListener {
         fun onClick(action: Action)

@@ -184,7 +184,13 @@ class MainInteractor(
             val currentActions = mutableListOf<Action>()
             it.forEach {
 
-                if(it.startDate != null && it.endDate != null && (it.startDate!! <= currentDate) && it.endDate!! >= currentDate) currentActions.add(it)
+                if(it.startDate != null && it.endDate != null
+                    && (it.startDate!! <= currentDate)
+                    && it.endDate!! >= currentDate)
+                {
+                    it.statePeriod = StatePeriod.Current
+                    currentActions.add(it)
+                }
             }
             currentActions
         }
@@ -197,7 +203,11 @@ class MainInteractor(
         return repository.getActions().map{
             val pastActions = mutableListOf<Action>()
             it.forEach {
-                if(it.endDate != null && it.endDate!! < currentDate) pastActions.add(it)
+                if(it.endDate != null && it.endDate!! < currentDate)
+                {
+                    it.statePeriod = StatePeriod.Past
+                    pastActions.add(it)
+                }
 
             }
             pastActions

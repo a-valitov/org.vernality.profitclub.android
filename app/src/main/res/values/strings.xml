@@ -89,6 +89,8 @@
     <!--    Экран акция bottom dialog fragment -->
     <string name="accept">Принять</string>
     <string name="link">Ссылка</string>
+    <string name="actions_description">Описание акции</string>
+    <string name="actions_contactName">Контактное лицо</string>
 
 
 
