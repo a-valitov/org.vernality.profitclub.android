@@ -51,20 +51,21 @@ public class OffersDocListRVAdapter(
     ) : RecyclerView.ViewHolder(view) {
 
         fun bind(string: String) {
-            itemView.tv_format_offers_doc.setText(string.substringAfter('.'))
+            val format = string.substringAfter('.')
+            itemView.tv_format_offers_doc.setText(format)
             itemView.tv_name_offers_doc.setText(string)
-            itemView.setOnClickListener{openOffer(itemCount)}
+            itemView.setOnClickListener{openOffer(layoutPosition, format)}
 
         }
 
     }
 
-    private fun openOffer(int: Int) {
-        listener.onItemClick(int)
+    private fun openOffer(int: Int, format: String) {
+        listener.onItemClick(int, format)
     }
 
     interface OnListItemClickListener {
-        fun onItemClick(int: Int)
+        fun onItemClick(int: Int, format: String)
     }
 
 }

@@ -12,6 +12,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -26,8 +27,10 @@ import org.vernality.profitclub.R
 import org.vernality.profitclub.model.data.CommercialOffer
 import org.vernality.profitclub.model.data.Supplier
 import org.vernality.profitclub.utils.Utils
+import org.vernality.profitclub.utils.ui.openFileInExternalApp
 import org.vernality.profitclub.utils.ui.setImageToImageView
 import org.vernality.profitclub.view.organization.adapter.OffersDocListRVAdapter
+import java.io.File
 
 
 class OfferBottomDialogFragment : BottomSheetDialogFragment() {
@@ -51,37 +54,13 @@ class OfferBottomDialogFragment : BottomSheetDialogFragment() {
 
     private val onListItemClickListener: OffersDocListRVAdapter.OnListItemClickListener =
         object : OffersDocListRVAdapter.OnListItemClickListener {
-            override fun onItemClick(numberFileInList: Int) {
+            override fun onItemClick(numberFileInList: Int, format:String) {
                 Toast.makeText(requireActivity()," number = $numberFileInList", Toast.LENGTH_SHORT).show()
                 println("------parse file")
                 val list = offer.getList<ParseFile>("attachmentFiles")
-                val file = list?.get(0)?.file
+                val file = list?.get(numberFileInList)?.file
 
-                println(file)
-
-                val uri = Uri.parse("android.resource://org.vernality.profitclub/" + R.raw.werty)
-
-                val target = Intent(Intent.ACTION_VIEW)
-                target.setDataAndType(uri, "application/pdf")
-                target.flags = Intent.FLAG_ACTIVITY_NO_HISTORY
-
-                val intent = Intent.createChooser(target, "Open File")
-
-                val packageManager: PackageManager = requireActivity().packageManager
-                val activities =
-                    packageManager.queryIntentActivities(intent, 0)
-                val isIntentSafe = activities.size > 0
-                if(isIntentSafe) println("------есть активити способное открыть интент")
-                else if(isIntentSafe) println("------нет активити способное открыть интент")
-
-
-                try {
-                    startActivity(intent)
-                } catch (e: ActivityNotFoundException) {
-                    // Instruct the user to install a PDF reader here, or something
-                    println("=====not faund exeption=====")
-                }
-
+                openFileInExternalApp(file, format, requireContext())
 
             }
         }
