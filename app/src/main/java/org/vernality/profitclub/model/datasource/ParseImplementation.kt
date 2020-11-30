@@ -6,6 +6,7 @@ import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import org.vernality.profitclub.model.data.*
+import timber.log.Timber
 
 
 class ParseImplementation() : DataSource {
@@ -498,32 +499,65 @@ class ParseImplementation() : DataSource {
     override fun getCommercialOffers(): Single<List<CommercialOffer>> {
         return Single.create {
 
+
+
+
+            println("into getCommercialOffers()")
             val currentUser = ParseUser.getCurrentUser()
-            if (currentUser != null) {
-                println("------currentUser is not null-----")
-
-                val query: ParseQuery<CommercialOffer> = ParseQuery.getQuery(CommercialOffer::class.java)
-                query.findInBackground { list, e ->
-                    if (e == null) {
+            if (currentUser != null)
+            {
+               println("currentUser is not null into getCommercialOffers()")
 
 
-                        println("----OK get Organization-----")
-                        println("++++++list size =${list.size}")
-                        list.forEach {
+                val query1: ParseQuery<CommercialOffer> = ParseQuery.getQuery(CommercialOffer::class.java)
+                val list = query1.find()
 
-                            it.contact = it.getParseObject("supplier")?.fetchIfNeeded<Supplier>()?.contactName
-                            val objectId: String = it.getObjectId()
-                            println("++++++object =${it.message}")
+                it.onSuccess(list)
 
-                        }
 
-                        it.onSuccess( list )
 
-                    } else {
-                        println("----Error get Organization-----")
+//                val query: ParseQuery<CommercialOffer> = ParseQuery.getQuery(CommercialOffer::class.java)
+//                query.findInBackground { list, e ->
+//
+//                    if (e == null) {
+//
+//                        println("CommercialOffers List geted")
+//
+//                        println("CommercialOffers List size =${list.size}")
+//
+//                        Thread.sleep(3000)
+//                        println("------it.onSuccess")
+//
+//                        it.onSuccess(mutableListOf())
+//
+////                        throw Throwable("Error AAAAAAAAAAAA")
+//
+//
+//
+//
+////                        list.forEach {
+////
+////                            it.contact = it.getParseObject("supplier")?.fetchIfNeeded<Supplier>()?.contactName
+////                            val objectId: String = it.getObjectId()
+////                            println("++++++CommercialOffer objectId =  =${objectId}")
+////                            println("++++++CommercialOffer message =  =${it.message}")
+////                            println("+++++++CommercialOffer contact = =${it.contact}")
+////                            println("++++++CommercialOffer Supplier =  =${(it.supplier as Supplier).contactName}")
+////
+////
+////                        }
+//
+//
+//
+////                        it.onSuccess( list )
+//
+//                    } else {
+//                        println("----Error get Organization-----")
+//
+//                    }
+//                }
 
-                    }
-                }
+
 
             } else {
                 // Вызов окна входа

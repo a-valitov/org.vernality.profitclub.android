@@ -26,14 +26,14 @@
                 android:layout_height="178dp">
 
                 <ImageView
-                    android:id="@+id/iv_actions_image"
+                    android:id="@+id/iv_offers_image"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:adjustViewBounds="true"
                     android:scaleType="centerCrop"/>
 
                 <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/iv_action_close"
+                    android:id="@+id/iv_offer_close"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@color/colorInputField"
@@ -61,7 +61,7 @@
                     android:layout_marginEnd="30dp">
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/tv_actions_contact_name"
+                        android:id="@+id/tv_offers_contact_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="22sp"
@@ -70,41 +70,17 @@
                         android:textColor="@color/colorStatusBarDark"
                         android:text="@string/actions_contactName"/>
 
-                    <LinearLayout
-                        android:id="@+id/layout_actions_link"
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tv_offers_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
                         android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true">
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/tv_actions_link"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="12sp"
-                            android:textColor="@color/color_Link"
-                            android:text="@string/link"/>
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
-
-                    </LinearLayout>
+                        android:layout_centerVertical="true"
+                        android:textSize="12sp"
+                        android:textColor="@color/color_Link"
+                        android:text="@string/date"/>
 
                 </RelativeLayout>
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/tv_actions_message"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginEnd="30dp"
-                    android:textSize="15sp"
-                    android:textColor="@color/colorStatusBarDark"
-                    android:text="Акция"/>
 
                 <ScrollView
                     android:layout_width="match_parent"
@@ -116,7 +92,7 @@
                         android:orientation="vertical">
 
                         <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/tv_actions_description"
+                            android:id="@+id/tv_offers_message"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
@@ -124,24 +100,21 @@
                             android:layout_marginEnd="30dp"
                             android:textSize="12sp"
                             android:textColor="@color/colorStatusBarDark"
-                            android:text="@string/actions_description"/>
+                            android:text="@string/description_offer"/>
 
                     </LinearLayout>
 
                 </ScrollView>
 
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/tv_actions_period"
-                    android:layout_width="wrap_content"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_offers_doc"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="30dp"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginEnd="30dp"
-                    android:textSize="12sp"
-                    android:textColor="@color/colorStatusBarDark"
-                    android:text="период акци"/>
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
+                </androidx.recyclerview.widget.RecyclerView>
 
                 <LinearLayout
                     android:id="@+id/layout_offers_buttons"
@@ -150,7 +123,7 @@
                     android:orientation="vertical">
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_accept_action"
+                        android:id="@+id/btn_approve_offer"
                         android:layout_width="354dp"
                         android:layout_height="52dp"
                         android:layout_marginStart="30dp"
@@ -160,7 +133,7 @@
                         android:text="@string/accept"/>
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_reject_action"
+                        android:id="@+id/btn_reject_offer"
                         android:layout_width="354dp"
                         android:layout_height="52dp"
                         android:layout_marginStart="30dp"

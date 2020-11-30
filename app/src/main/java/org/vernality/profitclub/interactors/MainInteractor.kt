@@ -172,7 +172,9 @@ class MainInteractor(
 
     fun getCommercialOffer():Single<AppState> {
 
-        return repository.getCommercialOffers().map { list -> AppState.Success<List<CommercialOffer>>(list) }
+        return repository.getCommercialOffers().map { list ->
+            println("-----getCommercialOffer() into interactor, list ="+list)
+            AppState.Success<List<CommercialOffer>>(list) }
     }
 
     @SuppressLint("SimpleDateFormat")
@@ -242,6 +244,16 @@ class MainInteractor(
     }
 
     fun getResultForRejectAction(action: Action):Completable{
+
+        return Completable.complete().delay(2000, TimeUnit.MILLISECONDS)
+    }
+
+    fun getResultForApproveOffer(offer: CommercialOffer):Completable{
+
+        return Completable.complete().delay(2000, TimeUnit.MILLISECONDS)
+    }
+
+    fun getResultForRejectOffer(offer: CommercialOffer):Completable{
 
         return Completable.complete().delay(2000, TimeUnit.MILLISECONDS)
     }

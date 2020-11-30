@@ -87,7 +87,7 @@ class ActionBottomDialogFragment : BottomSheetDialogFragment() {
         actionsPeriodTV = tv_actions_period
         acceptActionBTN = btn_accept_action
         rejectActionBTN = btn_reject_action
-        layoutButtons = layout_actions_buttons
+        layoutButtons = layout_offers_buttons
 
         actionCloseIV.setOnClickListener { dismiss() }
         acceptActionBTN.setOnClickListener(onAcceptButtonClickListener)

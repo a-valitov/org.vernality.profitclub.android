@@ -92,6 +92,12 @@
     <string name="actions_description">Описание акции</string>
     <string name="actions_contactName">Контактное лицо</string>
 
+    <!--    Экран поставка bottom dialog fragment -->
+    <string name="date">Дата</string>
+    <string name="description_offer">Описание коммерческого предложения</string>
+
+
+
 
 
 

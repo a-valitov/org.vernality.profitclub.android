@@ -12,6 +12,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.fragment_stocks_container.view.*
 import org.vernality.profitclub.R
+import timber.log.Timber
 
 
 class StocksContainerFragment : Fragment() {
@@ -30,6 +31,7 @@ class StocksContainerFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Timber.d("onCreateView start")
         homeViewModel =
             ViewModelProviders.of(this).get(StocksContainerFragmentViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_stocks_container, container, false)

@@ -22,7 +22,11 @@ class CommercialOffer: ParseObject(){
         set(value){ if(value != null) put("imageFile", value)}
 
     val supplier: Supplier?
-        get() = getParseObject("supplier") as Supplier
+        get()
+        {
+            println("---get Supplier")
+            return getParseObject("supplier") as Supplier
+        }
 
 
     @IgnoredOnParcel
