@@ -8,9 +8,15 @@ import androidx.lifecycle.ViewModel
 import io.reactivex.observers.DisposableCompletableObserver
 import io.reactivex.observers.DisposableObserver
 import org.vernality.profitclub.model.data.AppState
+import org.vernality.profitclub.model.data.CommercialOffer
+import org.vernality.profitclub.model.data.Member
+import org.vernality.profitclub.utils.ui.addStreamsIO_UI
 import org.vernality.profitclub.view_model.BaseViewModel
+import timber.log.Timber
 
 class MembersPageViewModel(appContext: Application) : BaseViewModel<AppState>(appContext) {
+
+    private val liveDataForMemberResult: MutableLiveData<AppState> = MutableLiveData()
 
     fun getLiveDataAndStartGetResult(page:Int): LiveData<AppState> {
 
@@ -27,8 +33,7 @@ class MembersPageViewModel(appContext: Application) : BaseViewModel<AppState>(ap
     private fun getResultForMembers(){
         compositeDisposable.add(
             interactor.getMembers()
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
+                .addStreamsIO_UI()
                 .doOnSubscribe { liveDataForViewToObserve.value = AppState.Loading(null) }
                 .subscribeWith(getObserver())
         )
@@ -37,8 +42,7 @@ class MembersPageViewModel(appContext: Application) : BaseViewModel<AppState>(ap
     private fun getResultForRequestMembers(){
         compositeDisposable.add(
             interactor.getRequestMembers()
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
+                .addStreamsIO_UI()
                 .doOnSubscribe { liveDataForViewToObserve.value = AppState.Loading(null) }
                 .subscribeWith(getObserver())
         )
@@ -60,6 +64,53 @@ class MembersPageViewModel(appContext: Application) : BaseViewModel<AppState>(ap
         }
     }
 
+//   liveData для результата одобрения/ неодобрения участника
+
+    fun getLiveDataForResultMember(btn: Int, member: Member): LiveData<AppState>{
+        when(btn)
+        {
+            0 -> getResultForAcceptBtn(member)
+            1 -> getResultForRejectBtn(member)
+        }
+
+        return liveDataForMemberResult
+    }
+
+    private fun getResultForRejectBtn(member: Member) {
+        Timber.d("getResultForRejectBtn(offer: CommercialOffer)")
+        compositeDisposable.add(
+            interactor.getResultForApproveMembersRequest(member)
+                .addStreamsIO_UI()
+                .doOnSubscribe { liveDataForMemberResult.value = AppState.Loading(null) }
+                .subscribeWith(getCompletableObserver())
+        )
+    }
+
+    private fun getResultForAcceptBtn(member: Member) {
+        Timber.d("getResultForAcceptBtn(offer: CommercialOffer)")
+        compositeDisposable.add(
+            interactor.getResultForRejectMembersRequest(member)
+                .addStreamsIO_UI()
+                .doOnSubscribe { liveDataForMemberResult.value = AppState.Loading(null) }
+                .subscribeWith(getCompletableObserver())
+        )
+    }
+
+    private fun getCompletableObserver(): DisposableCompletableObserver {
+        return object : DisposableCompletableObserver() {
+
+            override fun onError(e: Throwable) {
+                liveDataForMemberResult.value = AppState.Error(e)
+            }
+
+            override fun onComplete() {
+                liveDataForMemberResult.value = AppState.Success<Unit>(Unit)
+            }
+
+        }
+    }
+
+//   liveData для определения типа выводимого списка (участники/ заявки)
 
     private val _index = MutableLiveData<Int>()
     val page: LiveData<Int> = Transformations.map(_index) {

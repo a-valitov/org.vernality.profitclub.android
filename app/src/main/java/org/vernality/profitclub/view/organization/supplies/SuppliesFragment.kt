@@ -27,27 +27,21 @@ import timber.log.Timber
 
 class SuppliesFragment : Fragment() {
 
-    init {
-        Timber.d("init")
-    }
-
+    private var page:Int = 0
 
     private val viewModel by viewModel<SuppliesFragmentViewModel>()
-    private val adapter: SuppliesListRVAdapter by lazy {SuppliesListRVAdapter(onListItemClickListener)}
 
     private val observer = Observer<AppState> { renderData(it) }
+    private val observerForOfferResultBtn = Observer<AppState> { renderDataForOfferResultBtn(it) }
+    private lateinit var liveDataForOfferResult: LiveData<AppState>
 
     private lateinit var errorResultDialog: ErrorResultDialogFragment
     private lateinit var loadingLayout: FrameLayout
-
-    private lateinit var rv: RecyclerView
-
-    private val observerForOfferResultBtn = Observer<AppState> { renderDataForOfferResultBtn(it) }
-    private lateinit var liveDataForOfferResult: LiveData<AppState>
     private lateinit var offerBottomDialogFragment:OfferBottomDialogFragment
     private lateinit var successResultDialog:SuccessResultDialogFragment
 
-    private var page:Int = 0
+    private val adapter: SuppliesListRVAdapter by lazy {SuppliesListRVAdapter(onListItemClickListener)}
+    private lateinit var rv: RecyclerView
 
     private val onListItemClickListener: SuppliesListRVAdapter.OnListItemClickListener =
         object : SuppliesListRVAdapter.OnListItemClickListener {
@@ -63,7 +57,7 @@ class SuppliesFragment : Fragment() {
             }
         }
 
-    private var approveBtnListener =
+    private val approveBtnListener =
         object :OfferBottomDialogFragment.OnOfferClickListener{
             override fun onClick(offer: CommercialOffer) {
                 Toast.makeText(requireActivity(),"accept action clicked", Toast.LENGTH_SHORT).show()
@@ -77,13 +71,16 @@ class SuppliesFragment : Fragment() {
 
                     }
 
+                println("-----supplier name = "+offer.supplier?.contactName)
+                successResultDialog.setName(offer.supplier?.contactName)
+
                 successResultDialog.show(parentFragmentManager, this.toString())
 
             }
 
         }
 
-    private var rejectBtnListener =
+    private val rejectBtnListener =
         object :OfferBottomDialogFragment.OnOfferClickListener{
             override fun onClick(offer: CommercialOffer) {
                 Toast.makeText(requireActivity(),"reject action clicked", Toast.LENGTH_SHORT).show()

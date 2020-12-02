@@ -6,6 +6,7 @@ import io.reactivex.observers.DisposableCompletableObserver
 import org.vernality.profitclub.model.data.AppState
 import org.vernality.profitclub.model.data.User
 import org.vernality.profitclub.utils.ui.UIUtils
+import org.vernality.profitclub.utils.ui.addStreamsIO_UI
 
 
 class ResetPasswordFragmentViewModel(appContext: Application) : BaseViewModel<AppState>(appContext) {
@@ -24,8 +25,7 @@ class ResetPasswordFragmentViewModel(appContext: Application) : BaseViewModel<Ap
     private fun getResult(){
         compositeDisposable.add(
             interactor.resetPassword(gmail!!)
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
+                .addStreamsIO_UI()
                 .doOnSubscribe { liveDataForViewToObserve.value = AppState.Loading(null) }
                 .subscribeWith(getObserver())
         )

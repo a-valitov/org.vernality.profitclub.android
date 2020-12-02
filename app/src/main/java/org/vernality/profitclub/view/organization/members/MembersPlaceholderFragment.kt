@@ -7,26 +7,21 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_registration.view.*
 import kotlinx.android.synthetic.main.list_layout.view.*
 import kotlinx.android.synthetic.main.list_layout.view.loading_frame_layout
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.vernality.profitclub.R
-import org.vernality.profitclub.model.data.Action
 import org.vernality.profitclub.model.data.AppState
 import org.vernality.profitclub.model.data.Member
 import org.vernality.profitclub.view.fragments.ErrorResultDialogFragment
-import org.vernality.profitclub.view.fragments.LoadingDialogFragment
 import org.vernality.profitclub.view.fragments.SuccessResultDialogFragment
 import org.vernality.profitclub.view.fragments.TypeDialogFragment
 import org.vernality.profitclub.view.organization.adapter.MembersListRVAdapter
 import org.vernality.profitclub.view.organization.adapter.MembersRequestListRVAdapter
-import org.vernality.profitclub.view.organization.adapter.StocksListRVAdapter
-import org.vernality.profitclub.view_model.RegistrationFragmentViewModel
 
 
 /**
@@ -34,30 +29,25 @@ import org.vernality.profitclub.view_model.RegistrationFragmentViewModel
  */
 class MembersPlaceholderFragment : Fragment() {
 
-    private val viewModel by viewModel<MembersPageViewModel>()
-
-    private val membersAdapter: MembersListRVAdapter by lazy { MembersListRVAdapter(onListItemClickListener) }
-
-    private val membersRequestAdapter: MembersRequestListRVAdapter by
-    lazy { MembersRequestListRVAdapter(onListItemClickListenerForRequest) }
-
-
-    private val observer = Observer<AppState> { renderData(it) }
-
     private var page:Int = 0
 
+    private val viewModel by viewModel<MembersPageViewModel>()
+
+    private val observer = Observer<AppState> { renderData(it) }
+    private val observerForMemberResultBtn = Observer<AppState> { renderDataForOfferResultBtn(it) }
+    private lateinit var liveDataForMemberResult: LiveData<AppState>
+
+    private lateinit var successResultDialog:SuccessResultDialogFragment
     private lateinit var errorResultDialog: ErrorResultDialogFragment
     private lateinit var loadingLayout: FrameLayout
 
+    private val membersAdapter: MembersListRVAdapter by
+    lazy { MembersListRVAdapter(onListItemClickListener) }
+
+    private val membersRequestAdapter: MembersRequestListRVAdapter by
+    lazy { MembersRequestListRVAdapter(onListItemClickListenerForRequest, approveBtnListener, rejectBtnListener) }
+
     private lateinit var rv: RecyclerView
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.apply {
-            setIndex(arguments?.getInt(ARG_SECTION_NUMBER) ?: 1)
-        }
-
-    }
 
     private val onListItemClickListener: MembersListRVAdapter.OnListItemClickListener =
         object : MembersListRVAdapter.OnListItemClickListener {
@@ -74,6 +64,43 @@ class MembersPlaceholderFragment : Fragment() {
                 Toast.makeText(requireActivity(), member.firstName, Toast.LENGTH_SHORT).show()
             }
         }
+
+    private val  approveBtnListener: MembersRequestListRVAdapter.OnListItemClickListener =
+        object : MembersRequestListRVAdapter.OnListItemClickListener {
+            override fun onItemClick(member: Member) {
+                Toast.makeText(requireActivity(), "approve " + member.firstName, Toast.LENGTH_SHORT).show()
+                successResultDialog =
+                    SuccessResultDialogFragment.newInstance(
+                        TypeDialogFragment.ApproveAction
+                    ) {
+                        liveDataForMemberResult = viewModel.getLiveDataForResultMember(0, member)
+                        liveDataForMemberResult.observe(requireActivity(), observerForMemberResultBtn)
+                        successResultDialog.dismiss()
+
+                    }
+
+                successResultDialog.setName(member.firstName +" "+member.lastName)
+
+                successResultDialog.show(parentFragmentManager, this.toString())
+            }
+        }
+
+    private val rejectBtnListener: MembersRequestListRVAdapter.OnListItemClickListener =
+        object : MembersRequestListRVAdapter.OnListItemClickListener {
+            override fun onItemClick(member: Member) {
+                Toast.makeText(requireActivity(), "reject " + member.firstName, Toast.LENGTH_SHORT).show()
+                liveDataForMemberResult = viewModel.getLiveDataForResultMember(1, member)
+                liveDataForMemberResult.observe(requireActivity(), observerForMemberResultBtn)
+            }
+        }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.apply {
+            setIndex(arguments?.getInt(ARG_SECTION_NUMBER) ?: 1)
+        }
+
+    }
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -123,6 +150,28 @@ class MembersPlaceholderFragment : Fragment() {
             }
             is AppState.Error -> {
                 loadingLayout.visibility = View.GONE
+                errorResultDialog =
+                    ErrorResultDialogFragment.newInstance(description = appState.error.message.toString())
+                Toast.makeText(requireActivity(), "Error \n ${appState.error}", Toast.LENGTH_LONG).show()
+                errorResultDialog.show(parentFragmentManager, this.toString())
+            }
+        }
+    }
+
+    private fun renderDataForOfferResultBtn(appState: AppState) {
+        when (appState) {
+            is AppState.Success<*> -> {
+                Toast.makeText(requireActivity(), "Succes", Toast.LENGTH_LONG).show()
+                liveDataForMemberResult.removeObservers(requireActivity())
+
+
+            }
+            is AppState.Loading -> {
+                Toast.makeText(requireActivity(), "Loading", Toast.LENGTH_LONG).show()
+
+            }
+            is AppState.Error -> {
+
                 errorResultDialog =
                     ErrorResultDialogFragment.newInstance(description = appState.error.message.toString())
                 Toast.makeText(requireActivity(), "Error \n ${appState.error}", Toast.LENGTH_LONG).show()

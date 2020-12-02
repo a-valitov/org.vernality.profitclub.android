@@ -34,6 +34,8 @@ private var actionListener: ()->Unit) : SupportBlurDialogFragment() {
     private lateinit var actionTV: TextView
     lateinit var backTV: TextView
 
+    private var name: String? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,14 +44,6 @@ private var actionListener: ()->Unit) : SupportBlurDialogFragment() {
     ): View? {
 
         val root = inflater.inflate(R.layout.dialog_fragment_success, container, false)
-//        root.tv_resume.setOnClickListener {
-//            Toast.makeText(requireActivity(), "TV resume clicked ", Toast.LENGTH_LONG).show()
-//            //findNavController().navigate(R.id.action_registrationFragment_to_roleFragment)
-//            val intent = Intent(requireActivity(), EnterRoleActivity::class.java)
-//            requireActivity().startActivity(intent)
-//            dismiss()
-//            requireActivity().finish()
-//        }
 
         init(root)
 
@@ -69,6 +63,8 @@ private var actionListener: ()->Unit) : SupportBlurDialogFragment() {
         subMesageTV = root.tv_subMessage
         actionTV = root.tv_action
         backTV = root.tv_back
+
+        setListenerOnBack(backTV)
     }
 
     fun setListenerOnAction(func: ()->Unit){
@@ -82,11 +78,9 @@ private var actionListener: ()->Unit) : SupportBlurDialogFragment() {
         view.setOnClickListener { dismiss() }
     }
 
-    fun setName(name: String){
-        val message = mesageTV.text
-        val subMessage = subMesageTV.text
-        mesageTV.setText(message.toString().replace("name", name, true))
-        subMesageTV.setText(subMessage.toString().replace("name", name, true))
+    fun setName(_name: String?){
+        println("------setName")
+        name = _name
     }
 
     private fun initTitlesOnViews(){
@@ -95,8 +89,9 @@ private var actionListener: ()->Unit) : SupportBlurDialogFragment() {
 
 
     fun setTitleOnViews(array: Array<String>){
+        println("------setTitleOnViews")
         mesageTV.setText(array[0])
-        subMesageTV.setText(array[1])
+        subMesageTV.setText(array[1].replace("name", name?:"поставщика") )
         actionTV.setText(array[2])
         backTV.setText(array[3])
     }

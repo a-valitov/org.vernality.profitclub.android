@@ -13,6 +13,7 @@ import io.reactivex.observers.DisposableSingleObserver
 import org.vernality.profitclub.model.data.Action
 import org.vernality.profitclub.model.data.AppState
 import org.vernality.profitclub.model.data.Organization
+import org.vernality.profitclub.utils.ui.addStreamsIO_UI
 import org.vernality.profitclub.view.activities.DataRoleSaver
 import org.vernality.profitclub.view_model.BaseViewModel
 
@@ -33,8 +34,7 @@ class StocksPageViewModel(appContext: Application) : BaseViewModel<AppState>(app
     private fun getResultForCurrentActions(){
         compositeDisposable.add(
             interactor.getCurrentActions()
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
+                .addStreamsIO_UI()
                 .doOnSubscribe { liveDataForViewToObserve.value = AppState.Loading(null) }
                 .subscribeWith(getObserver())
         )
@@ -43,8 +43,7 @@ class StocksPageViewModel(appContext: Application) : BaseViewModel<AppState>(app
     private fun getResultForPastActions(){
         compositeDisposable.add(
             interactor.getPastActions()
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
+                .addStreamsIO_UI()
                 .doOnSubscribe { liveDataForViewToObserve.value = AppState.Loading(null) }
                 .subscribeWith(getObserver())
         )
@@ -61,8 +60,7 @@ class StocksPageViewModel(appContext: Application) : BaseViewModel<AppState>(app
     private fun getResultForRejectBtn(action: Action) {
         compositeDisposable.add(
             interactor.getResultForRejectAction(action)
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
+                .addStreamsIO_UI()
                 .doOnSubscribe { liveDataForActionResult.value = AppState.Loading(null) }
                 .subscribeWith(getCompletableObserver())
         )
@@ -71,8 +69,7 @@ class StocksPageViewModel(appContext: Application) : BaseViewModel<AppState>(app
     private fun getResultForAcceptBtn(action: Action) {
         compositeDisposable.add(
             interactor.getResultForAcceptAction(action)
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
+                .addStreamsIO_UI()
                 .doOnSubscribe { liveDataForActionResult.value = AppState.Loading(null) }
                 .subscribeWith(getCompletableObserver())
         )

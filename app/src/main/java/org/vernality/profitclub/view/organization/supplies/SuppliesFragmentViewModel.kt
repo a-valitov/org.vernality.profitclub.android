@@ -10,6 +10,7 @@ import io.reactivex.observers.DisposableSingleObserver
 import org.vernality.profitclub.model.data.Action
 import org.vernality.profitclub.model.data.AppState
 import org.vernality.profitclub.model.data.CommercialOffer
+import org.vernality.profitclub.utils.ui.addStreamsIO_UI
 import org.vernality.profitclub.view_model.BaseViewModel
 import timber.log.Timber
 
@@ -29,42 +30,9 @@ class SuppliesFragmentViewModel(appContext: Application) : BaseViewModel<AppStat
         println("getResult() into SuppliesFragmentViewModel")
         compositeDisposable.add(
             interactor.getCommercialOffer()
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
+                .addStreamsIO_UI()
                 .doOnSubscribe { liveDataForViewToObserve.value = AppState.Loading(null) }
                 .subscribeWith(getObserver())
-        )
-    }
-
-    fun getLiveDataForOffer(btn: Int, offer: CommercialOffer): LiveData<AppState>{
-          when(btn)
-          {
-              0 -> getResultForAcceptBtn(offer)
-              1 -> getResultForRejectBtn(offer)
-          }
-
-        return liveDataForOfferResult
-    }
-
-    private fun getResultForRejectBtn(offer: CommercialOffer) {
-        Timber.d("getResultForRejectBtn(offer: CommercialOffer)")
-        compositeDisposable.add(
-            interactor.getResultForRejectOffer(offer)
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
-                .doOnSubscribe { liveDataForOfferResult.value = AppState.Loading(null) }
-                .subscribeWith(getCompletableObserver())
-        )
-    }
-
-    private fun getResultForAcceptBtn(offer: CommercialOffer) {
-        Timber.d("getResultForAcceptBtn(offer: CommercialOffer)")
-        compositeDisposable.add(
-            interactor.getResultForApproveOffer(offer)
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
-                .doOnSubscribe { liveDataForOfferResult.value = AppState.Loading(null) }
-                .subscribeWith(getCompletableObserver())
         )
     }
 
@@ -89,15 +57,49 @@ class SuppliesFragmentViewModel(appContext: Application) : BaseViewModel<AppStat
         }
     }
 
+//   liveData для результата одобрения/ неодобрения КП
+
+    fun getLiveDataForOffer(btn: Int, offer: CommercialOffer): LiveData<AppState>{
+          when(btn)
+          {
+              0 -> getResultForAcceptBtn(offer)
+              1 -> getResultForRejectBtn(offer)
+          }
+
+        return liveDataForOfferResult
+    }
+
+    private fun getResultForRejectBtn(offer: CommercialOffer) {
+        Timber.d("getResultForRejectBtn(offer: CommercialOffer)")
+        compositeDisposable.add(
+            interactor.getResultForRejectOffer(offer)
+                .addStreamsIO_UI()
+                .doOnSubscribe { liveDataForOfferResult.value = AppState.Loading(null) }
+                .subscribeWith(getCompletableObserver())
+        )
+    }
+
+    private fun getResultForAcceptBtn(offer: CommercialOffer) {
+        Timber.d("getResultForAcceptBtn(offer: CommercialOffer)")
+        compositeDisposable.add(
+            interactor.getResultForApproveOffer(offer)
+                .addStreamsIO_UI()
+                .doOnSubscribe { liveDataForOfferResult.value = AppState.Loading(null) }
+                .subscribeWith(getCompletableObserver())
+        )
+    }
+
+
+
     private fun getCompletableObserver(): DisposableCompletableObserver {
         return object : DisposableCompletableObserver() {
 
             override fun onError(e: Throwable) {
-                liveDataForViewToObserve.value = AppState.Error(e)
+                liveDataForOfferResult.value = AppState.Error(e)
             }
 
             override fun onComplete() {
-                liveDataForViewToObserve.value = AppState.Success<Unit>(Unit)
+                liveDataForOfferResult.value = AppState.Success<Unit>(Unit)
             }
 
         }

@@ -9,6 +9,7 @@ import io.reactivex.observers.DisposableObserver
 import io.reactivex.observers.DisposableSingleObserver
 import org.vernality.profitclub.model.data.*
 import org.vernality.profitclub.utils.DataSaver
+import org.vernality.profitclub.utils.ui.addStreamsIO_UI
 import org.vernality.profitclub.view_model.BaseViewModel
 
 class MyOrganizationsListFragmentViewModel(appContext: Application) : BaseViewModel<AppState>(appContext) {
@@ -27,8 +28,7 @@ class MyOrganizationsListFragmentViewModel(appContext: Application) : BaseViewMo
     private fun getResult(){
         compositeDisposable.add(
             interactor.getDataForMyOrganizations()
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
+                .addStreamsIO_UI()
                 .doOnSubscribe { liveDataForViewToObserve.value = AppState.Loading(null) }
                 .subscribeWith(getObserver())
         )

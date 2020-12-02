@@ -155,6 +155,7 @@
                         android:layout_height="52dp"
                         android:layout_marginStart="30dp"
                         android:layout_marginEnd="30dp"
+                        android:textAllCaps="false"
                         android:backgroundTint="@color/colorStatusBarDark"
                         android:textColor="@color/colorAccent"
                         android:text="@string/accept"/>

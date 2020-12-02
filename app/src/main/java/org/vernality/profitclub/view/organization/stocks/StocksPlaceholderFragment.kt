@@ -28,22 +28,20 @@ import org.vernality.profitclub.view.organization.adapter.StocksListRVAdapter
  */
 class StocksPlaceholderFragment : Fragment() {
 
+    private var page:Int = 0
+
     private val viewModel by viewModel<StocksPageViewModel>()
-    private val adapter: StocksListRVAdapter by lazy { StocksListRVAdapter(onListItemClickListener) }
 
     private val observer = Observer<AppState> { renderData(it) }
-
     private val observerForActionResultBtn = Observer<AppState> { renderDataForActionResultBtn(it) }
     private lateinit var liveDataForActionResult: LiveData<AppState>
-    private lateinit var successResultDialog:SuccessResultDialogFragment
-    private lateinit var actionBottomDialogFragment:ActionBottomDialogFragment
-
-
-    private var page:Int = 0
 
     private lateinit var errorResultDialog: ErrorResultDialogFragment
     private lateinit var loadingLayout: FrameLayout
+    private lateinit var successResultDialog:SuccessResultDialogFragment
+    private lateinit var actionBottomDialogFragment:ActionBottomDialogFragment
 
+    private val adapter: StocksListRVAdapter by lazy { StocksListRVAdapter(onListItemClickListener) }
     private lateinit var rv: RecyclerView
 
     private val onListItemClickListener: StocksListRVAdapter.OnListItemClickListener =

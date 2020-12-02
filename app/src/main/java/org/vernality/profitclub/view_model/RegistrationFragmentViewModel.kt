@@ -6,6 +6,7 @@ import io.reactivex.observers.DisposableCompletableObserver
 import org.vernality.profitclub.model.data.AppState
 import org.vernality.profitclub.model.data.User
 import org.vernality.profitclub.utils.ui.UIUtils
+import org.vernality.profitclub.utils.ui.addStreamsIO_UI
 
 enum class Field{Login, Gmail, Password, Password2}
 
@@ -31,8 +32,7 @@ class RegistrationFragmentViewModel(appContext: Application) : BaseViewModel<App
     private fun getResult(){
         compositeDisposable.add(
             interactor.registration(user)
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
+                .addStreamsIO_UI()
                 .doOnSubscribe { liveDataForViewToObserve.value = AppState.Loading(null) }
                 .subscribeWith(getObserver())
         )

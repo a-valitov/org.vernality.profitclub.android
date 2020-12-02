@@ -258,4 +258,14 @@ class MainInteractor(
         return Completable.complete().delay(2000, TimeUnit.MILLISECONDS)
     }
 
+    fun getResultForApproveMembersRequest(member: Member):Completable{
+
+        return Completable.complete().delay(2000, TimeUnit.MILLISECONDS)
+    }
+
+    fun getResultForRejectMembersRequest(member: Member):Completable{
+
+        return Completable.complete().delay(2000, TimeUnit.MILLISECONDS)
+    }
+
 }

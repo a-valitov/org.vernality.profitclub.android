@@ -6,12 +6,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_list_members_requests.view.*
 import org.vernality.profitclub.R
-import org.vernality.profitclub.model.data.Action
 import org.vernality.profitclub.model.data.Member
-import org.vernality.profitclub.model.data.Organization
 
 public class MembersRequestListRVAdapter(
-    private val listener: OnListItemClickListener
+    private val itemListener: OnListItemClickListener,
+    private val approveBtnListener: OnListItemClickListener,
+    private val rejectBtnListener: OnListItemClickListener
 ) : RecyclerView.Adapter<MembersRequestListRVAdapter.RecyclerItemViewHolder>() {
 
     private var data: List<Member> = arrayListOf()
@@ -43,15 +43,23 @@ public class MembersRequestListRVAdapter(
         fun bind(member: Member) {
             itemView.tv_members_name.setText(member.firstName + " " + member.lastName)
             itemView.setOnClickListener { openMember(member) }
-            itemView.tv_approve.setOnClickListener {  }
-            itemView.tv_reject.setOnClickListener {  }
+            itemView.tv_approve.setOnClickListener { approveMember(member) }
+            itemView.tv_reject.setOnClickListener { rejectMember(member) }
         }
 
     }
 
 
     private fun openMember(member: Member) {
-        listener.onItemClick(member)
+        itemListener.onItemClick(member)
+    }
+
+    private fun approveMember(member: Member){
+        approveBtnListener.onItemClick(member)
+    }
+
+    private fun rejectMember(member: Member){
+        rejectBtnListener.onItemClick(member)
     }
 
     interface OnListItemClickListener {

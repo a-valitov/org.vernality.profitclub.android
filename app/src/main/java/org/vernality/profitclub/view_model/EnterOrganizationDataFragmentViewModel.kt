@@ -10,6 +10,7 @@ import io.reactivex.observers.DisposableCompletableObserver
 import org.vernality.profitclub.model.data.*
 import org.vernality.profitclub.utils.DataSaver
 import org.vernality.profitclub.utils.ui.UIUtils
+import org.vernality.profitclub.utils.ui.addStreamsIO_UI
 
 enum class RoleField{Name, INN, FCS, Phone}
 
@@ -50,8 +51,7 @@ class EnterOrganizationDataFragmentViewModel(appContext: Application) : BaseView
             interactor.createSupplier(supplier)
         }
         completable
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
+                .addStreamsIO_UI()
                 .doOnSubscribe { liveDataForViewToObserve.value = AppState.Loading(null) }
                 .subscribeWith(getObserver())
 

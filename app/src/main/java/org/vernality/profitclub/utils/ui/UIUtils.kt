@@ -66,6 +66,7 @@ class UIUtils {
                 TypeDialogFragment.LogOrgAccount -> return configureLogOrgAccountDialog(fragment)
                 TypeDialogFragment.ResetPassword -> return configureResetPasswordDialog(fragment)
                 TypeDialogFragment.ApproveAction -> return configureAcceptActionDialog(fragment)
+                TypeDialogFragment.ApproveDelivery -> return configureApproveDeliveryDialog(fragment)
                 else -> throw Throwable("недопустимый тип диалогового фрагмента")
 
             }
@@ -104,6 +105,12 @@ class UIUtils {
         private fun configureAcceptActionDialog(fragment: SuccessResultDialogFragment): SuccessResultDialogFragment{
             return fragment.apply {
                 setTitleOnViews(resources.getStringArray(R.array.AcceptAction))
+            }
+        }
+
+        private fun configureApproveDeliveryDialog(fragment: SuccessResultDialogFragment): SuccessResultDialogFragment{
+            return fragment.apply {
+                setTitleOnViews(resources.getStringArray(R.array.ApproveDelivery))
             }
         }
 
