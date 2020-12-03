@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -14,7 +12,7 @@
     android:theme="@style/AppTheme.DarkStatusBarNoTranslucentNavigation"
     >
 
-<!--    android:layout_marginTop="@dimen/abc_action_bar_default_height_material"-->
+    <!--    android:layout_marginTop="@dimen/abc_action_bar_default_height_material"-->
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -73,7 +71,7 @@
 
     <fragment
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:id="@+id/nav_host_fragment_organization"
+        android:id="@+id/nav_host_fragment_member"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -82,7 +80,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:navGraph="@navigation/mobile_navigation_organization" />
+        app:navGraph="@navigation/mobile_navigation_member" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
@@ -97,7 +95,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:menu="@menu/bottom_nav_menu_organization" />
+        app:menu="@menu/bottom_nav_menu_member" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
-

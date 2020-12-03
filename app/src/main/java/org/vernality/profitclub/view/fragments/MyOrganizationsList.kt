@@ -27,6 +27,7 @@ import org.vernality.profitclub.view.activities.EnterRoleActivity
 import org.vernality.profitclub.view.activities.MainActivity
 import org.vernality.profitclub.view.adapters.MyOrganizationsListRVAdapter
 import org.vernality.profitclub.view.adapters.MyRolesListDataAdapter
+import org.vernality.profitclub.view.member.MemberActivity
 import org.vernality.profitclub.view.organization.OrganizationActivity
 import org.vernality.profitclub.view_model.MyOrganizationsListFragmentViewModel
 import java.lang.reflect.Field
@@ -105,6 +106,7 @@ class DataProcessingFragment : Fragment() {
     private val onMemberListItemClickListener: MyRolesListDataAdapter.OnListItemClickListener<Organization> =
         object : MyRolesListDataAdapter.OnListItemClickListener<Organization> {
             override fun onItemClick(organization: Organization) {
+                navigateToMyMember()
                 Toast.makeText(requireActivity(),organization.name, Toast.LENGTH_SHORT).show()
 //                viewModel.setOrganization(organization)
 //                navigateTo()
@@ -254,6 +256,8 @@ class DataProcessingFragment : Fragment() {
 
     }
 
+//
+
     fun navigateTo(){
         val intent = Intent(requireActivity(), OrganizationActivity::class.java)
         requireActivity().startActivity(intent)
@@ -269,7 +273,11 @@ class DataProcessingFragment : Fragment() {
 
     }
 
+    fun navigateToMyMember(){
+        val intent = Intent(requireActivity(), MemberActivity::class.java)
+        requireActivity().startActivity(intent)
 
+    }
 
     companion object {
         /**

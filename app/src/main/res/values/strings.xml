@@ -91,14 +91,11 @@
     <string name="link">Ссылка</string>
     <string name="actions_description">Описание акции</string>
     <string name="actions_contactName">Контактное лицо</string>
+    <string name="actions_has_passed">Акция прошла</string>
 
     <!--    Экран поставка bottom dialog fragment -->
     <string name="date">Дата</string>
     <string name="description_offer">Описание коммерческого предложения</string>
-
-
-
-
 
 
     <!--    Экран диалога Succes-->

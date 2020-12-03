@@ -28,12 +28,14 @@ class ActionBottomDialogFragment : BottomSheetDialogFragment() {
     private lateinit var actionCloseIV: ShapeableImageView
     private lateinit var contactNameTV: MaterialTextView
     private lateinit var link: LinearLayout
+    private lateinit var linkTV: MaterialTextView
     private lateinit var actionsMessageTV: MaterialTextView
     private lateinit var actionsDescriptionTV: MaterialTextView
     private lateinit var actionsPeriodTV: MaterialTextView
     private lateinit var acceptActionBTN: MaterialButton
     private lateinit var rejectActionBTN: MaterialButton
     private lateinit var layoutButtons: LinearLayout
+    private var buttonsLayoutIsInvisible = false
     private var onAcceptClickListener:OnClickListener? = null
     private var onRejectClickListener:OnClickListener? = null
     private var onLinkClickListener:OnLinkClickListener? = null
@@ -82,6 +84,7 @@ class ActionBottomDialogFragment : BottomSheetDialogFragment() {
         actionCloseIV = iv_action_close
         contactNameTV = tv_actions_contact_name
         link = layout_actions_link
+        linkTV = tv_actions_link
         actionsMessageTV = tv_actions_message
         actionsDescriptionTV = tv_actions_description
         actionsPeriodTV = tv_actions_period
@@ -94,10 +97,18 @@ class ActionBottomDialogFragment : BottomSheetDialogFragment() {
         rejectActionBTN.setOnClickListener(onRejectButtonClickListener)
         link.setOnClickListener(onLinkButtonClickListener)
 
-        if(action.statePeriod == StatePeriod.Past) layoutButtons.visibility = View.GONE
+        if(action.statePeriod == StatePeriod.Past || buttonsLayoutIsInvisible)
+        {
+            linkTV.setText(R.string.actions_has_passed)
+            layoutButtons.visibility = View.GONE
+        }
 
         initViews()
 
+    }
+
+    fun disableButtonsLayout(){
+        buttonsLayoutIsInvisible = true
     }
 
     fun initViews(){
@@ -105,6 +116,7 @@ class ActionBottomDialogFragment : BottomSheetDialogFragment() {
         if(imageFile != null){
             actionsIV.setImageToImageView(imageFile.data)
         }
+
 
         contactNameTV.setText((action.supplier as Supplier).fetchIfNeeded<Supplier>().contactName)
         actionsMessageTV.setText(action.message)

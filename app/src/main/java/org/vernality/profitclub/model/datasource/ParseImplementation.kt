@@ -393,6 +393,7 @@ class ParseImplementation() : DataSource {
             val currentUser = ParseUser.getCurrentUser()
             if (currentUser != null) {
 
+                Thread.sleep(10000)
                 val query: ParseQuery<Action> = ParseQuery.getQuery(Action::class.java)
                 query.findInBackground { list, e ->
                     if (e == null) {

@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.item_list_org_for_member_recyclerview.view.*
 import kotlinx.android.synthetic.main.item_processing_list_recyclerview.view.*
 import org.vernality.profitclub.R
 import org.vernality.profitclub.model.data.Organization
@@ -32,9 +33,9 @@ public class ListOrgForMemberRVAdapter(
     ) : RecyclerView.ViewHolder(view) {
 
         fun bind(organization: Organization) {
-            itemView.tv_name_of_organization.text = organization.name
-            itemView.tv_contact_person_value.text = organization.contactName
-            itemView.tv_phone_value.text = organization.phone
+            itemView.tv_name_of_organization_member.text = organization.name
+            itemView.tv_contact_person_value_member.text = organization.contactName
+            itemView.tv_phone_value_member.text = organization.phone
             itemView.setOnClickListener { openInNewWindow(organization) }
         }
 

@@ -70,8 +70,6 @@ class SelectOrgForMemberFragment : Fragment() {
         // Inflate the layout for this fragment
         root = inflater.inflate(R.layout.fragment_select_organization_for_member, container, false)
 
-
-
         init(root)
 
         initResultSendData()
