@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation_supplier"
+    app:startDestination="@+id/creating_action_or_offer">
+
+    <fragment
+        android:id="@+id/creating_action_or_offer"
+        android:name="org.vernality.profitclub.view.supplier.ActionOrOfferCreatingFragment"
+        android:label="creating_action_or_offer"
+        tools:layout="@layout/fragment_of_creating_action_or_offer" />
+
+</navigation>

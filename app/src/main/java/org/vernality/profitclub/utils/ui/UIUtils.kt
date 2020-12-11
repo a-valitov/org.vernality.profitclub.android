@@ -67,6 +67,7 @@ class UIUtils {
                 TypeDialogFragment.ResetPassword -> return configureResetPasswordDialog(fragment)
                 TypeDialogFragment.ApproveAction -> return configureAcceptActionDialog(fragment)
                 TypeDialogFragment.ApproveDelivery -> return configureApproveDeliveryDialog(fragment)
+                TypeDialogFragment.RequestApprovedAdmin -> return configureRequestApprovedAdminDialog(fragment)
                 else -> throw Throwable("недопустимый тип диалогового фрагмента")
 
             }
@@ -111,6 +112,13 @@ class UIUtils {
         private fun configureApproveDeliveryDialog(fragment: SuccessResultDialogFragment): SuccessResultDialogFragment{
             return fragment.apply {
                 setTitleOnViews(resources.getStringArray(R.array.ApproveDelivery))
+            }
+        }
+
+        private fun configureRequestApprovedAdminDialog(fragment: SuccessResultDialogFragment): SuccessResultDialogFragment{
+            return fragment.apply {
+                setTitleOnViews(resources.getStringArray(R.array.RequestApprovedAdmin))
+                backTV?.visibility = View.GONE
             }
         }
 
