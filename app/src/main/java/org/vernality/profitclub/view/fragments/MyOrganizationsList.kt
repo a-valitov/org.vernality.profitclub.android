@@ -29,6 +29,7 @@ import org.vernality.profitclub.view.adapters.MyOrganizationsListRVAdapter
 import org.vernality.profitclub.view.adapters.MyRolesListDataAdapter
 import org.vernality.profitclub.view.member.MemberActivity
 import org.vernality.profitclub.view.organization.OrganizationActivity
+import org.vernality.profitclub.view.supplier.SupplierActivity
 import org.vernality.profitclub.view_model.MyOrganizationsListFragmentViewModel
 import java.lang.reflect.Field
 
@@ -87,7 +88,14 @@ class DataProcessingFragment : Fragment() {
         object : MyRolesListDataAdapter.OnListItemClickListener<Organization> {
             override fun onItemClick(organization: Organization) {
                 viewModel.setOrganization(organization)
-                navigateToMyOrganization()
+                val successResultDialogFragment
+                        = SuccessResultDialogFragment.newInstance(TypeDialogFragment.LogOrgAccount)
+                {navigateToMyOrganization()}
+                successResultDialogFragment.setName(organization.name)
+                successResultDialogFragment.setRole(organization)
+                successResultDialogFragment.show(parentFragmentManager, this.toString())
+
+
                 Toast.makeText(requireActivity(),organization.name, Toast.LENGTH_SHORT).show()
 //                viewModel.setOrganization(organization)
 //                navigateTo()
@@ -97,9 +105,16 @@ class DataProcessingFragment : Fragment() {
     private val onSupplierListItemClickListener: MyRolesListDataAdapter.OnListItemClickListener<Supplier> =
         object : MyRolesListDataAdapter.OnListItemClickListener<Supplier> {
             override fun onItemClick(supplier: Supplier) {
-                Toast.makeText(requireActivity(),supplier.name, Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireActivity(),"clicked on "+supplier.name, Toast.LENGTH_SHORT).show()
 //                viewModel.setOrganization(organization)
 //                navigateTo()
+                val successResultDialogFragment
+                        = SuccessResultDialogFragment.newInstance(TypeDialogFragment.LogOrgAccount)
+                {navigateToMySupplier()}
+                successResultDialogFragment.setName(supplier.name)
+                successResultDialogFragment.setRole(supplier)
+                successResultDialogFragment.show(parentFragmentManager, this.toString())
+
             }
         }
 
@@ -275,6 +290,12 @@ class DataProcessingFragment : Fragment() {
 
     fun navigateToMyMember(){
         val intent = Intent(requireActivity(), MemberActivity::class.java)
+        requireActivity().startActivity(intent)
+
+    }
+
+    fun navigateToMySupplier(){
+        val intent = Intent(requireActivity(), SupplierActivity::class.java)
         requireActivity().startActivity(intent)
 
     }

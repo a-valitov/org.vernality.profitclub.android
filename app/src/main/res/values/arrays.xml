@@ -24,7 +24,7 @@
 
     <string-array name="LogOrgAccount">
         <item>Войти?</item>
-        <item>Войти через аккаунт организации ООО «Верналити»</item>
+        <item>Войти через аккаунт role name</item>
         <item>Одобрить</item>
         <item>Назад</item>
     </string-array>

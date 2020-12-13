@@ -1,5 +1,6 @@
 package org.vernality.profitclub.view.organization.supplies
 
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -61,6 +62,9 @@ class SuppliesFragment : Fragment() {
         object :OfferBottomDialogFragment.OnOfferClickListener{
             override fun onClick(offer: CommercialOffer) {
                 Toast.makeText(requireActivity(),"accept action clicked", Toast.LENGTH_SHORT).show()
+
+                Thread.sleep(3000)
+
                 successResultDialog =
                     SuccessResultDialogFragment.newInstance(
                         TypeDialogFragment.ApproveAction

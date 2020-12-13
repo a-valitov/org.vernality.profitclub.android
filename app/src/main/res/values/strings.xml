@@ -99,6 +99,17 @@
 
 
     <!--    Экран диалога Succes-->
+    <string name="of_organizations">организации</string>
+    <string name="of_suppliers">поставщика</string>
+    <string name="of_members">участника</string>
+
+    <!--    Экран поставщик мейн-->
+    <string name="create_commercial_offer">Создать коммерческое предложение</string>
+    <string name="create_action">Создать акцию</string>
+
+
+
+
     <!--  Registration  -->
     <string name="message_reg">Вы прошли регистрацию</string>
     <string name="subMessage_reg">Осталось выбрать роль в клубе</string>
