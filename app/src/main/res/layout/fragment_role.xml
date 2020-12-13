@@ -57,7 +57,7 @@
                     android:id="@+id/exit">
 
                     <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/iv_clear_filter"
+                        android:id="@+id/iv_add"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_gravity="center"
@@ -74,7 +74,7 @@
                         android:textSize="13sp"
                         android:textColor="@color/colorAccent"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/iv_clear_filter"
+                        app:layout_constraintStart_toEndOf="@+id/iv_add"
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

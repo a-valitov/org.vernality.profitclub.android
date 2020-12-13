@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation_organization"
+    app:startDestination="@+id/navigation_actions">
+
+    <fragment
+        android:id="@+id/navigation_actions"
+        android:name="org.vernality.profitclub.view.organization.stocks.StocksContainerFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_stocks_container" />
+
+    <fragment
+        android:id="@+id/navigation_members"
+        android:name="org.vernality.profitclub.view.organization.members.MembersContainerFragment"
+        android:label="@string/title_dashboard"
+        tools:layout="@layout/fragment_members_container" />
+
+    <fragment
+        android:id="@+id/navigation_suppliers"
+        android:name="org.vernality.profitclub.view.organization.supplies.SuppliesFragment"
+        android:label="@string/title_notifications"
+        tools:layout="@layout/list_layout" />
+</navigation>

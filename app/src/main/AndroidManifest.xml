@@ -12,20 +12,54 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.activities.ActivityWithStatusBar"
-            android:theme="@style/AppTheme.DarkStatusBar">
-
-        </activity>
-        <activity
-            android:name=".view.activities.MainActivity"
-            android:orientation="horizontal"
-            android:screenOrientation="portrait"
-            android:usesCleartextTraffic="true">
+        <activity android:name=".view.member.MemberActivity"
+            android:theme="@style/AppTheme.DarkStatusBarNoTranslucentNavigation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
+        <activity
+            android:name=".view.organization.OrganizationActivity"
+            android:label="@string/title_activity_organization"
+            android:theme="@style/AppTheme.DarkStatusBarNoTranslucentNavigation">
+
+        </activity>
+
+        <activity android:name=".view.activities.ContainerActivity">
+
+        </activity>
+        <activity
+            android:name=".view.activities.SelectOrganizationActivity"
+            android:theme="@style/AppTheme.DarkStatusBar"></activity>
+        <activity
+            android:name=".view.activities.EnterRoleActivity"
+            android:theme="@style/AppTheme.DarkStatusBar"></activity>
+        <activity
+            android:name=".view.activities.ResetPasswordActivity"
+            android:theme="@style/AppTheme.DarkStatusBar"></activity>
+        <activity
+            android:name=".view.activities.MainActivity"
+            android:usesCleartextTraffic="true">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
     </application>
 

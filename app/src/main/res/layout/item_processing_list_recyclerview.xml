@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cv_task_item_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="2dp"
+    app:cardBackgroundColor="@color/colorAccent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_centerVertical="true"
+            android:background="@color/colorDialogLine"
+            android:orientation="vertical" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_name_of_organization"
+            android:text="@string/name_of_organization"
+            android:textColor="@color/colorStatusBarDark"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="21dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"/>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TableRow
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:gravity="start">
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_INN"
+                        android:text="@string/INN"
+                        android:paddingStart="30dp"
+                        android:paddingBottom="16dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="@color/colorTittleRole"/>
+                </TableRow>
+                <TableRow
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:gravity="end">
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_INN_value"
+                        android:text="@string/INN_value"
+                        android:paddingEnd="30dp"
+                        android:paddingBottom="16dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp"
+                        android:textColor="@color/colorStatusBarDark"/>
+                </TableRow>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TableRow
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:gravity="start|center_vertical">
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_contact_person"
+                        android:text="@string/contact_person"
+                        android:paddingStart="30dp"
+                        android:paddingBottom="16dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="@color/colorTittleRole"/>
+                </TableRow>
+                <TableRow
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:gravity="end|center_vertical">
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_contact_person_value"
+                        android:text="@string/contact_person_value"
+                        android:paddingEnd="30dp"
+                        android:paddingBottom="16dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp"
+                        android:textColor="@color/colorStatusBarDark"/>
+                </TableRow>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TableRow
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:gravity="start|center_vertical">
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_phone"
+                        android:text="@string/phone"
+                        android:paddingStart="30dp"
+                        android:paddingBottom="16dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="@color/colorTittleRole"/>
+                </TableRow>
+                <TableRow
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:gravity="end|center_vertical">
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_phone_value"
+                        android:text="@string/phone_value"
+                        android:paddingEnd="30dp"
+                        android:paddingBottom="16dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp"
+                        android:textColor="@color/colorStatusBarDark"/>
+                </TableRow>
+            </TableRow>
+
+
+        </TableLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_status"
+            android:text="@string/status"
+            android:paddingBottom="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/colorTittleRole"/>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

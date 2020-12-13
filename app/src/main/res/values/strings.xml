@@ -16,15 +16,137 @@
     <string name="registration">Регистрация</string>
     <string name="resume">Продолжить</string>
 
+
+    <!--    Экран входа в учетную запись-->
+    <string name="noAccount">Нет аккаунта?</string>
+    <string name="forgotPassword">Забыли пароль?</string>
+
+
     <!--    экран выбора роли-->
     <string name="Exit">Выход</string>
     <string name="selecting_role">Выбор роли</string>
-    <string name="provider">Поставщик</string>
+    <string name="supplier">Поставщик</string>
     <string name="organization">Организация</string>
-    <string name="participant_of_the_organization">Участник организации</string>
+    <string name="member">Участник организации</string>
     <string name="provider_description">юридическое или физическое лицо, поставляющие товары или услуги заказчикам. Регистрация в роли поставщика даст вам возможность рассылать свои комерческие предложения, а так же создавать акции и рассылать их организациям вступившим в клуб.</string>
     <string name="organization_description">организационно-правовая форма юридического лица преследующая прибыль в качестве основной цели своей деятельности.Регистрация в роли организации даст вам возможность участвовать в акциях от поставщиков и принимать или отклонять их коммерческие предложения для успешного ведения вашего бизнесса. Так же организация может приглашать в клуб своих физических участников.</string>
     <string name="participant_of_the_organization_description">участником является лицо обладающее правом членства в конкретной организации. Стать участником организации в клубе вы можете только по предварительному приглашению.</string>
+
+
+    <!--    Экран ввода данных роли-->
+    <string name="provider_input_hint">Укажите дополнительные данные для вступления в клуб в роли поставщика</string>
+    <string name="organization_input_hint">Укажите дополнительные данные для вступления в клуб в роли организации</string>
+    <string name="participant_of_the_organization_input_hint">Укажите дополнительные данные для вступления в клуб в роли участника организации</string>
+    <string name="enter_name_of_organization">Введите наименование организации</string>
+    <string name="enter_INN">Введите ИНН</string>
+    <string name="enter_FCS">Введите ФИО</string>
+    <string name="enter_your_phone_number">Введите номер телефона</string>
+    <string name="agree_to_terms">Я согласен c условиями</string>
+    <string name="privacy_policy">политики конфеденциальности</string>
+    <string name="send_data">Отправить данные</string>
+
+    <!--    Экран Роль алерт-->
+    <string name="data_sent_processing">Ваши данные отправлены в обработку</string>
+    <string name="wait_administrator_approval">Дождитесь пока администратор одобрит вашу заявку на вступление в клуб</string>
+    <string name="thanks">Спасибо</string>
+
+    <!--    Экран Данные в обработке-->
+    <string name="INN">ИНН: </string>
+    <string name="INN_value">значение ИНН</string>
+    <string name="contact_person">Контактное лицо: </string>
+    <string name="contact_person_value">ФИО</string>
+    <string name="phone">Телефон: </string>
+    <string name="phone_value">Номер телефона</string>
+    <string name="role">Роль</string>
+    <string name="status">Статус</string>
+    <string name="name_of_organization">Название организации</string>
+    <string name="status_under_consideration">На рассмотрении</string>
+
+    <!--    Экран выбора организации для участника-->
+    <string name="userName">Имя пользователя</string>
+    <string name="firstName">Имя</string>
+    <string name="lastName">Фамилия</string>
+    <string name="back">Назад</string>
+
+    <!--    Экран сброса пароля-->
+    <string name="resetPassword">Сбросить пароль</string>
+    <string name="reset">Сбросить</string>
+    <string name="enterYourEmailDescription">Укажите почту, которую Вы использовали для входа в приложение</string>
+    <string name="enterYourEmail">Введите почту</string>
+    <string name="invalidEmail">Указана неверная почта</string>
+
+    <!--    Экран Организации -->
+    <string name="stocks">Акции</string>
+    <string name="members">Участники</string>
+    <string name="supplies">Поставки</string>
+    <string name="current_stocks">Текущие акции</string>
+    <string name="past_stocks">Прошедшие акции</string>
+    <string name="membersOfOrganization">Участники организации</string>
+    <string name="requests">Заявки</string>
+    <string name="approve">Одобрить</string>
+    <string name="reject">Отклонить</string>
+
+    <!--    Экран акция bottom dialog fragment -->
+    <string name="accept">Принять</string>
+    <string name="link">Ссылка</string>
+    <string name="actions_description">Описание акции</string>
+    <string name="actions_contactName">Контактное лицо</string>
+    <string name="actions_has_passed">Акция прошла</string>
+
+    <!--    Экран поставка bottom dialog fragment -->
+    <string name="date">Дата</string>
+    <string name="description_offer">Описание коммерческого предложения</string>
+
+
+    <!--    Экран диалога Succes-->
+    <!--  Registration  -->
+    <string name="message_reg">Вы прошли регистрацию</string>
+    <string name="subMessage_reg">Осталось выбрать роль в клубе</string>
+    <string name="action_reg">Продолжить</string>
+    <string name="goBack_reg">Назад</string>
+    <!--ResetPassword  Сброс пароля  RoleApproveAdmin-->
+    <string name="message_pass_reset">Вы сбросили пароль</string>
+    <string name="subMessage_pass_reset">Проверьте вашу почту</string>
+    <string name="action_pass_reset">Спасибо</string>
+    <string name="goBack_pass_reset">Назад</string>
+    <!-- RoleApproveAdmin   Данные организации отправлены на одобрение администратором -->
+    <string name="message_role">Ваши данные отправлены в обработку</string>
+    <string name="subMessage_role">Дождитесь пока администратор одобрит вашу заявку на вступление в клуб</string>
+    <string name="action_role">Спасибо</string>
+    <!--LogOrgAccount   Вход через организацию-->
+    <string name="message_val">Войти?</string>
+    <string name="subMessage_val">Войти через аккаунт организации ООО «Верналити»</string>
+    <string name="action_val">Одобрить</string>
+    <string name="goBack_val">Назад</string>
+    <!--RequestApprovedAdmin Поставщик Вы в клубе-->
+    <string name="message_val_ok">Вы в клубе</string>
+    <string name="subMessage_val_ok">Администрация одобрила вашу заявку на вступление в клуб</string>
+    <string name="action_val_ok">Спасибо</string>
+    <string name="goBack_val_ok">Назад</string>
+    <!--ApprovePromotion Организация одобрить акцию-->
+    <string name="message_action_ok">Одобрить акцию?</string>
+    <string name="subMessage_action_ok">Одобрить акцию от ?</string>
+    <string name="action_action_ok">Одобрить</string>
+    <string name="goBack_action_ok">Назад</string>
+    <!--SubmitCommercialOffer Поставщик коммерческое предложение-->
+    <string name="message_supplier_offer">Отправить в обработку?</string>
+    <string name="subMessage_supplier_offer">Перед публикацией комерческого предложения, его должен проверить аминистратор</string>
+    <string name="action_supplier_offer">Отправить</string>
+    <string name="goBack_supplier_offer">Назад</string>
+    <!--ApproveRequestIntoOrg Организация одобрить заявку-->
+    <string name="message_org_approve_application">Одобрить заявку?</string>
+    <string name="subMessage_org_approve_application">Одобрить заявку на вступление Елены Коноваловой в организацию?</string>
+    <string name="action_org_approve_application">Одобрить</string>
+    <string name="goBack_org_approve_application">Назад</string>
+    <!--ApproveDelivery   Организация одобрить поставку-->
+    <string name="message_org_approve_delivery">Одобрить поставку?</string>
+    <string name="subMessage_org_approve_delivery">Одобрить поставку от Алины Ермолаевой?</string>
+    <string name="action_org_approve_delivery">Одобрить</string>
+    <string name="goBack_org_approve_delivery">Назад</string>
+    <string name="title_activity_organization">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 
 
 </resources>

@@ -1,35 +1,40 @@
 package org.vernality.profitclub.view.fragments
 
-import android.content.DialogInterface
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
-import android.widget.Toast
-import androidx.fragment.app.DialogFragment
-import androidx.navigation.fragment.findNavController
+import android.widget.TextView
 import fr.tvbarthel.lib.blurdialogfragment.BlurDialogEngine
 import fr.tvbarthel.lib.blurdialogfragment.SupportBlurDialogFragment
-import kotlinx.android.synthetic.main.dialog_fragment_registration_success.view.*
+import kotlinx.android.synthetic.main.dialog_fragment_success.view.*
 import org.vernality.profitclub.R
-import org.vernality.profitclub.view.activities.ActivityWithStatusBar
+import org.vernality.profitclub.utils.ui.UIUtils
+
+enum class TypeDialogFragment{
+    Registration, RoleApproveAdmin, LogOrgAccount, ResetPassword, RequestApprovedAdmin,
+    ApproveAction, ApproveRequestIntoOrg, SubmitCommercialOffer, ApproveDelivery
+}
 
 
-class SuccessResultDialogFragment(_clickListener: View.OnClickListener) : SupportBlurDialogFragment() {
+class SuccessResultDialogFragment(private var typeDialogFragment: TypeDialogFragment,
+private var actionListener: ()->Unit) : SupportBlurDialogFragment() {
 
     companion object {
-        fun newInstance(clickListener: View.OnClickListener): SuccessResultDialogFragment {
-            return SuccessResultDialogFragment(clickListener)
+        fun newInstance(typeDialogFragment: TypeDialogFragment, actionListener: ()->Unit): SuccessResultDialogFragment {
+            return SuccessResultDialogFragment(typeDialogFragment, actionListener)
         }
     }
 
-    lateinit var mBlurEngine: BlurDialogEngine
+    private lateinit var mBlurEngine: BlurDialogEngine
+    private lateinit var mesageTV: TextView
+    private lateinit var subMesageTV: TextView
+    private lateinit var actionTV: TextView
+    lateinit var backTV: TextView
 
-    var clickListener: View.OnClickListener = _clickListener
+    private var name: String? = null
 
 
     override fun onCreateView(
@@ -38,20 +43,57 @@ class SuccessResultDialogFragment(_clickListener: View.OnClickListener) : Suppor
         savedInstanceState: Bundle?
     ): View? {
 
-        val root = inflater.inflate(R.layout.dialog_fragment_registration_success, container, false)
-        root.tv_resume.setOnClickListener {
-            Toast.makeText(requireActivity(), "TV resume clicked ", Toast.LENGTH_LONG).show()
-            //findNavController().navigate(R.id.action_registrationFragment_to_roleFragment)
-            val intent = Intent(requireActivity(), ActivityWithStatusBar::class.java)
-            requireActivity().startActivity(intent)
-            dismiss()
-        }
+        val root = inflater.inflate(R.layout.dialog_fragment_success, container, false)
+
+        init(root)
+
+        setListenerOnAction(actionListener)
+
+        initTitlesOnViews()
 
         dialog?.window?.setDimAmount(1f)
 
         this.dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         return root
+    }
+
+    private fun init(root: View){
+        mesageTV = root.tv_message
+        subMesageTV = root.tv_subMessage
+        actionTV = root.tv_action
+        backTV = root.tv_back
+
+        setListenerOnBack(backTV)
+    }
+
+    fun setListenerOnAction(func: ()->Unit){
+        actionTV.setOnClickListener {
+            func()
+            dismiss()
+        }
+    }
+
+    fun setListenerOnBack(view: View){
+        view.setOnClickListener { dismiss() }
+    }
+
+    fun setName(_name: String?){
+        println("------setName")
+        name = _name
+    }
+
+    private fun initTitlesOnViews(){
+        UIUtils.configureDialogFragment(this, typeDialogFragment)
+    }
+
+
+    fun setTitleOnViews(array: Array<String>){
+        println("------setTitleOnViews")
+        mesageTV.setText(array[0])
+        subMesageTV.setText(array[1].replace("name", name?:"поставщика") )
+        actionTV.setText(array[2])
+        backTV.setText(array[3])
     }
 
 

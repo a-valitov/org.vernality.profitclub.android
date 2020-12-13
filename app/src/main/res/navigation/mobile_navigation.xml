@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_mainFragment_to_registrationFragment2"
             app:destination="@id/registrationFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
 
     <fragment
@@ -26,14 +29,37 @@
         <action
             android:id="@+id/action_registrationFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
+        <action
+            android:id="@+id/action_registrationFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/mainFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="org.vernality.profitclub.view.fragments.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_registrationFragment2"
+            app:destination="@id/registrationFragment"
+            app:popUpTo="@id/mainFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_resetPasswordActivity"
+            app:destination="@id/resetPasswordActivity" />
     </fragment>
 
     <fragment
         android:id="@+id/roleFragment"
-        android:name="org.vernality.profitclub.view.fragments.RoleFragment"
+        android:name="org.vernality.profitclub.view.fragments.RoleSelectFragment"
         android:label="fragment_blank"
         tools:layout="@layout/fragment_role" >
     </fragment>
+    <activity
+        android:id="@+id/resetPasswordActivity"
+        android:name="org.vernality.profitclub.view.activities.ResetPasswordActivity"
+        android:label="activity_reset_password"
+        tools:layout="@layout/activity_reset_password" /><action android:id="@+id/action_global_loginFragment" app:destination="@id/loginFragment"/>
 
 
 </navigation>
