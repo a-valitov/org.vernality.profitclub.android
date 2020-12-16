@@ -68,6 +68,7 @@ class UIUtils {
                 TypeDialogFragment.ApproveAction -> return configureAcceptActionDialog(fragment)
                 TypeDialogFragment.ApproveDelivery -> return configureApproveDeliveryDialog(fragment)
                 TypeDialogFragment.RequestApprovedAdmin -> return configureRequestApprovedAdminDialog(fragment)
+                TypeDialogFragment.SubmitAction -> return configureSubmitActionDialog(fragment)
                 else -> throw Throwable("недопустимый тип диалогового фрагмента")
 
             }
@@ -119,6 +120,12 @@ class UIUtils {
             return fragment.apply {
                 setTitleOnViews(resources.getStringArray(R.array.RequestApprovedAdmin))
                 backTV?.visibility = View.GONE
+            }
+        }
+
+        private fun configureSubmitActionDialog(fragment: SuccessResultDialogFragment): SuccessResultDialogFragment{
+            return fragment.apply {
+                setTitleOnViews(resources.getStringArray(R.array.SubmitAction))
             }
         }
 

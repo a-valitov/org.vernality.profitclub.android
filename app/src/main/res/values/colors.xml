@@ -39,6 +39,18 @@
 
     <color name="color_Link">#A63C3C43</color>
 
+    <color name="color_createActionHint"> #80191818</color>
+    <color name="background_pressed">#F44336</color>
+    <color name="background_focused">#4AF44336</color>
+    <color name="background_normal">#00F44336</color>
+
+    <color name="colorSelectedGrayTrans">#80888888</color>
+
+    <color name="colorBackgroundGrayLight">#DADADA</color>
+    <color name="colorBackgroundGrayMiddle">#AEAEAE</color>
+    <color name="colorBackgroundGrayDark">#808080</color>
+
+
 
 
 </resources>

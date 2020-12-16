@@ -5,7 +5,7 @@ import com.parse.ParseObject
 
 
 @ParseClassName("Organization")
-class Organization: ParseObject() {
+class Organization: ParseObject(), BusinessRole {
 
     enum class OrganizationStatus{
         onReview, approved, rejected, excluded

@@ -14,11 +14,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".view.supplier.SupplierActivity"
             android:theme="@style/AppTheme.DarkStatusBarNoTranslucentNavigation">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <activity android:name=".view.member.MemberActivity"
@@ -44,7 +40,11 @@
         </activity>
 
         <activity android:name=".view.activities.ContainerActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <activity

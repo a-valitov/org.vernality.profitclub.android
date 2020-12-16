@@ -12,6 +12,7 @@ import org.vernality.profitclub.view.member.actions.ActionsForMemberPageViewMode
 import org.vernality.profitclub.view.organization.members.MembersPageViewModel
 import org.vernality.profitclub.view.organization.stocks.StocksPageViewModel
 import org.vernality.profitclub.view.organization.supplies.SuppliesFragmentViewModel
+import org.vernality.profitclub.view.supplier.ActionCreatingFragmentViewModel
 import org.vernality.profitclub.view_model.*
 
 val application = module {
@@ -87,6 +88,10 @@ val viewModelDependency = module {
 
     viewModel {
         ActionsForMemberPageViewModel(androidApplication())
+    }
+
+    viewModel {
+        ActionCreatingFragmentViewModel(androidApplication())
     }
 
 }

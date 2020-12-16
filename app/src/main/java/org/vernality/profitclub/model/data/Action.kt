@@ -16,6 +16,10 @@ class Action: ParseObject(){
     val id: String?
         get() = getString("objectId")
 
+    var start: Date? = null
+
+    var end: Date? = null
+
     var message: String?
         get() = getString("message")
         set(value){ if(value != null) put("message", value)}
@@ -43,6 +47,11 @@ class Action: ParseObject(){
     var imageFile: ParseFile?
     get() = getParseFile("imageFile")
     set(value){ if(value != null) put("imageFile", value)}
+
+
+    var image: ByteArray? = null
+        get() = field
+        set(value){ field = value }
 
     var supplier: ParseObject?
         get() = getParseObject("supplier")

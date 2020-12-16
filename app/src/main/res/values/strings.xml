@@ -107,6 +107,15 @@
     <string name="create_commercial_offer">Создать коммерческое предложение</string>
     <string name="create_action">Создать акцию</string>
 
+    <!--    Экран создания акции-->
+    <string name="add_a_photo">Добавьте фото</string>
+    <string name="change_photo">Изменить фото</string>
+    <string name="enter_a_message">Введите сообщение</string>
+    <string name="enter_a_description_of_the_action">Введите описание акции</string>
+    <string name="insert_a_link_to_the_action">Вставьте ссылку на акцию</string>
+    <string name="start_of_action">Старт акции</string>
+    <string name="end_of_action">Конец акции</string>
+
 
 
 

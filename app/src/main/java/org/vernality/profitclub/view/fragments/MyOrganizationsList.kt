@@ -23,6 +23,7 @@ import org.vernality.profitclub.model.data.CommercialOffer
 import org.vernality.profitclub.model.data.Organization
 import org.vernality.profitclub.model.data.Supplier
 import org.vernality.profitclub.model.repository.RepositoryImplementation
+import org.vernality.profitclub.utils.DataSaver
 import org.vernality.profitclub.view.activities.EnterRoleActivity
 import org.vernality.profitclub.view.activities.MainActivity
 import org.vernality.profitclub.view.adapters.MyOrganizationsListRVAdapter
@@ -87,6 +88,7 @@ class DataProcessingFragment : Fragment() {
     private val onOrganizationListItemClickListener: MyRolesListDataAdapter.OnListItemClickListener<Organization> =
         object : MyRolesListDataAdapter.OnListItemClickListener<Organization> {
             override fun onItemClick(organization: Organization) {
+                DataSaver.setCurrentBusinessRole(organization)
                 viewModel.setOrganization(organization)
                 val successResultDialogFragment
                         = SuccessResultDialogFragment.newInstance(TypeDialogFragment.LogOrgAccount)
@@ -108,6 +110,7 @@ class DataProcessingFragment : Fragment() {
                 Toast.makeText(requireActivity(),"clicked on "+supplier.name, Toast.LENGTH_SHORT).show()
 //                viewModel.setOrganization(organization)
 //                navigateTo()
+                DataSaver.setCurrentBusinessRole(supplier)
                 val successResultDialogFragment
                         = SuccessResultDialogFragment.newInstance(TypeDialogFragment.LogOrgAccount)
                 {navigateToMySupplier()}
@@ -121,6 +124,7 @@ class DataProcessingFragment : Fragment() {
     private val onMemberListItemClickListener: MyRolesListDataAdapter.OnListItemClickListener<Organization> =
         object : MyRolesListDataAdapter.OnListItemClickListener<Organization> {
             override fun onItemClick(organization: Organization) {
+                DataSaver.setCurrentBusinessRole(organization)
                 navigateToMyMember()
                 Toast.makeText(requireActivity(),organization.name, Toast.LENGTH_SHORT).show()
 //                viewModel.setOrganization(organization)

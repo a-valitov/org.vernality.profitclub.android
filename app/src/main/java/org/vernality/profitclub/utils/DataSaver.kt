@@ -1,5 +1,6 @@
 package org.vernality.profitclub.utils
 
+import org.vernality.profitclub.model.data.BusinessRole
 import org.vernality.profitclub.model.data.Member
 import org.vernality.profitclub.model.data.Organization
 import org.vernality.profitclub.model.data.Supplier
@@ -14,6 +15,8 @@ object DataSaver {
     var member: Member? = null
 
     var role: Role? = null
+
+    var businessRole: BusinessRole? = null
 
 
     fun <T>setData(data: T){
@@ -39,5 +42,13 @@ object DataSaver {
 
         }
 
+    }
+
+    fun setCurrentBusinessRole(_businessRole: BusinessRole){
+        businessRole = _businessRole
+    }
+
+    fun getCurrentBusinessRole(): BusinessRole? {
+        return businessRole
     }
 }

@@ -9,6 +9,16 @@
         android:id="@+id/creating_action_or_offer"
         android:name="org.vernality.profitclub.view.supplier.ActionOrOfferCreatingFragment"
         android:label="creating_action_or_offer"
-        tools:layout="@layout/fragment_of_creating_action_or_offer" />
+        tools:layout="@layout/fragment_of_creating_action_or_offer" >
+        <action
+            android:id="@+id/action_creating_action_or_offer_to_creating_action"
+            app:destination="@id/creating_action" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/creating_action"
+        android:name="org.vernality.profitclub.view.supplier.ActionCreatingFragment"
+        android:label="creating_action_or_offer"
+        tools:layout="@layout/fragment_of_creating_action" />
 
 </navigation>

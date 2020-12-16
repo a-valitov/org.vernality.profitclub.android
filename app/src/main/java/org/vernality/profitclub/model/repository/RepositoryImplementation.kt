@@ -58,4 +58,6 @@ class RepositoryImplementation(private val dataSource: DataSource) :
 
     override fun getCommercialOffers(): Single<List<CommercialOffer>> =
         dataSource.getCommercialOffers()
+
+    override fun createAction(action: Action, supplier: Supplier): Completable = dataSource.createAction(action, supplier)
 }
