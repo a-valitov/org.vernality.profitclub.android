@@ -505,6 +505,49 @@ class ParseImplementation() : DataSource {
         }
     }
 
+    override fun createOffer(offer: CommercialOffer, supplier: Supplier): Completable {
+        return Completable.create {
+            val currentUser = ParseUser.getCurrentUser()
+            if (currentUser != null) {
+                offer.put("supplier", supplier)
+                offer.getRelation<ParseUser>("user").add(currentUser)
+                offer.put("statusString","approved")
+
+                val acl = ParseACL()
+                acl.publicReadAccess = true
+                acl.setRoleWriteAccess("administrator", true)
+                offer.acl = acl
+
+                val parseFile: ParseFile = ParseFile("image.png",offer.image)
+                parseFile.save()
+
+                offer.put("imageFile", parseFile)
+
+                val parseFileList = mutableListOf<ParseFile>()
+
+                offer.listOfDocs.forEach {
+
+                    offer.add("attachmentNames", it.key)
+                    val parseFileDoc: ParseFile = ParseFile(it.key,it.value)
+                    parseFileDoc.save()
+                    parseFileList.add(parseFileDoc)
+
+                }
+
+                offer.addAll("attachmentFiles", parseFileList)
+
+                offer.save()
+
+                it.onComplete()
+
+
+            } else {
+                // Вызов окна входа
+
+            }
+        }
+    }
+
 
 
     companion object {

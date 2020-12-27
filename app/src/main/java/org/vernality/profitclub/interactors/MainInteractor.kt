@@ -280,4 +280,13 @@ class MainInteractor(
 
     }
 
+    fun createOffer(offer: CommercialOffer): Completable {
+        val supplier = DataSaver.getCurrentBusinessRole()
+        println("-------"+supplier)
+        if( supplier != null && (supplier is Supplier)){
+            return repository.createOffer(offer, supplier)
+        } else {throw Throwable("не найден текущий поставщик")
+        }
+    }
+
 }

@@ -59,9 +59,8 @@ class ActionOrOfferCreatingFragment : Fragment() {
 
 
     private fun navigateToFragmentOnCreatingOffer(){
-
         Toast.makeText(requireActivity(), "the button for creating a commercial offer is clicked", Toast.LENGTH_LONG).show()
-
+        findNavController().navigate(R.id.action_creating_action_or_offer_to_creating_offer)
     }
 
     private fun navigateToFragmentOnCreatingAction(){

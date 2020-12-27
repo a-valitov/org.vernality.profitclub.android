@@ -16,18 +16,28 @@ import org.vernality.profitclub.model.data.Supplier
 import org.vernality.profitclub.utils.Utils
 import org.vernality.profitclub.utils.ui.setImageToImageView
 
-public class OffersDocListRVAdapter(
+
+enum class UploadState{Loading, Uploaded}
+
+
+class LoadingStateDoc (var fileName: String,var fileState: UploadState, var byteFile: ByteArray? = null)
+
+class OffersDocListRVAdapter(
     private val listener: OnListItemClickListener
 ) : RecyclerView.Adapter<OffersDocListRVAdapter.RecyclerItemViewHolder>() {
 
-    private var data:  MutableList<String> = mutableListOf()
 
-    fun setData(list: MutableList<String>?) {
+
+    private var data:  List<LoadingStateDoc> = listOf()
+
+    fun setData(list: List<LoadingStateDoc>) {
         println("---------setData")
-        list?.let { data = it }
+        data = list
 
-        list?.forEach { println("-----"+it) }
-        this.data = data
+        data.forEach {
+            println("++++ file name = ${it.fileName}")
+        }
+
         notifyDataSetChanged()
     }
 
@@ -50,12 +60,19 @@ public class OffersDocListRVAdapter(
         view: View
     ) : RecyclerView.ViewHolder(view) {
 
-        fun bind(string: String) {
-            val format = string.substringAfter('.')
-            itemView.tv_format_offers_doc.setText(format)
-            itemView.tv_name_offers_doc.setText(string)
-            itemView.setOnClickListener{openOffer(layoutPosition, format)}
+        fun bind(state: LoadingStateDoc) {
+            val name = state.fileName
+            val format = name.substringAfter('.')
 
+            itemView.tv_format_offers_doc.setText(format)
+            itemView.tv_name_offers_doc.setText(name)
+
+            when(state.fileState){
+                UploadState.Loading -> itemView.progress_circular.visibility = View.VISIBLE
+                UploadState.Uploaded -> itemView.progress_circular.visibility = View.GONE
+            }
+
+            itemView.setOnClickListener{openOffer(layoutPosition, format)}
         }
 
     }

@@ -29,7 +29,9 @@ import org.vernality.profitclub.model.data.Supplier
 import org.vernality.profitclub.utils.Utils
 import org.vernality.profitclub.utils.ui.openFileInExternalApp
 import org.vernality.profitclub.utils.ui.setImageToImageView
+import org.vernality.profitclub.view.organization.adapter.LoadingStateDoc
 import org.vernality.profitclub.view.organization.adapter.OffersDocListRVAdapter
+import org.vernality.profitclub.view.organization.adapter.UploadState
 import java.io.File
 
 
@@ -109,7 +111,13 @@ class OfferBottomDialogFragment : BottomSheetDialogFragment() {
         rv = rv_offers_doc
         rv.adapter = adapter
 
-        adapter.setData(offer.getList("attachmentNames"))
+        val docsList = offer.getList<String>("attachmentNames")
+        val stateList = mutableListOf<LoadingStateDoc>()
+        docsList?.forEach {
+            stateList.add(LoadingStateDoc(it, UploadState.Uploaded))
+        }
+
+        adapter.setData(stateList)
 
         offerCloseIV.setOnClickListener { dismiss() }
         acceptOfferBTN.setOnClickListener(onApproveButtonClickListener)

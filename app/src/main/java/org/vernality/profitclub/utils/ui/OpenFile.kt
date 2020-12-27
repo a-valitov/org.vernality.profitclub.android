@@ -3,6 +3,7 @@ package org.vernality.profitclub.utils.ui
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.widget.Toast
 import androidx.core.content.FileProvider
 import timber.log.Timber
@@ -74,6 +75,8 @@ private fun getTypeOfMIME(_extension: String): String{
         "text" -> "text/plain"
         else -> "unknown file format"
     }
+
+
 
 }
 
