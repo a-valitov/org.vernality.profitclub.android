@@ -47,4 +47,6 @@ interface DataSource {
 
     fun getCommercialOffers(): Single<List<CommercialOffer>>
 
+    fun createAction(action: Action, supplier: Supplier): Completable
+
 }

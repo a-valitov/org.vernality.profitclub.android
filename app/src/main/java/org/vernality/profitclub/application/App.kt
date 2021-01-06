@@ -1,6 +1,7 @@
 package org.vernality.profitclub.application
 
 import android.app.Application
+import android.content.Context
 import android.util.Log
 import com.parse.Parse
 import com.parse.ParseObject
@@ -16,9 +17,10 @@ import timber.log.Timber.DebugTree
 
 class App : Application() {
 
+
+
     override fun onCreate() {
         super.onCreate()
-
 
         initParse()
 

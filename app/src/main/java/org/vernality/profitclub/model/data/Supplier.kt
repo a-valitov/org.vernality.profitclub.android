@@ -6,7 +6,7 @@ import com.parse.ParseObject
 import kotlinx.android.parcel.Parcelize
 
 @ParseClassName("Supplier")
-class Supplier: ParseObject() {
+class Supplier: ParseObject(), BusinessRole {
 
     val id: String?
         get() = getString("objectId")

@@ -9,7 +9,7 @@ public class Utils {
         @SuppressLint("SimpleDateFormat")
         fun getMyDateFormat()  = java.text.SimpleDateFormat("dd.MM.yyyy")
 
-        fun getDataOfMyFormat(date: Date) = getMyDateFormat().format(date)
+        fun getDataOfMyFormat(date: Date): String = getMyDateFormat().format(date)
 
 
     }

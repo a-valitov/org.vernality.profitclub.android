@@ -45,4 +45,6 @@ interface Repository{
     fun getRequestOfOrganization(organization: Organization): Single<List<Member>>
 
     fun getCommercialOffers(): Single<List<CommercialOffer>>
+
+    fun createAction(action: Action, supplier: Supplier): Completable
 }

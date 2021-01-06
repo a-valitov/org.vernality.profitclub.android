@@ -27,12 +27,10 @@ class ParseImplementation() : DataSource {
             user.signUpInBackground { e ->
                 if (e == null) {
                     // Hooray! Let them use the app now.
-                    println("регистрация прошла успешно")
                     it.onComplete()
                 } else {
                     // Sign up didn't succeed. Look at the ParseException
                     // to figure out what went wrong
-                    println("ошибка регистрации  "+e)
                     it.onError(e)
                 }
             }
@@ -58,7 +56,6 @@ class ParseImplementation() : DataSource {
 
             ParseUser.logInInBackground(user.login, user.password) { user, e ->
                 if (user != null) {
-                    println("вход в аккаунт прошел успешно")
                     it.onComplete()
                 } else {
                     println("ошибка входа в аккаунт  "+e)
@@ -74,7 +71,6 @@ class ParseImplementation() : DataSource {
 
             ParseUser.requestPasswordResetInBackground(email) { e ->
                 if (e == null) {
-                    println("инструкции по сбросу пароля отправлены на указанную почту")
                     it.onComplete()
                 } else {
                     println("ошибка сброса пароля  "+e)
@@ -195,7 +191,6 @@ class ParseImplementation() : DataSource {
                 it.onSuccess(userName)
             } else {
                 // Вызов окна входа
-                println("------необходимо войти в систему---")
                 it.onError(Exception("Не удалось войти в систему"))
             }
         }
@@ -212,12 +207,7 @@ class ParseImplementation() : DataSource {
                 val query: ParseQuery<Organization> = ParseQuery.getQuery(Organization::class.java)
                 query.findInBackground { list, e ->
                     if(e == null){
-                        println("----OK get Organization-----")
-                        list.forEach {
-                            val objectId: String = it.getObjectId()
-                            println("object =${it.name}")
 
-                        }
                         it.onNext(list)
                     } else {
                         println("----Error get Organization-----")
@@ -237,7 +227,7 @@ class ParseImplementation() : DataSource {
         return Observable.create {
             val currentUser = ParseUser.getCurrentUser()
             if (currentUser != null) {
-                println("------currentUser is not null-----")
+
 
                 val relation: ParseRelation<Organization> = currentUser.getRelation("organizations")
                 relation.query.findInBackground { results, e ->
@@ -256,7 +246,6 @@ class ParseImplementation() : DataSource {
         return Observable.create {
             val currentUser = ParseUser.getCurrentUser()
             if (currentUser != null) {
-                println("------currentUser is not null-----")
 
                 val relation: ParseRelation<Supplier> = currentUser.getRelation("suppliers")
                 relation.query.findInBackground { results, e ->
@@ -275,7 +264,6 @@ class ParseImplementation() : DataSource {
         return Observable.create {
             val currentUser = ParseUser.getCurrentUser()
             if (currentUser != null) {
-                println("------currentUser is not null-----")
 
                 val relation: ParseRelation<Member> = currentUser.getRelation("member")
                 relation.query.findInBackground { results, e ->
@@ -294,7 +282,6 @@ class ParseImplementation() : DataSource {
         return Observable.create {
             val currentUser = ParseUser.getCurrentUser()
             if (currentUser != null) {
-                println("------currentUser is not null-----")
 
                 val user = ParseUser.getCurrentUser()
                 val relation = user.getRelation<Member>("member")
@@ -336,9 +323,6 @@ class ParseImplementation() : DataSource {
         return Completable.create {
             val currentUser = ParseUser.getCurrentUser()
             if (currentUser != null) {
-                println("------currentUser is not null-----")
-                println("------member= " +member.firstName)
-                println("------organization= " +organization.name)
 
                 member.saveInBackground{ e->
                     if(e == null)
@@ -359,7 +343,6 @@ class ParseImplementation() : DataSource {
 
                         val relation2: ParseRelation<ParseObject> = organization.getRelation("members")
                         relation2.add(member)
-                        println("organization = "+organization.name)
                         organization.saveInBackground{ e->
                             if(e == null)
                             {
@@ -398,13 +381,7 @@ class ParseImplementation() : DataSource {
                     if (e == null) {
 
                         it.onSuccess( list )
-                        list.forEach {
 
-                            val objectId: String = it.getObjectId()
-                            println("++++++action object =${it.message}")
-                            println("++++++action object =${it.startDate}")
-
-                        }
 
                     } else {
 
@@ -424,7 +401,6 @@ class ParseImplementation() : DataSource {
 
             val currentUser = ParseUser.getCurrentUser()
             if (currentUser == null) {
-                println("------currentUser is not null-----")
 
                 val relation = organization.getRelation<Member>("members")
 
@@ -434,14 +410,7 @@ class ParseImplementation() : DataSource {
                     if (e == null) {
 
                         it.onSuccess( list )
-                        println("----OK get Organization-----")
-                        println("++++++list size =${list.size}")
-                        list.forEach {
 
-                            val objectId: String = it.getObjectId()
-                            println("++++++object =${it.firstName + it.lastName}")
-
-                        }
 
                     } else {
                         println("----Error get Organization-----")
@@ -462,7 +431,6 @@ class ParseImplementation() : DataSource {
 
             val currentUser = ParseUser.getCurrentUser()
             if (currentUser == null) {
-                println("------currentUser is not null-----")
 
                 val relation = organization.getRelation<Member>("members")
 
@@ -472,24 +440,14 @@ class ParseImplementation() : DataSource {
                     if (e == null) {
 
                         it.onSuccess( list )
-                        println("----OK get Organization-----")
-                        println("++++++list size =${list.size}")
-                        list.forEach {
-
-                            val objectId: String = it.getObjectId()
-                            println("++++++object =${it.firstName + it.lastName}")
-
-                        }
 
                     } else {
-                        println("----Error get Organization-----")
 
                     }
                 }
 
             } else {
                 // Вызов окна входа
-                println("------необходимо войти в систему---")
 
             }
         }
@@ -498,12 +456,9 @@ class ParseImplementation() : DataSource {
     override fun getCommercialOffers(): Single<List<CommercialOffer>> {
         return Single.create {
 
-            println("into getCommercialOffers()")
             val currentUser = ParseUser.getCurrentUser()
             if (currentUser != null)
             {
-               println("currentUser is not null into getCommercialOffers()")
-
 
                 val query: ParseQuery<CommercialOffer> = ParseQuery.getQuery(CommercialOffer::class.java)
                 val list = query.find()
@@ -512,7 +467,39 @@ class ParseImplementation() : DataSource {
 
             } else {
                 // Вызов окна входа
-                println("------необходимо войти в систему---")
+
+            }
+        }
+    }
+
+    override fun createAction(action: Action, supplier: Supplier): Completable {
+        return Completable.create {
+            val currentUser = ParseUser.getCurrentUser()
+            if (currentUser != null) {
+                action.put("supplier", supplier)
+                action.getRelation<ParseUser>("user").add(currentUser)
+                action.put("statusString","approved")
+                action.start?.let { action.put("startDate", it) }
+                action.end?.let { action.put("endDate", it) }
+
+                val acl = ParseACL()
+                acl.publicReadAccess = true
+                acl.setRoleWriteAccess("administrator", true)
+
+                action.acl = acl
+
+                val parseFile: ParseFile = ParseFile("image.png",action.image)
+                parseFile.save()
+
+                action.put("imageFile", parseFile)
+
+                action.save()
+
+                it.onComplete()
+
+
+            } else {
+                // Вызов окна входа
 
             }
         }

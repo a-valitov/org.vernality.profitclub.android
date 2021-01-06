@@ -20,7 +20,8 @@ import org.vernality.profitclub.view_model.Role
 
 enum class TypeDialogFragment{
     Registration, RoleApproveAdmin, LogOrgAccount, ResetPassword, RequestApprovedAdmin,
-    ApproveAction, ApproveRequestIntoOrg, SubmitCommercialOffer, ApproveDelivery
+    ApproveAction, ApproveRequestIntoOrg, SubmitCommercialOffer, SubmitAction,
+    ApproveDelivery
 }
 
 

@@ -7,7 +7,7 @@ import kotlinx.android.parcel.Parcelize
 import java.util.*
 
 @ParseClassName("Member")
-class Member: ParseObject(){
+class Member: ParseObject(), BusinessRole{
     val id: String?
         get() = getString("objectId")
 

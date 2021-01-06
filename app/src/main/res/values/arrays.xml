@@ -50,6 +50,13 @@
         <item>Назад</item>
     </string-array>
 
+    <string-array name="SubmitAction">
+        <item>Отправить в обработку?</item>
+        <item>Перед публикацией акции, ее должен проверить аминистратор</item>
+        <item>Отправить</item>
+        <item>Назад</item>
+    </string-array>
+
     <string-array name="ApproveRequestIntoOrg">
         <item>Одобрить заявку?</item>
         <item>Одобрить заявку на вступление name в организацию?</item>

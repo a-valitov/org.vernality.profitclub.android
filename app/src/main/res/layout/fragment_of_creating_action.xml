@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/rootview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorAccent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="30dp"
+                android:paddingEnd="30dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_add_photo"
+                    android:layout_width="match_parent"
+                    android:layout_height="178dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/selector_layout2"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="@color/colorTransient"
+                    app:cardCornerRadius="5dp">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/iv_actions_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:clickable="true"
+                        android:contextClickable="true"
+                        app:shapeAppearance="@style/ShapeAppearanceCorner_10dp"
+                        android:background="@color/colorInputField"/>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="@drawable/selector_layout2"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:id="@+id/layout_add_photo">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_baseline_add_24"
+                            android:background="@drawable/selector_layout2"
+                            android:foreground="@drawable/selector_layout2"
+                            app:tint="@color/color_createActionHint" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:gravity="center"
+                            android:textColor="@color/color_createActionHint"
+                            android:textSize="12sp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:textIsSelectable="true"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/add_a_photo"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layout_change_photo"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="@drawable/selector_layout2"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:visibility="gone">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:gravity="center"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:background="@color/colorInputField"
+                            android:textSize="12sp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:textIsSelectable="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/change_photo"/>
+
+                    </LinearLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_enter_message"
+                    android:layout_width="match_parent"
+                    android:layout_height="46dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/rounded_corner"
+                    android:ems="10"
+                    android:gravity="fill_vertical"
+                    android:hint="@string/enter_a_message"
+                    android:textColorHint="@color/color_createActionHint"
+                    android:textColor="@color/colorStatusBarDark"
+                    android:textCursorDrawable="@drawable/cursor_color_dark"
+                    android:inputType="textPersonName"
+                    android:paddingStart="10dp"
+                    android:layout_marginTop="21dp"
+                    android:textSize="12sp"/>
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_enter_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="109dp"
+                    android:paddingTop="18dp"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="start"
+                    android:background="@drawable/rounded_corner"
+                    android:ems="10"
+                    android:hint="@string/enter_a_description_of_the_action"
+                    android:textColorHint="@color/color_createActionHint"
+                    android:textColor="@color/colorStatusBarDark"
+                    android:textCursorDrawable="@drawable/cursor_color_dark"
+                    android:inputType="textPersonName"
+                    android:paddingStart="10dp"
+                    android:layout_marginTop="21dp"
+
+                    android:textSize="12sp"/>
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_insert_link"
+                    android:layout_width="match_parent"
+                    android:layout_height="46dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/rounded_corner"
+                    android:ems="10"
+                    android:gravity="fill_vertical"
+                    android:hint="@string/insert_a_link_to_the_action"
+                    android:textColorHint="@color/color_createActionHint"
+                    android:textColor="@color/colorStatusBarDark"
+                    android:textCursorDrawable="@drawable/cursor_color_dark"
+                    android:inputType="textPersonName"
+                    android:paddingStart="10dp"
+                    android:layout_marginTop="21dp"
+                    android:textSize="12sp"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tv_start_of_action"
+                        android:layout_width="105dp"
+                        android:layout_height="46dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="21dp"
+                        android:background="@drawable/rounded_corner"
+                        android:ems="10"
+                        android:gravity="fill_vertical"
+                        android:hint="@string/start_of_action"
+                        android:inputType="textPersonName"
+                        android:paddingStart="10dp"
+                        android:textColor="@color/colorStatusBarDark"
+                        android:textColorHint="@color/color_createActionHint"
+                        android:textCursorDrawable="@drawable/cursor_color_dark"
+                        android:textSize="12sp" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tv_end_of_action"
+                        android:layout_width="105dp"
+                        android:layout_height="46dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="21dp"
+                        android:background="@drawable/rounded_corner"
+                        android:ems="10"
+                        android:gravity="fill_vertical"
+                        android:hint="@string/end_of_action"
+                        android:inputType="textPersonName"
+                        android:paddingStart="10dp"
+                        android:textColor="@color/colorStatusBarDark"
+                        android:textColorHint="@color/color_createActionHint"
+                        android:textCursorDrawable="@drawable/cursor_color_dark"
+                        android:textSize="12sp" />
+
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_action_create_action"
+                android:layout_width="354dp"
+                android:layout_height="52dp"
+                android:layout_marginBottom="66dp"
+                android:gravity="center_horizontal|center_vertical"
+                android:backgroundTint="@color/colorStatusBarDark"
+                android:text="@string/create_action"
+                android:textAllCaps="false"
+                android:textColor="@color/colorAccent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+
+
+    <FrameLayout
+        android:id="@+id/loading_frame_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <androidx.core.widget.ContentLoadingProgressBar
+            android:id="@+id/progress_circular"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="270dp"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:layout_gravity="center">
+
+
+        </androidx.core.widget.ContentLoadingProgressBar>
+
+    </FrameLayout>
+
+</FrameLayout>

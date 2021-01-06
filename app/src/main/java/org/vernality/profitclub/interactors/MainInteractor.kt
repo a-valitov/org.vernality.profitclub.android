@@ -8,6 +8,7 @@ import io.reactivex.functions.Function3
 import io.reactivex.functions.Function4
 import org.vernality.profitclub.model.data.*
 import org.vernality.profitclub.model.repository.Repository
+import org.vernality.profitclub.utils.DataSaver
 import org.vernality.profitclub.view_model.MyOrganizationsListFragmentViewModel.*
 import java.net.URI.create
 import java.util.*
@@ -266,6 +267,17 @@ class MainInteractor(
     fun getResultForRejectMembersRequest(member: Member):Completable{
 
         return Completable.complete().delay(2000, TimeUnit.MILLISECONDS)
+    }
+
+    fun createAction(action: Action):Completable{
+        val supplier = DataSaver.getCurrentBusinessRole()
+        println("-------"+supplier)
+        if( supplier != null && (supplier is Supplier)){
+            return repository.createAction(action, supplier)
+        } else {throw Throwable("не найден текущий поставщик")
+        }
+
+
     }
 
 }

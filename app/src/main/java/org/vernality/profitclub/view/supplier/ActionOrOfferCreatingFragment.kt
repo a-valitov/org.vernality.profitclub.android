@@ -6,6 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.button.MaterialButton
 import kotlinx.android.synthetic.main.fragment_of_creating_action_or_offer.view.*
 import org.vernality.profitclub.R
@@ -33,8 +36,8 @@ class ActionOrOfferCreatingFragment : Fragment() {
 
 
     fun initViews(view: View){
-        createOfferBTN = view.btn_approve_offer
-        createActionBTN = view.btn_reject_offer
+        createOfferBTN = view.btn_create_offer
+        createActionBTN = view.btn_create_action
 
         createOfferBTN.setOnClickListener{ navigateToFragmentOnCreatingOffer() }
         createActionBTN.setOnClickListener{ navigateToFragmentOnCreatingAction() }
@@ -58,11 +61,13 @@ class ActionOrOfferCreatingFragment : Fragment() {
     private fun navigateToFragmentOnCreatingOffer(){
 
         Toast.makeText(requireActivity(), "the button for creating a commercial offer is clicked", Toast.LENGTH_LONG).show()
+
     }
 
     private fun navigateToFragmentOnCreatingAction(){
 
         Toast.makeText(requireActivity(), "the action creation button is clicked", Toast.LENGTH_LONG).show()
+        findNavController().navigate(R.id.action_creating_action_or_offer_to_creating_action)
     }
 
 
