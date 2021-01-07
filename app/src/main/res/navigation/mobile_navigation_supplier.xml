@@ -13,12 +13,21 @@
         <action
             android:id="@+id/action_creating_action_or_offer_to_creating_action"
             app:destination="@id/creating_action" />
+        <action
+            android:id="@+id/action_creating_action_or_offer_to_creating_offer"
+            app:destination="@id/creating_offer" />
     </fragment>
 
     <fragment
         android:id="@+id/creating_action"
         android:name="org.vernality.profitclub.view.supplier.ActionCreatingFragment"
-        android:label="creating_action_or_offer"
+        android:label="creating_action"
         tools:layout="@layout/fragment_of_creating_action" />
+
+    <fragment
+        android:id="@+id/creating_offer"
+        android:name="org.vernality.profitclub.view.supplier.OfferCreatingFragment"
+        android:label="creating_offer"
+        tools:layout="@layout/fragment_of_creating_offer" />
 
 </navigation>

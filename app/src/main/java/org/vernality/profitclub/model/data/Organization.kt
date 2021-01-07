@@ -35,6 +35,7 @@ class Organization: ParseObject(), BusinessRole {
         set(value){ if(value != null) put("statusString", value)}
 
 
+
     fun setFields(baseCompany: BaseCompany){
         name = baseCompany.name
         contactName = baseCompany.contactName

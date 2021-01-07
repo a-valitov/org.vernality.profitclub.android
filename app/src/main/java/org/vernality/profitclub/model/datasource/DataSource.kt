@@ -49,4 +49,6 @@ interface DataSource {
 
     fun createAction(action: Action, supplier: Supplier): Completable
 
+    fun createOffer(offer: CommercialOffer, supplier: Supplier): Completable
+
 }

@@ -47,4 +47,6 @@ interface Repository{
     fun getCommercialOffers(): Single<List<CommercialOffer>>
 
     fun createAction(action: Action, supplier: Supplier): Completable
+
+    fun createOffer(offer: CommercialOffer, supplier: Supplier): Completable
 }

@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorAccent">
+
+            <LinearLayout
+                android:id="@+id/linearLayout3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingStart="30dp"
+                android:paddingEnd="30dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_add_photo"
+                    android:layout_width="match_parent"
+                    android:layout_height="178dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/selector_layout2"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="@color/colorTransient"
+                    app:cardCornerRadius="5dp">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/iv_offers_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/colorInputField"
+                        android:clickable="true"
+                        android:contextClickable="true"
+                        android:scaleType="centerCrop"
+                        app:shapeAppearance="@style/ShapeAppearanceCorner_10dp" />
+
+
+                    <LinearLayout
+                        android:id="@+id/layout_add_photo"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/selector_layout2"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/selector_layout2"
+                            android:foreground="@drawable/selector_layout2"
+                            android:src="@drawable/ic_baseline_add_24"
+                            app:tint="@color/color_createActionHint" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center"
+                            android:text="@string/add_a_photo"
+                            android:textColor="@color/color_createActionHint"
+                            android:textIsSelectable="true"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layout_change_photo"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/selector_layout2"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@color/colorInputField"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center"
+                            android:text="@string/change_photo"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textIsSelectable="true"
+                            android:textSize="12sp" />
+
+
+                    </LinearLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="21dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_enter_message_offer"
+                        android:layout_width="match_parent"
+                        android:layout_height="109dp"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/rounded_corner"
+                        android:ems="10"
+                        android:gravity="start|top"
+                        android:hint="@string/enter_a_message"
+                        android:inputType="textMultiLine"
+                        android:paddingStart="15dp"
+                        android:paddingTop="18dp"
+                        android:paddingEnd="40dp"
+                        android:textColor="@color/colorStatusBarDark"
+                        android:textColorHint="@color/color_createActionHint"
+                        android:textSize="12sp"
+                        android:theme="@style/AppTheme.EditText" />
+
+                    <FrameLayout
+                        android:id="@+id/add_doc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+                        android:background="@drawable/selector_layout2"
+                        android:clickable="true"
+                        android:focusable="true">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end|top"
+                            android:layout_margin="10dp"
+                            android:rotation="45"
+                            android:src="@drawable/ic_baseline_attach_file_24" />
+
+                    </FrameLayout>
+
+                </RelativeLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_offers_doc"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_offer_create"
+                    android:layout_width="354dp"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="100dp"
+                    android:backgroundTint="@color/colorStatusBarDark"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:text="@string/create_commercial_offer"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorAccent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.491"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+
+
+            </LinearLayout>
+
+    </FrameLayout>
+
+
+    <FrameLayout
+        android:id="@+id/loading_frame_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <androidx.core.widget.ContentLoadingProgressBar
+            android:id="@+id/progress_circular"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="270dp"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:layout_gravity="center">
+
+
+        </androidx.core.widget.ContentLoadingProgressBar>
+
+    </FrameLayout>
+
+</FrameLayout>

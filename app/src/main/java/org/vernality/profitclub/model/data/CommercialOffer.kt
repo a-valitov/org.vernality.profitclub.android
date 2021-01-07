@@ -28,6 +28,17 @@ class CommercialOffer: ParseObject(){
             return getParseObject("supplier") as Supplier
         }
 
+    var image: ByteArray? = null
+        get() = field
+        set(value){ field = value }
+
+    var listOfDocs: MutableMap<String, ByteArray> = mutableMapOf()
+        get() = field
+        set(value){ field = value }
+
+    var listNamesOfDocs: MutableList<String> = mutableListOf()
+        get() = field
+        set(value){ field = value }
 
     @IgnoredOnParcel
     var contact: String? = null
