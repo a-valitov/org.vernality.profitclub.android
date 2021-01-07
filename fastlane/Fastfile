@@ -1,0 +1,49 @@
+default_platform(:android)
+
+before_all do
+  sh("rm", "-rf", "org.vernality.profitclub.keystore")
+  sh("git", "clone", "git@github.com:vernality/org.vernality.profitclub.keystore.git")
+  ENV["FIREBASE_REFRESH_TOKEN"] = File.read("./org.vernality.profitclub.keystore/FirebaseRefreshToken")
+end
+
+def remove_artifacts
+  sh("rm", "-rf", "org.vernality.profitclub.keystore")
+  sh("rm", "README.md")
+  sh("rm", "report.xml")
+end
+
+platform :android do
+  desc "Runs all the tests"
+  lane :test do
+    gradle(task: "test")
+  end
+
+  lane :alpha do
+    gradle(task: "clean assembleRelease")
+    firebase_app_distribution(
+      app: "1:485137165982:android:4963d7b76541e325e5d58f",
+      firebase_cli_token: ENV["FIREBASE_REFRESH_TOKEN"],
+      groups: "android-alpha"
+    )
+  end
+
+  desc "Submit a new Beta Build to Crashlytics Beta"
+  lane :beta do
+    gradle(task: "clean assembleRelease")
+    crashlytics
+  end
+
+  desc "Deploy a new version to the Google Play"
+  lane :deploy do
+    gradle(task: "clean assembleRelease")
+    upload_to_play_store
+  end
+
+  error do |lane, exception|
+    remove_artifacts()
+  end
+end
+
+after_all do
+  remove_artifacts()
+end

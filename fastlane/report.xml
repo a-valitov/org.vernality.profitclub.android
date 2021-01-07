@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="fastlane.lanes">
+    
+    
+    
+      
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000311">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="1: rm -rf org.vernality.profitclub.keystore" time="0.004181">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="2: git clone git@github.com:vernality/org.vernality.profitclub.keystore.git" time="2.046685">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="3: clean assembleRelease" time="21.592052">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="4: firebase_app_distribution" time="10.52998">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="5: rm -rf org.vernality.profitclub.keystore" time="0.008291">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="6: rm README.md" time="0.003937">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="7: rm report.xml" time="0.003188">
+        
+      </testcase>
+    
+  </testsuite>
+</testsuites>

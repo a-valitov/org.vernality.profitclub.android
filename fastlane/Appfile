@@ -1,0 +1,2 @@
+json_key_file("pc-api-8640804440696407856-296-a9c8e9dbbcb8.json") # Path to the json secret file - Follow https://docs.fastlane.tools/actions/supply/#setup to get one
+package_name("org.vernality.profitclub") # e.g. com.krausefx.app
