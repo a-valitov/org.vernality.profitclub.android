@@ -12,8 +12,6 @@ end
 
 def remove_artifacts
   sh("rm", "-rf", "org.vernality.profitclub.keystore")
-  sh("rm", ENV["PWD"] + "/fastlane/README.md")
-  sh("rm", ENV["PWD"] + "/fastlane/report.xml")
 end
 
 platform :android do
