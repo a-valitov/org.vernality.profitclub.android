@@ -4,6 +4,10 @@ before_all do
   sh("rm", "-rf", "org.vernality.profitclub.keystore")
   sh("git", "clone", "git@github.com:vernality/org.vernality.profitclub.keystore.git")
   ENV["FIREBASE_REFRESH_TOKEN"] = File.read("./org.vernality.profitclub.keystore/FirebaseRefreshToken")
+  ENV["STORE_PASSWORD"] = File.read("./org.vernality.profitclub.keystore/android.injected.signing.store.password")
+  ENV["KEY_ALIAS"] = File.read("./org.vernality.profitclub.keystore/android.injected.signing.key.alias")
+  ENV["KEY_PASSWORD"] = File.read("./org.vernality.profitclub.keystore/android.injected.signing.key.password")
+  ENV["FIREBASE_APP"] = File.read("./org.vernality.profitclub.keystore/android.firebase.app.name")
 end
 
 def remove_artifacts
@@ -19,9 +23,19 @@ platform :android do
   end
 
   lane :alpha do
-    gradle(task: "clean assembleRelease")
+    gradle(
+      task: "assemble",
+      build_type: "Release",
+      print_command: false,
+      properties: {
+        "android.injected.signing.store.file" => ENV["PWD"] + "/fastlane/org.vernality.profitclub.keystore/upload-keystore.jks",
+        "android.injected.signing.store.password" => ENV["STORE_PASSWORD"],
+        "android.injected.signing.key.alias" => ENV["KEY_ALIAS"],
+        "android.injected.signing.key.password" => ENV["KEY_PASSWORD"]
+      }
+    )
     firebase_app_distribution(
-      app: "1:485137165982:android:4963d7b76541e325e5d58f",
+      app: ENV["FIREBASE_APP"],
       firebase_cli_token: ENV["FIREBASE_REFRESH_TOKEN"],
       groups: "android-alpha"
     )
