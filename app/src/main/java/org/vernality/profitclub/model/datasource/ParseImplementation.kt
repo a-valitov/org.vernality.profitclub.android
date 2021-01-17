@@ -26,11 +26,11 @@ class ParseImplementation() : DataSource {
         return Completable.create {
             user.signUpInBackground { e ->
                 if (e == null) {
-                    // Hooray! Let them use the app now.
+                    val installation = ParseInstallation.getCurrentInstallation()
+                    installation.put("user", user)
+                    installation.saveEventually()
                     it.onComplete()
                 } else {
-                    // Sign up didn't succeed. Look at the ParseException
-                    // to figure out what went wrong
                     it.onError(e)
                 }
             }
@@ -56,6 +56,9 @@ class ParseImplementation() : DataSource {
 
             ParseUser.logInInBackground(user.login, user.password) { user, e ->
                 if (user != null) {
+                    val installation = ParseInstallation.getCurrentInstallation()
+                    installation.put("user", user)
+                    installation.saveEventually()
                     it.onComplete()
                 } else {
                     println("ошибка входа в аккаунт  "+e)

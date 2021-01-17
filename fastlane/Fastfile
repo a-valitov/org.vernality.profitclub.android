@@ -1,0 +1,61 @@
+default_platform(:android)
+
+before_all do
+  sh("rm", "-rf", "org.vernality.profitclub.keystore")
+  sh("git", "clone", "git@github.com:vernality/org.vernality.profitclub.keystore.git")
+  ENV["FIREBASE_REFRESH_TOKEN"] = File.read("./org.vernality.profitclub.keystore/FirebaseRefreshToken")
+  ENV["STORE_PASSWORD"] = File.read("./org.vernality.profitclub.keystore/android.injected.signing.store.password")
+  ENV["KEY_ALIAS"] = File.read("./org.vernality.profitclub.keystore/android.injected.signing.key.alias")
+  ENV["KEY_PASSWORD"] = File.read("./org.vernality.profitclub.keystore/android.injected.signing.key.password")
+  ENV["FIREBASE_APP"] = File.read("./org.vernality.profitclub.keystore/android.firebase.app.name")
+end
+
+def remove_artifacts
+  sh("rm", "-rf", "org.vernality.profitclub.keystore")
+end
+
+platform :android do
+  desc "Runs all the tests"
+  lane :test do
+    gradle(task: "test")
+  end
+
+  lane :alpha do
+    gradle(
+      task: "assemble",
+      build_type: "Release",
+      print_command: false,
+      properties: {
+        "android.injected.signing.store.file" => ENV["PWD"] + "/fastlane/org.vernality.profitclub.keystore/upload-keystore.jks",
+        "android.injected.signing.store.password" => ENV["STORE_PASSWORD"],
+        "android.injected.signing.key.alias" => ENV["KEY_ALIAS"],
+        "android.injected.signing.key.password" => ENV["KEY_PASSWORD"]
+      }
+    )
+    firebase_app_distribution(
+      app: ENV["FIREBASE_APP"],
+      firebase_cli_token: ENV["FIREBASE_REFRESH_TOKEN"],
+      groups: "android-alpha"
+    )
+  end
+
+  desc "Submit a new Beta Build to Crashlytics Beta"
+  lane :beta do
+    gradle(task: "clean assembleRelease")
+    crashlytics
+  end
+
+  desc "Deploy a new version to the Google Play"
+  lane :deploy do
+    gradle(task: "clean assembleRelease")
+    upload_to_play_store
+  end
+
+  error do |lane, exception|
+    remove_artifacts()
+  end
+end
+
+after_all do
+  remove_artifacts()
+end
