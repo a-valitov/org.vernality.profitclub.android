@@ -91,6 +91,8 @@ class OfferCreatingFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_of_creating_offer, container, false)
 
+        println(resources.getString(R.string._122))
+
         initViews(view)
 
         return view

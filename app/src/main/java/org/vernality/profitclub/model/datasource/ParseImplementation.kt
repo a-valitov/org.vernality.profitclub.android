@@ -6,6 +6,8 @@ import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import org.vernality.profitclub.model.data.*
+import org.vernality.profitclub.utils.ui.ErrorsUtils
+import org.vernality.profitclub.utils.ui.ErrorsUtils.Companion.getErrorsMessage
 
 
 class ParseImplementation() : DataSource {
@@ -525,14 +527,21 @@ class ParseImplementation() : DataSource {
 
                 val parseFileList = mutableListOf<ParseFile>()
 
-                offer.listOfDocs.forEach {
+                try {
+                    offer.listOfDocs.forEach {
 
-                    offer.add("attachmentNames", it.key)
-                    val parseFileDoc: ParseFile = ParseFile(it.key,it.value)
-                    parseFileDoc.save()
-                    parseFileList.add(parseFileDoc)
+                        offer.add("attachmentNames", it.key)
+                        val parseFileDoc: ParseFile = ParseFile(it.key,it.value)
+                        parseFileDoc.save()
+                        parseFileList.add(parseFileDoc)
 
+                    }
+                }catch (e: ParseException){
+                    println("++++++ intersept error code = ${e.code}")
+                    it.onError(Throwable(getErrorsMessage(e.code)))
                 }
+
+
 
                 offer.addAll("attachmentFiles", parseFileList)
 

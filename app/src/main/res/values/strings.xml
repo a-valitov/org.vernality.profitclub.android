@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Profitclub</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -167,6 +167,46 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+
+
+    <string name="back_pressed_retry">Повторное нажатие \"назад\" приведет к выходу из приложения</string>
+
+
+
+<!--    Errors-->
+
+<!--    Ошибки, связанные с файлом-->
+    <string name="_122" tools:ignore="TypographyDashes">Недопустимое имя файла. Имя файла должно содержать только a-z A-Z 0-9_. символы и не превышать 128 символов</string>
+    <string name="_129">Размер файла превышает максимально допустимый</string>
+    <string name="_130">Ошибка при сохранении файла</string>
+    <string name="_153">Файл не может быть удален</string>
+    <string name="_161">Безымянный файл не может быть удален</string>
+
+<!--    Ошибки, связанные с пользователем-->
+    <string name="_200">Имя пользователя отсутствует или пусто</string>
+    <string name="_201">Пароль отсутствует или пуст</string>
+    <string name="_202">Данное имя пользователя уже занято</string>
+    <string name="_203">Данная электронная почта уже занята</string>
+    <string name="_204">Необходимо указать электронную почту</string>
+    <string name="_205">Пользователь с указанным адресом электронной почты не найден</string>
+    <string name="_206">Пользовательский объект без действующего сеанса не может быть изменен</string>
+    <string name="_207">Пользователь может быть создан только через регистрацию</string>
+    <string name="_208">Привязываемая учетная запись уже связана с другим пользователем</string>
+    <string name="_209">Токен сеанса устройства больше не действителен. Необходимо заново войти в систему</string>
+
+<!--    Только клиентские ошибки-->
+    <string name="_100">Не удалось подключиться к серверам Parse</string>
+
+
+<!--    Операционные вопросы-->
+    <string name="_124">Время ожидания выполнения запрпоса истекло</string>
+
+<!--    Другие вопросы-->
+    <string name="_minus1">Ошибка выполнения запроса</string>
+    <string name="_1">Внутренняя ошибка сервера. Нет доступной информации</string>
+    <string name="_2">В настоящее время услуга недоступна</string>
+    <string name="_3">Ошибка подключения</string>
+
 
 
 </resources>
