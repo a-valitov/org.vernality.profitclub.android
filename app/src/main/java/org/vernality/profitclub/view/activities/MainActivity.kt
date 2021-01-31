@@ -1,5 +1,6 @@
 package org.vernality.profitclub.view.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -10,7 +11,9 @@ import com.parse.ParseObject
 import com.parse.ParseQuery
 import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
+import org.koin.core.inject
 import org.vernality.profitclub.R
+import org.vernality.profitclub.interactors.MainInteractor
 import org.vernality.profitclub.model.repository.RepositoryImplementation
 import org.vernality.profitclub.utils.ui.ActionBottomDialogFragment
 import org.vernality.profitclub.utils.ui.MyPreferences
@@ -25,6 +28,12 @@ class MainActivity : AppCompatActivity() , ActionBottomDialogFragment.ItemClickL
 
         val pref = get<MyPreferences> ()
 
+        val interactor: MainInteractor by inject()
+
+        if(interactor.isUserLogged()){
+            val intent = Intent(this, SelectOrganizationActivity::class.java)
+            startActivity(intent)
+        }
 
     }
 

@@ -10,6 +10,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.marginBottom
 import androidx.core.view.setMargins
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
@@ -65,7 +66,10 @@ class DataProcessingFragment : Fragment(), OnBackPressedListener {
     private val viewModel by viewModel<MyOrganizationsListFragmentViewModel>()
     private val adapter: MyOrganizationsListRVAdapter by lazy { MyOrganizationsListRVAdapter(onListItemClickListener) }
 
+    private lateinit var liveDataForLogOutResult: LiveData<AppState>
+
     private val observer = Observer<AppState> { renderData(it) }
+    private val observerForLogOutResult = Observer<AppState> { renderDataForLogOut(it) }
 
     private lateinit var errorResultDialog: ErrorResultDialogFragment
     private lateinit var loadingLayout: FrameLayout
@@ -240,6 +244,27 @@ class DataProcessingFragment : Fragment(), OnBackPressedListener {
         }
     }
 
+    private fun renderDataForLogOut(appState: AppState) {
+        when (appState) {
+            is AppState.Success<*> -> {
+                loadingLayout.visibility = View.GONE
+                val intent = Intent(requireActivity(), MainActivity::class.java)
+                startActivity(intent)
+
+            }
+            is AppState.Loading -> {
+                loadingLayout.visibility = View.VISIBLE
+            }
+            is AppState.Error -> {
+                loadingLayout.visibility = View.GONE
+                errorResultDialog =
+                    ErrorResultDialogFragment.newInstance(description = appState.error.message.toString())
+                Toast.makeText(requireActivity(), "Error \n ${appState.error}", Toast.LENGTH_LONG).show()
+                errorResultDialog.show(parentFragmentManager, this.toString())
+            }
+        }
+    }
+
 
     private fun initPopupMenu(view: View){
         val wrapper = ContextThemeWrapper(requireActivity(), R.style.AppTheme_PopupOverlay)
@@ -249,9 +274,7 @@ class DataProcessingFragment : Fragment(), OnBackPressedListener {
             when (it.itemId) {
                 R.id.item_menu_exit -> {
                     Toast.makeText(requireActivity(), "exit clicked", Toast.LENGTH_LONG).show()
-                    interactor.logOut()
-                    val intent = Intent(requireActivity(), MainActivity::class.java)
-                    startActivity(intent)
+                    viewModel.getLiveDataAndStartGetResultForLogOut().observe(requireActivity(), observerForLogOutResult)
                     true
                 }
                 else -> false

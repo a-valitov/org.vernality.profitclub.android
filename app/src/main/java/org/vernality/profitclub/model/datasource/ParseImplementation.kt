@@ -18,6 +18,10 @@ class ParseImplementation() : DataSource {
         return user
     }
 
+    override fun isUserLogged(): Boolean {
+        return ParseUser.getCurrentUser() != null
+
+    }
 
     override fun registration(_user: User):Completable {
         val user = ParseUser()
@@ -401,30 +405,43 @@ class ParseImplementation() : DataSource {
     override fun getMembersOfOrganization(organization: Organization): Single<List<Member>> {
         return Single.create {
 
-            val currentUser = ParseUser.getCurrentUser()
-            if (currentUser == null) {
+            try {
+                val currentUser = ParseUser.getCurrentUser()
+                if (currentUser == null) {
 
-                val relation = organization.getRelation<Member>("members")
+                    val relation = organization.getRelation<Member>("members")
 
-                val query: ParseQuery<Member> = relation.getQuery()
-                query.whereEqualTo("approved", "statusString")
-                query.findInBackground { list, e ->
-                    if (e == null) {
+                    val query: ParseQuery<Member> = relation.getQuery()
+                    query.whereEqualTo("approved", "statusString")
+                    val list = query.find()
 
-                        it.onSuccess( list )
+                    it.onSuccess( list )
 
 
-                    } else {
-                        println("----Error get Organization-----")
 
+                    query.findInBackground { list, e ->
+                        if (e == null) {
+
+                            it.onSuccess( list )
+
+
+                        } else {
+                            println("----Error get Organization-----")
+
+                        }
                     }
+
+                } else {
+                    // Вызов окна входа
+                    println("------необходимо войти в систему---")
                 }
 
-            } else {
-                // Вызов окна входа
-                println("------необходимо войти в систему---")
-
+            }catch (e: ParseException) {
+                println("++++++ intersept error code = ${e.code}")
+                it.onError(Throwable(getErrorsMessage(e.code)))
             }
+
+
         }
     }
 
@@ -458,101 +475,115 @@ class ParseImplementation() : DataSource {
     override fun getCommercialOffers(): Single<List<CommercialOffer>> {
         return Single.create {
 
-            val currentUser = ParseUser.getCurrentUser()
-            if (currentUser != null)
-            {
+            try {
+                val currentUser = ParseUser.getCurrentUser()
+                if (currentUser != null)
+                {
+                    val query: ParseQuery<CommercialOffer> = ParseQuery.getQuery(CommercialOffer::class.java)
+                    val list = query.find()
 
-                val query: ParseQuery<CommercialOffer> = ParseQuery.getQuery(CommercialOffer::class.java)
-                val list = query.find()
+                    it.onSuccess(list)
 
-                it.onSuccess(list)
+                } else {
+                    // Вызов окна входа
+                }
 
-            } else {
-                // Вызов окна входа
-
+            }catch (e: ParseException) {
+                println("++++++ intersept error code = ${e.code}")
+                it.onError(Throwable(getErrorsMessage(e.code)))
             }
+
         }
     }
 
     override fun createAction(action: Action, supplier: Supplier): Completable {
         return Completable.create {
-            val currentUser = ParseUser.getCurrentUser()
-            if (currentUser != null) {
-                action.put("supplier", supplier)
-                action.getRelation<ParseUser>("user").add(currentUser)
-                action.put("statusString","approved")
-                action.start?.let { action.put("startDate", it) }
-                action.end?.let { action.put("endDate", it) }
 
-                val acl = ParseACL()
-                acl.publicReadAccess = true
-                acl.setRoleWriteAccess("administrator", true)
+            try {
 
-                action.acl = acl
+                val currentUser = ParseUser.getCurrentUser()
+                if (currentUser != null) {
+                    action.put("supplier", supplier)
+                    action.getRelation<ParseUser>("user").add(currentUser)
+                    action.put("statusString","approved")
+                    action.start?.let { action.put("startDate", it) }
+                    action.end?.let { action.put("endDate", it) }
 
-                val parseFile: ParseFile = ParseFile("image.png",action.image)
-                parseFile.save()
+                    val acl = ParseACL()
+                    acl.publicReadAccess = true
+                    acl.setRoleWriteAccess("administrator", true)
 
-                action.put("imageFile", parseFile)
+                    action.acl = acl
 
-                action.save()
+                    val parseFile: ParseFile = ParseFile("image.png",action.image)
+                    parseFile.save()
 
-                it.onComplete()
+                    action.put("imageFile", parseFile)
+
+                    action.save()
+
+                    it.onComplete()
 
 
-            } else {
-                // Вызов окна входа
+                } else {
+                    // Вызов окна входа
+                }
 
+            }catch (e: ParseException) {
+                println("++++++ intersept error code = ${e.code}")
+                it.onError(Throwable(getErrorsMessage(e.code)))
             }
+
         }
     }
 
     override fun createOffer(offer: CommercialOffer, supplier: Supplier): Completable {
         return Completable.create {
-            val currentUser = ParseUser.getCurrentUser()
-            if (currentUser != null) {
-                offer.put("supplier", supplier)
-                offer.getRelation<ParseUser>("user").add(currentUser)
-                offer.put("statusString","approved")
 
-                val acl = ParseACL()
-                acl.publicReadAccess = true
-                acl.setRoleWriteAccess("administrator", true)
-                offer.acl = acl
+            try {
 
-                val parseFile: ParseFile = ParseFile("image.png",offer.image)
-                parseFile.save()
+                val currentUser = ParseUser.getCurrentUser()
+                if (currentUser != null) {
+                    offer.put("supplier", supplier)
+                    offer.getRelation<ParseUser>("user").add(currentUser)
+                    offer.put("statusString", "approved")
 
-                offer.put("imageFile", parseFile)
+                    val acl = ParseACL()
+                    acl.publicReadAccess = true
+                    acl.setRoleWriteAccess("administrator", true)
+                    offer.acl = acl
 
-                val parseFileList = mutableListOf<ParseFile>()
+                    val parseFile: ParseFile = ParseFile("image.png", offer.image)
+                    parseFile.save()
 
-                try {
+                    offer.put("imageFile", parseFile)
+
+                    val parseFileList = mutableListOf<ParseFile>()
+
+
                     offer.listOfDocs.forEach {
 
                         offer.add("attachmentNames", it.key)
-                        val parseFileDoc: ParseFile = ParseFile(it.key,it.value)
+                        val parseFileDoc: ParseFile = ParseFile(it.key, it.value)
                         parseFileDoc.save()
                         parseFileList.add(parseFileDoc)
-
                     }
-                }catch (e: ParseException){
-                    println("++++++ intersept error code = ${e.code}")
-                    it.onError(Throwable(getErrorsMessage(e.code)))
+
+                    offer.addAll("attachmentFiles", parseFileList)
+
+                    offer.save()
+
+                    it.onComplete()
+
+
+                } else {
+                    // Вызов окна входа
+
                 }
 
-
-
-                offer.addAll("attachmentFiles", parseFileList)
-
-                offer.save()
-
-                it.onComplete()
-
-
-            } else {
-                // Вызов окна входа
-
+            }catch (e: ParseException) {
+                println("++++++ intersept error code = ${e.code}")
+                it.onError(Throwable(getErrorsMessage(e.code)))
             }
         }
     }

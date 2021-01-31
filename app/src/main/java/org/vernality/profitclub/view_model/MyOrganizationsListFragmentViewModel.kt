@@ -10,6 +10,7 @@ import io.reactivex.observers.DisposableSingleObserver
 import org.vernality.profitclub.model.data.*
 import org.vernality.profitclub.utils.DataSaver
 import org.vernality.profitclub.utils.ui.addStreamsIO_UI
+import org.vernality.profitclub.view.activities.DataRoleSaver
 import org.vernality.profitclub.view_model.BaseViewModel
 
 class MyOrganizationsListFragmentViewModel(appContext: Application) : BaseViewModel<AppState>(appContext) {
@@ -17,11 +18,20 @@ class MyOrganizationsListFragmentViewModel(appContext: Application) : BaseViewMo
 
     data class MyOrganizationsData(val dataOrg:List<Organization>, val dataSup:List<Supplier>, val dataMem:List<Organization>)
 
+    private val liveDataForLogOutResult: MutableLiveData<AppState> = MutableLiveData()
+
     fun getLiveDataAndStartGetResult(): LiveData<AppState> {
 
         getResult()
 
         return liveDataForViewToObserve
+    }
+
+    fun getLiveDataAndStartGetResultForLogOut(): LiveData<AppState> {
+
+        getResultForLogOut()
+
+        return liveDataForLogOutResult
     }
 
 
@@ -31,6 +41,15 @@ class MyOrganizationsListFragmentViewModel(appContext: Application) : BaseViewMo
                 .addStreamsIO_UI()
                 .doOnSubscribe { liveDataForViewToObserve.value = AppState.Loading(null) }
                 .subscribeWith(getObserver())
+        )
+    }
+
+    private fun getResultForLogOut(){
+        compositeDisposable.add(
+            interactor.logOut()
+                .addStreamsIO_UI()
+                .doOnSubscribe { liveDataForViewToObserve.value = AppState.Loading(null) }
+                .subscribeWith(getCompletableObserver())
         )
     }
 
@@ -53,5 +72,23 @@ class MyOrganizationsListFragmentViewModel(appContext: Application) : BaseViewMo
             }
 
         }
+    }
+
+    private fun getCompletableObserver(): DisposableCompletableObserver {
+        return object : DisposableCompletableObserver() {
+
+            override fun onError(e: Throwable) {
+                liveDataForLogOutResult.value = AppState.Error(e)
+            }
+
+            override fun onComplete() {
+                liveDataForLogOutResult.value = AppState.Success<Unit>(Unit)
+            }
+
+        }
+    }
+
+    override fun onCleared() {
+        compositeDisposable.clear()
     }
 }
