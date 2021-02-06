@@ -121,9 +121,8 @@ class RegistrationFragment : Fragment() {
             is AppState.Error -> {
                 loadingLayout.visibility = View.GONE
                 errorResultDialog =
-                    ErrorResultDialogFragment.newInstance(description = appState.error.message.toString())
-                Toast.makeText(requireActivity(), "Error \n ${appState.error}", Toast.LENGTH_LONG).show()
-                errorResultDialog.show(parentFragmentManager, this@RegistrationFragment.toString())
+                    ErrorResultDialogFragment.newInstance(description = appState.error.message?:getString(R.string._minus1))
+                errorResultDialog.show(parentFragmentManager, this.toString())
             }
         }
     }

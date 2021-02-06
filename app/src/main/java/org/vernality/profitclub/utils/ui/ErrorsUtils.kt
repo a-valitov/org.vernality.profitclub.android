@@ -15,6 +15,7 @@ class ErrorsUtils{
 
             when(code){
 
+                101 -> return context.resources.getString(R.string._101)
                 122 -> return context.resources.getString(R.string._122)
                 129 -> return context.resources.getString(R.string._129)
                 130 -> return context.resources.getString(R.string._130)
@@ -36,6 +37,8 @@ class ErrorsUtils{
                 1 -> return context.resources.getString(R.string._1)
                 2 -> return context.resources.getString(R.string._2)
                 3 -> return context.resources.getString(R.string._3)
+                70 -> return context.resources.getString(R.string._70)
+                else -> return ""
 
             }
 

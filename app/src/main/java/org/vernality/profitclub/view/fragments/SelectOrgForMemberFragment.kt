@@ -33,6 +33,7 @@ class SelectOrgForMemberFragment : Fragment() {
 
     lateinit var backCL: ConstraintLayout
     lateinit var userName: TextView
+    private lateinit var errorResultDialog: ErrorResultDialogFragment
 
     private val observer = Observer<AppState> { renderData(it) }
 
@@ -125,7 +126,9 @@ class SelectOrgForMemberFragment : Fragment() {
                 Toast.makeText(requireActivity(), "Loading", Toast.LENGTH_LONG).show()
             }
             is AppState.Error -> {
-                Toast.makeText(requireActivity(), "Error \n ${appState.error}", Toast.LENGTH_LONG).show()
+                errorResultDialog =
+                    ErrorResultDialogFragment.newInstance(description = appState.error.message?:getString(R.string._minus1))
+                errorResultDialog.show(parentFragmentManager, this.toString())
             }
         }
     }
@@ -144,7 +147,9 @@ class SelectOrgForMemberFragment : Fragment() {
                 Toast.makeText(requireActivity(), "Loading", Toast.LENGTH_LONG).show()
             }
             is AppState.Error -> {
-                Toast.makeText(requireActivity(), "Error \n ${appState.error}", Toast.LENGTH_LONG).show()
+                errorResultDialog =
+                    ErrorResultDialogFragment.newInstance(description = appState.error.message?:getString(R.string._minus1))
+                errorResultDialog.show(parentFragmentManager, this.toString())
             }
         }
     }

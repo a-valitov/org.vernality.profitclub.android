@@ -54,6 +54,8 @@ class LoginFragment : Fragment() {
 
     private val observer = Observer<AppState> { renderData(it) }
 
+    private lateinit var errorResultDialog: ErrorResultDialogFragment
+
     val compos = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -114,7 +116,9 @@ class LoginFragment : Fragment() {
             }
             is AppState.Error -> {
                 loadingLayout.visibility = View.GONE
-                Toast.makeText(requireActivity(), "Error \n ${appState.error}", Toast.LENGTH_LONG).show()
+                errorResultDialog =
+                    ErrorResultDialogFragment.newInstance(description = appState.error.message?:getString(R.string._minus1))
+                errorResultDialog.show(parentFragmentManager, this.toString())
             }
         }
     }

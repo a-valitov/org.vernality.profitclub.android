@@ -38,6 +38,8 @@ class RoleSelectFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private lateinit var errorResultDialog: ErrorResultDialogFragment
+
     private val observer = Observer<AppState> { renderData(it) }
 
     lateinit var radioGroup: RadioGroup
@@ -106,7 +108,9 @@ class RoleSelectFragment : Fragment() {
                 Toast.makeText(requireActivity(), "Loading", Toast.LENGTH_LONG).show()
             }
             is AppState.Error -> {
-                Toast.makeText(requireActivity(), "Error \n ${appState.error}", Toast.LENGTH_LONG).show()
+                errorResultDialog =
+                    ErrorResultDialogFragment.newInstance(description = appState.error.message?:getString(R.string._minus1))
+                errorResultDialog.show(parentFragmentManager, this.toString())
             }
         }
     }
