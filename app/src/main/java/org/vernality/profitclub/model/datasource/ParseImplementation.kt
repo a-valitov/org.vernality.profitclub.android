@@ -322,51 +322,21 @@ class ParseImplementation() : DataSource {
 
 
     override fun becameMemberOfOrganization(member: Member, organization: Organization): Completable {
-
         return Completable.create {
-            val currentUser = ParseUser.getCurrentUser()
-            if (currentUser != null) {
-
-                member.saveInBackground{ e->
-                    if(e == null)
-                    {
-                        val relation: ParseRelation<ParseObject> = currentUser.getRelation("member")
-                        relation.add(member)
-                        currentUser.saveInBackground{ e->
-                            if(e == null)
-                            {
-
-                            }
-                            else
-                            { it.onError(e)
-                            }
+            member.saveInBackground{ e ->
+                if(e == null) {
+                    val params = HashMap<String, String>()
+                    params["organizationId"] = organization.objectId
+                    params["memberId"] = member.objectId
+                    ParseCloud.callFunctionInBackground("applyAsAMemberToOrganization", params) { param: Any?, e: ParseException? ->
+                        if(e == null) {
+                            it.onComplete()
+                        } else {
+                            it.onError(e)
                         }
-
-                        Thread.sleep(1000)
-
-                        val relation2: ParseRelation<ParseObject> = organization.getRelation("members")
-                        relation2.add(member)
-                        organization.saveInBackground{ e->
-                            if(e == null)
-                            {
-                                it.onComplete()
-                            }
-                            else
-                            { it.onError(e)
-                                println(e)
-                            }
-                        }
-
-
-
                     }
-                    else it.onError(e)
                 }
-
-
-            } else {
-                // Вызов окна входа
-                println("------необходимо войти в систему---")
+                else it.onError(e)
             }
         }
     }
