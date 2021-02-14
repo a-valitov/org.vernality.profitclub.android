@@ -14,8 +14,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".view.supplier.SupplierActivity"
-            android:theme="@style/AppTheme.DarkStatusBarNoTranslucentNavigation">
+            android:theme="@style/AppTheme.DarkStatusBarNoTranslucentNavigation"
+            android:windowSoftInputMode="adjustPan">
 
         </activity>
 

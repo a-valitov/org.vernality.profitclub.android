@@ -125,7 +125,7 @@ class StocksPlaceholderFragment : Fragment() {
         rv = root.rv_list
         rv.layoutManager = LinearLayoutManager(requireActivity())
 
-        viewModel.page.observe(this, Observer<Int> {
+        viewModel.page.observe(viewLifecycleOwner, Observer<Int> {
             page = it
             viewModel.getLiveDataAndStartGetResult(page).observe(requireActivity(), observer)
         })

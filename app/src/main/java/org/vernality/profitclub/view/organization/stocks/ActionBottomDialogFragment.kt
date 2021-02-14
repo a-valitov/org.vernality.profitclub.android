@@ -118,7 +118,7 @@ class ActionBottomDialogFragment : BottomSheetDialogFragment() {
         }
 
 
-        contactNameTV.setText((action.supplier as Supplier).fetchIfNeeded<Supplier>().contactName)
+        contactNameTV.setText((action.supplier as Supplier).contactName)
         actionsMessageTV.setText(action.message)
         actionsDescriptionTV.setText(action.descriptionOf)
         actionsPeriodTV.setText(Utils.getDataOfMyFormat(action.startDate!!)+

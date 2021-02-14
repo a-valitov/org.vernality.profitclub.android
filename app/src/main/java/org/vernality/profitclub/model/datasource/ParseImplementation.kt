@@ -345,7 +345,13 @@ class ParseImplementation() : DataSource {
                 if (currentUser != null) {
 
                     val query: ParseQuery<Action> = ParseQuery.getQuery(Action::class.java)
-                    it.onSuccess( query.find() )
+                    val actions = query.find().apply { forEach { action ->
+
+                        action.supplier?.fetchIfNeeded<Supplier>()
+
+                    } }
+
+                    it.onSuccess( actions )
 
                 }else {
                     // Вызов окна входа
