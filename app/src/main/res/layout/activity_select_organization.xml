@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".view.activities.EnterRoleActivity"
     android:background="@drawable/main_background"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:id="@+id/layout_container">
 
     <fragment
         android:id="@+id/nav_host_fragment_container"

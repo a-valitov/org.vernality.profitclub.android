@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -22,6 +23,7 @@ import kotlinx.android.synthetic.main.card_login.view.*
 import kotlinx.android.synthetic.main.card_registration.view.cv_bottom_sheet
 import kotlinx.android.synthetic.main.card_registration.view.et_enter_login
 import kotlinx.android.synthetic.main.card_registration.view.et_enter_password
+import kotlinx.android.synthetic.main.fragment_login.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.vernality.profitclub.R
 import org.vernality.profitclub.model.data.AppState
@@ -48,7 +50,11 @@ class LoginFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private lateinit var loadingLayout: FrameLayout
+
     private val observer = Observer<AppState> { renderData(it) }
+
+    private lateinit var errorResultDialog: ErrorResultDialogFragment
 
     val compos = CompositeDisposable()
 
@@ -87,6 +93,7 @@ class LoginFragment : Fragment() {
         val enterBTN = root.btn_enter
         val registerAccountTV = root.tv_register
         val forgotPasswordTV = root.tv_forgotPassword
+        loadingLayout = root.loading_frame_layout
 
         setRxToLoginET(loginET)
         setRxToPassET(editPasswordET)
@@ -100,13 +107,18 @@ class LoginFragment : Fragment() {
         when (appState) {
             is AppState.Success<*> -> {
                 navigateTo()
+                loadingLayout.visibility = View.GONE
 
             }
             is AppState.Loading -> {
+                loadingLayout.visibility = View.VISIBLE
                 Toast.makeText(requireActivity(), "Loading", Toast.LENGTH_LONG).show()
             }
             is AppState.Error -> {
-                Toast.makeText(requireActivity(), "Error \n ${appState.error}", Toast.LENGTH_LONG).show()
+                loadingLayout.visibility = View.GONE
+                errorResultDialog =
+                    ErrorResultDialogFragment.newInstance(description = appState.error.message?:getString(R.string._minus1))
+                errorResultDialog.show(parentFragmentManager, this.toString())
             }
         }
     }

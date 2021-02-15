@@ -1,6 +1,8 @@
 package org.vernality.profitclub.view.fragments
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,10 +11,13 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.setMargins
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxbinding2.widget.RxTextView
@@ -25,6 +30,8 @@ import kotlinx.android.synthetic.main.fragment_reset_password.view.loading_frame
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.vernality.profitclub.R
 import org.vernality.profitclub.model.data.AppState
+import org.vernality.profitclub.view.activities.MainActivity
+import org.vernality.profitclub.view.activities.OnBackPresser
 import org.vernality.profitclub.view_model.ResetPasswordFragmentViewModel
 
 
@@ -116,8 +123,7 @@ class ResetPasswordFragment : Fragment() {
                 loadingLayout.visibility = View.GONE
                 setAlertColor()
                 errorResultDialog =
-                    ErrorResultDialogFragment.newInstance(description = appState.error.message.toString())
-                Toast.makeText(requireActivity(), "Error \n ${appState.error}", Toast.LENGTH_LONG).show()
+                    ErrorResultDialogFragment.newInstance(description = appState.error.message?:getString(R.string._minus1))
                 errorResultDialog.show(parentFragmentManager, this.toString())
 
             }
@@ -136,14 +142,12 @@ class ResetPasswordFragment : Fragment() {
     fun navigateTo(){
 
         //findNavController().navigate(R.id.action_registrationFragment_to_roleFragment)
-        findNavController().navigate(R.id.action_global_loginFragment)
+        val intent = Intent(requireActivity(), MainActivity::class.java)
+        requireActivity().startActivity(intent)
+        requireActivity().onBackPressed()
+//        findNavController().navigate(R.id.action_global_loginFragment)
         Toast.makeText(requireActivity(), "TV resume clicked ", Toast.LENGTH_LONG).show()
     }
-
-
-
-
-
 
 
     private fun setRxBackTV(backTV: ConstraintLayout) {
@@ -151,7 +155,8 @@ class ResetPasswordFragment : Fragment() {
             .subscribe {
                 Toast.makeText(requireActivity(), "TV enter clicked ", Toast.LENGTH_LONG).show()
 
-                findNavController().navigate(R.id.action_loginFragment_to_registrationFragment2)
+                navigateTo()
+                requireActivity().onBackPressed()
 
             }
 
@@ -213,4 +218,6 @@ class ResetPasswordFragment : Fragment() {
                 }
             }
     }
+
+
 }

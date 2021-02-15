@@ -9,7 +9,7 @@ interface DataSource {
 
     fun getData(password: String, email:String):User?
 
-
+    fun isUserLogged(): Boolean
 
     fun registration(user: User):Completable
 

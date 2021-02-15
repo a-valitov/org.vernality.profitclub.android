@@ -27,6 +27,8 @@ class MainInteractor(
 
     }
 
+    fun isUserLogged() = repository.isUserLogged()
+
     fun logOut(): Completable{
 
         return repository.logOut()

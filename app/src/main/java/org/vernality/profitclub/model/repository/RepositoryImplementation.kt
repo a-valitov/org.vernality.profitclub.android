@@ -17,6 +17,8 @@ class RepositoryImplementation(private val dataSource: DataSource) :
         return ParseImplementation().getData(password, email)
     }
 
+    override fun isUserLogged() = dataSource.isUserLogged()
+
     override fun registration(user: User) = dataSource.registration(user)
 
     override fun signIn(user: User) = dataSource.signIn(user)

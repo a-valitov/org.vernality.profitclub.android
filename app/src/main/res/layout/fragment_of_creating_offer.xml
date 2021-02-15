@@ -2,6 +2,7 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -10,8 +11,8 @@
         android:layout_height="match_parent"
         android:background="@color/colorAccent">
 
-            <LinearLayout
-                android:id="@+id/linearLayout3"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
@@ -31,7 +32,10 @@
                     android:clickable="true"
                     android:focusable="true"
                     app:cardBackgroundColor="@color/colorTransient"
-                    app:cardCornerRadius="5dp">
+                    app:cardCornerRadius="5dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <com.google.android.material.imageview.ShapeableImageView
                         android:id="@+id/iv_offers_image"
@@ -108,7 +112,11 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="21dp">
+                    android:layout_marginTop="15dp"
+                    tools:layout_editor_absoluteX="30dp"
+                    android:id="@+id/layout_enter_message_offer"
+                    app:layout_constraintTop_toBottomOf="@+id/card_add_photo"
+                    tools:visibility="visible">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_enter_message_offer"
@@ -151,32 +159,36 @@
                 </RelativeLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:layout_marginTop="15dp"
                     android:id="@+id/rv_offers_doc"
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintTop_toBottomOf="@+id/layout_enter_message_offer"
+                    tools:layout_editor_absoluteX="30dp"
+                    tools:visibility="visible">
 
                 </androidx.recyclerview.widget.RecyclerView>
 
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_offer_create"
-                    android:layout_width="354dp"
+                    android:layout_width="match_parent"
+                    android:layout_marginBottom="50dp"
                     android:layout_height="52dp"
-                    android:layout_marginTop="100dp"
                     android:backgroundTint="@color/colorStatusBarDark"
                     android:gravity="center_horizontal|center_vertical"
                     android:text="@string/create_commercial_offer"
                     android:textAllCaps="false"
                     android:textColor="@color/colorAccent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.491"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+                    app:layout_constraintBottom_toBottomOf="@+id/layout_container"
+                    tools:visibility="visible" />
 
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
     </FrameLayout>
 

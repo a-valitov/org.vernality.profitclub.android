@@ -6,26 +6,29 @@ import android.os.Bundle
 import android.view.*
 import android.widget.*
 import androidx.appcompat.widget.PopupMenu
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.marginBottom
+import androidx.core.view.setMargins
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.snackbar.Snackbar.SnackbarLayout
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_my_organizations_list.view.*
-import kotlinx.android.synthetic.main.fragment_my_organizations_list.view.loading_frame_layout
-import kotlinx.android.synthetic.main.list_layout.view.*
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.vernality.profitclub.R
 import org.vernality.profitclub.interactors.MainInteractor
 import org.vernality.profitclub.model.data.AppState
-import org.vernality.profitclub.model.data.CommercialOffer
 import org.vernality.profitclub.model.data.Organization
 import org.vernality.profitclub.model.data.Supplier
 import org.vernality.profitclub.model.repository.RepositoryImplementation
 import org.vernality.profitclub.utils.DataSaver
 import org.vernality.profitclub.view.activities.EnterRoleActivity
 import org.vernality.profitclub.view.activities.MainActivity
+import org.vernality.profitclub.view.activities.OnBackPresser
 import org.vernality.profitclub.view.adapters.MyOrganizationsListRVAdapter
 import org.vernality.profitclub.view.adapters.MyRolesListDataAdapter
 import org.vernality.profitclub.view.member.MemberActivity
@@ -42,7 +45,7 @@ private const val ARG_PARAM2 = "param2"
 
 
 
-class DataProcessingFragment : Fragment() {
+class DataProcessingFragment : Fragment(), OnBackPressedListener {
 
     val compos = CompositeDisposable()
 
@@ -57,12 +60,16 @@ class DataProcessingFragment : Fragment() {
     lateinit var layoutOrganizationsList: LinearLayout
     lateinit var layoutSuppliersList: LinearLayout
     lateinit var layoutMembersList: LinearLayout
+    lateinit var layoutPlaceSnack: CoordinatorLayout
 
 
     private val viewModel by viewModel<MyOrganizationsListFragmentViewModel>()
     private val adapter: MyOrganizationsListRVAdapter by lazy { MyOrganizationsListRVAdapter(onListItemClickListener) }
 
+    private lateinit var liveDataForLogOutResult: LiveData<AppState>
+
     private val observer = Observer<AppState> { renderData(it) }
+    private val observerForLogOutResult = Observer<AppState> { renderDataForLogOut(it) }
 
     private lateinit var errorResultDialog: ErrorResultDialogFragment
     private lateinit var loadingLayout: FrameLayout
@@ -168,6 +175,7 @@ class DataProcessingFragment : Fragment() {
         layoutMembersList = root.layout_MembersList
 //        rv = root.rv_myOrganizations_list
 //        rv.layoutManager = LinearLayoutManager(requireActivity())
+        layoutPlaceSnack = root.place_snack
 
         initPopupMenu(settingsIV)
 
@@ -236,6 +244,26 @@ class DataProcessingFragment : Fragment() {
         }
     }
 
+    private fun renderDataForLogOut(appState: AppState) {
+        when (appState) {
+            is AppState.Success<*> -> {
+                loadingLayout.visibility = View.GONE
+                val intent = Intent(requireActivity(), MainActivity::class.java)
+                startActivity(intent)
+
+            }
+            is AppState.Loading -> {
+                loadingLayout.visibility = View.VISIBLE
+            }
+            is AppState.Error -> {
+                loadingLayout.visibility = View.GONE
+                errorResultDialog =
+                    ErrorResultDialogFragment.newInstance(description = appState.error.message?:getString(R.string._minus1))
+                errorResultDialog.show(parentFragmentManager, this.toString())
+            }
+        }
+    }
+
 
     private fun initPopupMenu(view: View){
         val wrapper = ContextThemeWrapper(requireActivity(), R.style.AppTheme_PopupOverlay)
@@ -245,9 +273,7 @@ class DataProcessingFragment : Fragment() {
             when (it.itemId) {
                 R.id.item_menu_exit -> {
                     Toast.makeText(requireActivity(), "exit clicked", Toast.LENGTH_LONG).show()
-                    interactor.logOut()
-                    val intent = Intent(requireActivity(), MainActivity::class.java)
-                    startActivity(intent)
+                    viewModel.getLiveDataAndStartGetResultForLogOut().observe(requireActivity(), observerForLogOutResult)
                     true
                 }
                 else -> false
@@ -304,6 +330,8 @@ class DataProcessingFragment : Fragment() {
 
     }
 
+
+
     companion object {
         /**
          * Use this factory method to create a new instance of
@@ -322,5 +350,31 @@ class DataProcessingFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    override fun onBackPressed(onBackPresser: OnBackPresser) {
+
+
+        val snackbar =
+            Snackbar.make(layoutPlaceSnack,"", Snackbar.LENGTH_SHORT)
+
+        snackbar.addCallback(object : Snackbar.Callback(){
+            override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                super.onDismissed(transientBottomBar, event)
+                onBackPresser.setIsBackPress()
+            }
+        })
+        snackbar.setText(getString(R.string.back_pressed_retry))
+        var view = snackbar.view
+        val tv =
+            view.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView
+        tv.textAlignment = View.TEXT_ALIGNMENT_CENTER
+        snackbar.view.setBackground(resources.getDrawable(R.drawable.card_info_lite))
+        val params = view.layoutParams as CoordinatorLayout.LayoutParams
+        params.gravity = Gravity.TOP
+        params.setMargins(800)
+
+
+        snackbar.show()
     }
 }

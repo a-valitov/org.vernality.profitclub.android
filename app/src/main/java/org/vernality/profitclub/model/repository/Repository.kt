@@ -10,6 +10,8 @@ interface Repository{
 
     fun getUser(password: String, email: String):User?
 
+    fun isUserLogged(): Boolean
+
     fun registration(user: User):Completable
 
     fun signIn(user: User):Completable

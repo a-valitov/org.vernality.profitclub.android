@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
+import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -60,6 +61,8 @@ class EnterMemberDataFragment : Fragment() {
     lateinit var roleTV: TextView
     lateinit var agreeCB: CheckBox
     lateinit var roleHideTV: TextView
+    private lateinit var loadingLayout: FrameLayout
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -111,6 +114,8 @@ class EnterMemberDataFragment : Fragment() {
         roleTV = root.tittle_role
         agreeCB = root.cb_agree
         roleHideTV = root.tv_input_hint
+        loadingLayout = root.loading_frame_layout
+
 
         setRxToNameOfOrgET(firstNameOET)
         setRxToINNET(lastNameET)
@@ -125,12 +130,15 @@ class EnterMemberDataFragment : Fragment() {
         when (appState) {
             is AppState.Success<*> -> {
                 navigateTo()
+                loadingLayout.visibility = View.GONE
             }
             is AppState.Loading -> {
                 Toast.makeText(requireActivity(), "Loading", Toast.LENGTH_LONG).show()
+                loadingLayout.visibility = View.VISIBLE
             }
             is AppState.Error -> {
                 Toast.makeText(requireActivity(), "Error \n ${appState.error}", Toast.LENGTH_LONG).show()
+                loadingLayout.visibility = View.GONE
             }
         }
     }
