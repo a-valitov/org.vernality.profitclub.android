@@ -1,0 +1,63 @@
+default_platform(:android)
+
+before_all do
+  sh("rm", "-rf", "org.vernality.profitclub.keystore")
+  sh("git", "clone", "git@github.com:vernality/org.vernality.profitclub.keystore.git")
+  ENV["FIREBASE_REFRESH_TOKEN"] = File.read("./org.vernality.profitclub.keystore/FirebaseRefreshToken")
+  ENV["STORE_PASSWORD"] = File.read("./org.vernality.profitclub.keystore/android.injected.signing.store.password")
+  ENV["KEY_ALIAS"] = File.read("./org.vernality.profitclub.keystore/android.injected.signing.key.alias")
+  ENV["KEY_PASSWORD"] = File.read("./org.vernality.profitclub.keystore/android.injected.signing.key.password")
+  ENV["FIREBASE_APP"] = File.read("./org.vernality.profitclub.keystore/android.firebase.app.name")
+end
+
+def remove_artifacts
+  sh("rm", "-rf", "org.vernality.profitclub.keystore")
+end
+
+platform :android do
+  desc "Runs all the tests"
+  lane :test do
+    gradle(task: "test")
+  end
+
+  lane :alpha do |options|
+    BUILD_NUMBER = options[:build_number]
+    UI.crash!('build_number parameter is required') unless BUILD_NUMBER
+
+    android_set_version_code(
+      version_code: BUILD_NUMBER
+    )
+
+    changelog = changelog_from_git_commits(
+      commits_count: 2,
+      pretty: "• %s",
+      merge_commit_filtering: "only_include_merges"
+    )
+
+    gradle(
+      task: "assemble",
+      build_type: "Release",
+      print_command: false,
+      properties: {
+        "android.injected.signing.store.file" => ENV["PWD"] + "/fastlane/org.vernality.profitclub.keystore/upload-keystore.jks",
+        "android.injected.signing.store.password" => ENV["STORE_PASSWORD"],
+        "android.injected.signing.key.alias" => ENV["KEY_ALIAS"],
+        "android.injected.signing.key.password" => ENV["KEY_PASSWORD"]
+      }
+    )
+    firebase_app_distribution(
+      app: ENV["FIREBASE_APP"],
+      firebase_cli_token: ENV["FIREBASE_REFRESH_TOKEN"],
+      release_notes: changelog,
+      groups: "android-alpha"
+    )
+  end
+
+  error do |lane, exception|
+    remove_artifacts()
+  end
+end
+
+after_all do
+  remove_artifacts()
+end

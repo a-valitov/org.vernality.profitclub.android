@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "485137165982",
+    "project_id": "profitclub-vernality-org",
+    "storage_bucket": "profitclub-vernality-org.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:485137165982:android:4963d7b76541e325e5d58f",
+        "android_client_info": {
+          "package_name": "org.vernality.profitclub"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "485137165982-jnr9h5kv8p7vh48o9prhth3mh1qk665o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBq-X5wcClUHciIsMt9dM5Az2hFF2C3Rmc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "485137165982-jnr9h5kv8p7vh48o9prhth3mh1qk665o.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "485137165982-h8v6k01p7usv10v1s408eaulqi3pr35a.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.vernality.profitclub",
+                "app_store_id": "1547175155"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

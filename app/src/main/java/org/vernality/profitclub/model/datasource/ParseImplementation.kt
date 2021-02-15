@@ -30,15 +30,16 @@ class ParseImplementation() : DataSource {
         user.email = _user.email
 
         return Completable.create {
-
-            try {
-                user.signUp()
-                it.onComplete()
-            }catch (e: ParseException) {
-                println("ошибка регистрации, code =  "+ e.code+"   , m ="+e.message)
-                it.onError(Throwable(getErrorsMessage(e.code).let { if(it.isEmpty()) e.message else it}))
+            user.signUpInBackground { e ->
+                if (e == null) {
+                    val installation = ParseInstallation.getCurrentInstallation()
+                    installation.put("user", user)
+                    installation.saveEventually()
+                    it.onComplete()
+                } else {
+                    it.onError(e)
+                }
             }
-
         }
 
     }
@@ -64,13 +65,17 @@ class ParseImplementation() : DataSource {
 
         return Completable.create {
 
-            try {
-                ParseUser.logIn(user.login, user.password)
-                it.onComplete()
-            }catch (e: ParseException) {
-                it.onError(Throwable(getErrorsMessage(e.code).let { if(it.isEmpty()) e.message else it}))
+            ParseUser.logInInBackground(user.login, user.password) { user, e ->
+                if (user != null) {
+                    val installation = ParseInstallation.getCurrentInstallation()
+                    installation.put("user", user)
+                    installation.saveEventually()
+                    it.onComplete()
+                } else {
+                    println("ошибка входа в аккаунт  "+e)
+                    it.onError(e)
+                }
             }
-
         }
     }
 

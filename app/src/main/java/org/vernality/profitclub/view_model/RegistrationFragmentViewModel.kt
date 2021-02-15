@@ -126,19 +126,20 @@ class RegistrationFragmentViewModel(appContext: Application) : BaseViewModel<App
     }
 
     private fun checkFinishPassword(password: String?):Boolean{
-        val PASSWORD_REGEX = """^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#${'$'}%!\-_?&])(?=\S+${'$'}).{6,40}""".toRegex()
-        if(!password.isNullOrBlank() && !password.isNullOrEmpty()){
-            if(PASSWORD_REGEX.matches(password)){
-                return true
-            }else{
-                liveDataForViewToObserve.value = AppState.Error(Throwable("Некорректный пароль." +
-                        " Длина пароля должна быть от 6 до 40 символов, пароль должен включать в себя цифры, заглавные буквы и специальные символы"))
-                return false
-            }
-        } else {
-            liveDataForViewToObserve.value = AppState.Error(Throwable("Необходимо ввести пароль"))
-            return false
-        }
+        return true
+//        val PASSWORD_REGEX = """^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#${'$'}%!\-_?&])(?=\S+${'$'}).{6,40}""".toRegex()
+//        if(!password.isNullOrBlank() && !password.isNullOrEmpty()){
+//            if(PASSWORD_REGEX.matches(password)){
+//                return true
+//            }else{
+//                liveDataForViewToObserve.value = AppState.Error(Throwable("Некорректный пароль." +
+//                        " Длина пароля должна быть от 6 до 40 символов, пароль должен включать в себя цифры, заглавные буквы и специальные символы"))
+//                return false
+//            }
+//        } else {
+//            liveDataForViewToObserve.value = AppState.Error(Throwable("Необходимо ввести пароль"))
+//            return false
+//        }
 
     }
 
