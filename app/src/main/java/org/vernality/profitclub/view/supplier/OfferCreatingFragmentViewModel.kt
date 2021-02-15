@@ -2,6 +2,7 @@ package org.vernality.profitclub.view.supplier
 
 import android.annotation.SuppressLint
 import android.app.Application
+import android.net.ParseException
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -110,6 +111,8 @@ class OfferCreatingFragmentViewModel(appContext: Application) : BaseViewModel<Ap
         return object : DisposableCompletableObserver() {
 
             override fun onError(e: Throwable) {
+                println("---- error.code = ${e.message}")
+
                 liveDataForViewToObserve.value = AppState.Error(e)
             }
 

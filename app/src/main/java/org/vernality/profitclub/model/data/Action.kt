@@ -53,9 +53,11 @@ class Action: ParseObject(){
         get() = field
         set(value){ field = value }
 
-    var supplier: ParseObject?
-        get() = getParseObject("supplier")
+    var supplier: Supplier?
+        get() = getParseObject("supplier") as Supplier
         set(value){ if(value != null) put("supplier", value)}
+
+    var supplier2:Supplier? = null
 
     var statePeriod: StatePeriod? = null
 

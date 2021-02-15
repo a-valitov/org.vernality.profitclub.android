@@ -125,7 +125,7 @@ class StocksPlaceholderFragment : Fragment() {
         rv = root.rv_list
         rv.layoutManager = LinearLayoutManager(requireActivity())
 
-        viewModel.page.observe(this, Observer<Int> {
+        viewModel.page.observe(viewLifecycleOwner, Observer<Int> {
             page = it
             viewModel.getLiveDataAndStartGetResult(page).observe(requireActivity(), observer)
         })
@@ -159,8 +159,7 @@ class StocksPlaceholderFragment : Fragment() {
             is AppState.Error -> {
                 loadingLayout.visibility = View.GONE
                 errorResultDialog =
-                    ErrorResultDialogFragment.newInstance(description = appState.error.message.toString())
-                Toast.makeText(requireActivity(), "Error \n ${appState.error}", Toast.LENGTH_LONG).show()
+                    ErrorResultDialogFragment.newInstance(description = appState.error.message?:getString(R.string._minus1))
                 errorResultDialog.show(parentFragmentManager, this.toString())
             }
         }

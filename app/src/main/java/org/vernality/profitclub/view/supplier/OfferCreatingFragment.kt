@@ -91,6 +91,8 @@ class OfferCreatingFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_of_creating_offer, container, false)
 
+        println(resources.getString(R.string._122))
+
         initViews(view)
 
         return view
@@ -217,8 +219,7 @@ class OfferCreatingFragment : Fragment() {
             is AppState.Error -> {
                 loadingLayout.visibility = View.GONE
                 errorResultDialog =
-                    ErrorResultDialogFragment.newInstance(description = appState.error.message.toString())
-                Toast.makeText(requireActivity(), "Error \n ${appState.error}", Toast.LENGTH_LONG).show()
+                    ErrorResultDialogFragment.newInstance(description = appState.error.message?:getString(R.string._minus1))
                 errorResultDialog.show(parentFragmentManager, this.toString())
             }
         }
