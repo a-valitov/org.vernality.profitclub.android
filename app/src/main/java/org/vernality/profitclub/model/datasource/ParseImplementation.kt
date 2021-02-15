@@ -311,30 +311,21 @@ class ParseImplementation() : DataSource {
 
 
     override fun becameMemberOfOrganization(member: Member, organization: Organization): Completable {
-
         return Completable.create {
-
-            try {
-                val currentUser = ParseUser.getCurrentUser()
-                if (currentUser != null) {
-
-                    member.save()
-                    val relation: ParseRelation<ParseObject> = currentUser.getRelation(KEY_MEMBER)
-                    relation.add(member)
-                    currentUser.save()
-
-                    val relation2: ParseRelation<ParseObject> = organization.getRelation(KEY_MEMBERS)
-                    relation2.add(member)
-                    organization.save()
-
-                }else {
-                    // Вызов окна входа
-                    println("------необходимо войти в систему---")
+            member.saveInBackground{ e ->
+                if(e == null) {
+                    val params = HashMap<String, String>()
+                    params["organizationId"] = organization.objectId
+                    params["memberId"] = member.objectId
+                    ParseCloud.callFunctionInBackground("applyAsAMemberToOrganization", params) { param: Any?, e: ParseException? ->
+                        if(e == null) {
+                            it.onComplete()
+                        } else {
+                            it.onError(e)
+                        }
+                    }
                 }
-
-            }catch (e: ParseException) {
-                println("++++++ intersept error code = ${e.code}")
-                it.onError(Throwable(getErrorsMessage(e.code).let { if(it.isEmpty()) e.message else it}))
+                else it.onError(e)
             }
 
         }
