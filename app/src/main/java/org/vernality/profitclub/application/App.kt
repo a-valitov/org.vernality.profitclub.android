@@ -52,7 +52,7 @@ class App : Application() {
             Parse.Configuration.Builder(this)
                 .applicationId("org.vernality.alliance") // if defined
                 .clientKey("hWlREY7dvWb7sLpCVfZrReWNKPHh4uJT")
-                .server("https://alliance.vernality.net/parse")
+                .server("https://profitclub.vernality.org/parse")
                 .build()
         )
     }

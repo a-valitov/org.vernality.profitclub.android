@@ -320,7 +320,14 @@ class ParseImplementation() : DataSource {
 
                     val relation2: ParseRelation<ParseObject> = organization.getRelation(KEY_MEMBERS)
                     relation2.add(member)
-                    organization.save()
+                    val params = HashMap<String, String>()
+                    params["organizationId"] = organization.objectId
+                    params["memberId"] = member.objectId
+
+                    ParseCloud.callFunction<Any?>("applyAsAMemberToOrganization", params)
+
+
+                    it.onComplete()
 
                 }else {
                     // Вызов окна входа

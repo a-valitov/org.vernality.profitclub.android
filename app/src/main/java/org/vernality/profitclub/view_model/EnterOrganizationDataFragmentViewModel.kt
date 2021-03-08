@@ -32,7 +32,7 @@ class EnterOrganizationDataFragmentViewModel(appContext: Application) : BaseView
 
     fun getLiveDataAndStartGetResult(): LiveData<AppState> {
 
-        if(true) getResult()
+        if(checkFields()) getResult()
 
         return liveDataForViewToObserve
     }

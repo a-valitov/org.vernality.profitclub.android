@@ -22,6 +22,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import org.vernality.profitclub.R
 import org.vernality.profitclub.interactors.MainInteractor
 import org.vernality.profitclub.model.data.AppState
+import org.vernality.profitclub.model.data.Member
 import org.vernality.profitclub.model.data.Organization
 import org.vernality.profitclub.model.data.Supplier
 import org.vernality.profitclub.model.repository.RepositoryImplementation
@@ -128,12 +129,12 @@ class DataProcessingFragment : Fragment(), OnBackPressedListener {
             }
         }
 
-    private val onMemberListItemClickListener: MyRolesListDataAdapter.OnListItemClickListener<Organization> =
-        object : MyRolesListDataAdapter.OnListItemClickListener<Organization> {
-            override fun onItemClick(organization: Organization) {
-                DataSaver.setCurrentBusinessRole(organization)
+    private val onMemberListItemClickListener: MyRolesListDataAdapter.OnListItemClickListener<Member> =
+        object : MyRolesListDataAdapter.OnListItemClickListener<Member> {
+            override fun onItemClick(member: Member) {
+                DataSaver.setCurrentBusinessRole(member)
                 navigateToMyMember()
-                Toast.makeText(requireActivity(),organization.name, Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireActivity(),member.name, Toast.LENGTH_SHORT).show()
 //                viewModel.setOrganization(organization)
 //                navigateTo()
             }
@@ -217,7 +218,7 @@ class DataProcessingFragment : Fragment(), OnBackPressedListener {
                     layoutSuppliersList,
                     R.layout.item_processing_list_recyclerview,
                     layoutMembersList,
-                    R.layout.item_list_org_for_member_recyclerview,
+                    R.layout.item_list_member_short,
                     data,
                     onOrganizationListItemClickListener,
                     onSupplierListItemClickListener,

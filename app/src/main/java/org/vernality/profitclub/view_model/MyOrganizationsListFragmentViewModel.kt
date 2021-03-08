@@ -16,7 +16,7 @@ import org.vernality.profitclub.view_model.BaseViewModel
 class MyOrganizationsListFragmentViewModel(appContext: Application) : BaseViewModel<AppState>(appContext) {
 
 
-    data class MyOrganizationsData(val dataOrg:List<Organization>, val dataSup:List<Supplier>, val dataMem:List<Organization>)
+    data class MyOrganizationsData(val dataOrg:List<Organization>, val dataSup:List<Supplier>, val dataMem:List<Member>)
 
     private val liveDataForLogOutResult: MutableLiveData<AppState> = MutableLiveData()
 
