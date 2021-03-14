@@ -24,6 +24,7 @@ import org.vernality.profitclub.R
 import org.vernality.profitclub.model.data.Action
 import org.vernality.profitclub.model.data.Organization
 import org.vernality.profitclub.view.activities.MainActivity
+import org.vernality.profitclub.view.activities.SelectOrganizationActivity
 import java.lang.reflect.Field
 import java.text.DateFormat
 import java.util.*
@@ -94,12 +95,19 @@ class SupplierActivity : AppCompatActivity() {
             when (it.itemId) {
                 R.id.item_menu_exit -> {
                     Toast.makeText(this, "exit clicked", Toast.LENGTH_LONG).show()
+                    navigateToMyOrganizationList()
 
                     true
                 }
                 else -> false
             }
         }
+
+    }
+
+    private fun navigateToMyOrganizationList(){
+        val intent = Intent(this, SelectOrganizationActivity::class.java)
+        startActivity(intent)
 
     }
 }
