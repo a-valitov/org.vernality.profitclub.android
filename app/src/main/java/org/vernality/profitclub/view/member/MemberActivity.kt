@@ -1,6 +1,7 @@
 package org.vernality.profitclub.view.member
 
 import android.content.Intent
+import android.icu.text.TimeZoneFormat
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.ContextThemeWrapper
@@ -10,22 +11,52 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.appcompat.widget.Toolbar
+import com.parse.ParseObject
+import org.koin.android.ext.android.get
 import org.vernality.profitclub.R
+import org.vernality.profitclub.utils.ui.MyPreferences
+import org.vernality.profitclub.utils.ui.WAS_ADMIN_APPROVAL_SHOWN
 import org.vernality.profitclub.view.activities.SelectOrganizationActivity
+import org.vernality.profitclub.view.fragments.SuccessResultDialogFragment
+import org.vernality.profitclub.view.fragments.TypeDialogFragment
 import java.lang.reflect.Field
+import java.lang.reflect.Member
 
 class MemberActivity : AppCompatActivity() {
 
     lateinit var settingsIV: ImageView
     lateinit var popupMenu:PopupMenu
+    private lateinit var successResultDialog: SuccessResultDialogFragment
+    var member: ParseObject? = null
+    lateinit var pref: MyPreferences
+    var objIdSet: Set<String>? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_member)
+
+        val arguments = intent.extras
+        if(arguments != null) {
+            member = arguments.getParcelable<ParseObject>("member")
+        }
+
         val toolbar: Toolbar = findViewById(R.id.myToolbar)
         setSupportActionBar(toolbar)
         initViews()
 
+
+        pref = get<MyPreferences> ()
+        objIdSet = pref.getStringSet(WAS_ADMIN_APPROVAL_SHOWN)
+        val memberTemp = member
+        val objIdSetTemp = objIdSet
+
+        if(objIdSetTemp != null && objIdSetTemp.size > 0){
+            memberTemp?.let {
+                val id = it.objectId
+                if(!objIdSetTemp.contains(id)) showSuccessDialog()
+            }
+        } else showSuccessDialog()
 
     }
 
@@ -70,6 +101,33 @@ class MemberActivity : AppCompatActivity() {
                 else -> false
             }
         }
+
+    }
+
+    private fun showSuccessDialog(){
+        successResultDialog =
+            SuccessResultDialogFragment.newInstance(
+                TypeDialogFragment.RequestApprovedAdmin
+            ) {
+                member?.let{
+                    var objIdSetTemp = objIdSet
+                    if(objIdSetTemp != null && objIdSetTemp.size > 0){
+                        if(!objIdSetTemp.contains(it.objectId)) {
+                            pref.setStringSet(WAS_ADMIN_APPROVAL_SHOWN, objIdSetTemp.plus(it.objectId))
+
+                        } else {}
+                    } else {
+                        val objIdSetTemp = HashSet<String>()
+                        objIdSetTemp.add(it.objectId)
+                        pref.setStringSet(WAS_ADMIN_APPROVAL_SHOWN, objIdSetTemp)
+
+                    }
+                }
+
+            }
+
+        successResultDialog.show(supportFragmentManager, this.toString())
+
 
     }
 

@@ -3,9 +3,9 @@ package org.vernality.profitclub.utils.ui
 import android.content.Context
 import android.content.SharedPreferences
 import org.koin.core.KoinComponent
-import org.koin.core.inject
 
-public const val APP_PREF_REG_STATUS = "registrationStatus"
+const val APP_PREF_REG_STATUS = "registrationStatus"
+const val WAS_ADMIN_APPROVAL_SHOWN = "was_administrator_approval_shown"
 
 class MyPreferences(private var context: Context): KoinComponent {
 
@@ -52,5 +52,12 @@ class MyPreferences(private var context: Context): KoinComponent {
         return preferences.getBoolean(key, false)
     }
 
+    fun setStringSet(key: String, units: Set<String>){
+        preferences.edit().putStringSet(key, units).apply()
+    }
+
+    fun getStringSet(key: String):Set<String>?{
+        return preferences.getStringSet(key, HashSet())
+    }
 
 }

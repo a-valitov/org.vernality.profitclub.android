@@ -133,7 +133,7 @@ class DataProcessingFragment : Fragment(), OnBackPressedListener {
         object : MyRolesListDataAdapter.OnListItemClickListener<Member> {
             override fun onItemClick(member: Member) {
                 DataSaver.setCurrentBusinessRole(member)
-                navigateToMyMember()
+                navigateToMyMember(member)
                 Toast.makeText(requireActivity(),member.name, Toast.LENGTH_SHORT).show()
 //                viewModel.setOrganization(organization)
 //                navigateTo()
@@ -319,8 +319,10 @@ class DataProcessingFragment : Fragment(), OnBackPressedListener {
 
     }
 
-    fun navigateToMyMember(){
+    fun navigateToMyMember(member: Member){
         val intent = Intent(requireActivity(), MemberActivity::class.java)
+        intent.putExtra("member", member)
+        intent.putExtra("int", 3)
         requireActivity().startActivity(intent)
 
     }
