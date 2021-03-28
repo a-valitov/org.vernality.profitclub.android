@@ -15,12 +15,15 @@ import com.parse.ParseObject
 import org.koin.android.ext.android.get
 import org.vernality.profitclub.R
 import org.vernality.profitclub.utils.ui.MyPreferences
+import org.vernality.profitclub.utils.ui.UIUtils
 import org.vernality.profitclub.utils.ui.WAS_ADMIN_APPROVAL_SHOWN
 import org.vernality.profitclub.view.activities.SelectOrganizationActivity
 import org.vernality.profitclub.view.fragments.SuccessResultDialogFragment
 import org.vernality.profitclub.view.fragments.TypeDialogFragment
 import java.lang.reflect.Field
 import java.lang.reflect.Member
+
+const val MEMBER = "member"
 
 class MemberActivity : AppCompatActivity() {
 
@@ -36,27 +39,19 @@ class MemberActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_member)
 
-        val arguments = intent.extras
-        if(arguments != null) {
-            member = arguments.getParcelable<ParseObject>("member")
-        }
-
         val toolbar: Toolbar = findViewById(R.id.myToolbar)
         setSupportActionBar(toolbar)
         initViews()
 
+        val arguments = intent.extras
+        if(arguments != null) {
+            member = arguments.getParcelable<ParseObject>(MEMBER)
+        }
 
-        pref = get<MyPreferences> ()
-        objIdSet = pref.getStringSet(WAS_ADMIN_APPROVAL_SHOWN)
-        val memberTemp = member
-        val objIdSetTemp = objIdSet
+        member?.let {
+           if(UIUtils.wasApprovalDialogShown(it.objectId)) showSuccessDialog()
+        }
 
-        if(objIdSetTemp != null && objIdSetTemp.size > 0){
-            memberTemp?.let {
-                val id = it.objectId
-                if(!objIdSetTemp.contains(id)) showSuccessDialog()
-            }
-        } else showSuccessDialog()
 
     }
 
@@ -104,36 +99,24 @@ class MemberActivity : AppCompatActivity() {
 
     }
 
+
+    private fun navigateToMyOrganizationList(){
+        val intent = Intent(this, SelectOrganizationActivity::class.java)
+        startActivity(intent)
+
+    }
+
     private fun showSuccessDialog(){
         successResultDialog =
             SuccessResultDialogFragment.newInstance(
                 TypeDialogFragment.RequestApprovedAdmin
             ) {
                 member?.let{
-                    var objIdSetTemp = objIdSet
-                    if(objIdSetTemp != null && objIdSetTemp.size > 0){
-                        if(!objIdSetTemp.contains(it.objectId)) {
-                            pref.setStringSet(WAS_ADMIN_APPROVAL_SHOWN, objIdSetTemp.plus(it.objectId))
-
-                        } else {}
-                    } else {
-                        val objIdSetTemp = HashSet<String>()
-                        objIdSetTemp.add(it.objectId)
-                        pref.setStringSet(WAS_ADMIN_APPROVAL_SHOWN, objIdSetTemp)
-
-                    }
+                    UIUtils.saveApprovalDialogShownEvent(it.objectId)
                 }
-
             }
 
         successResultDialog.show(supportFragmentManager, this.toString())
-
-
-    }
-
-    private fun navigateToMyOrganizationList(){
-        val intent = Intent(this, SelectOrganizationActivity::class.java)
-        startActivity(intent)
 
     }
 }

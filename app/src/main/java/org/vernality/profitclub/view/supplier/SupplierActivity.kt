@@ -17,28 +17,44 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.parse.ParseObject
 import com.parse.ParseQuery
 import com.parse.ParseUser
 import kotlinx.android.synthetic.main.fragment_my_organizations_list.view.*
+import org.koin.android.ext.android.get
 import org.vernality.profitclub.R
 import org.vernality.profitclub.model.data.Action
 import org.vernality.profitclub.model.data.Organization
+import org.vernality.profitclub.utils.ui.MyPreferences
+import org.vernality.profitclub.utils.ui.UIUtils
+import org.vernality.profitclub.utils.ui.WAS_ADMIN_APPROVAL_SHOWN
 import org.vernality.profitclub.view.activities.MainActivity
 import org.vernality.profitclub.view.activities.SelectOrganizationActivity
+import org.vernality.profitclub.view.fragments.SuccessResultDialogFragment
+import org.vernality.profitclub.view.fragments.TypeDialogFragment
+import org.vernality.profitclub.view.organization.ORGANIZATION
 import java.lang.reflect.Field
 import java.text.DateFormat
 import java.util.*
 
+const val SUPPLIER = "supplier"
 
 class SupplierActivity : AppCompatActivity() {
 
     lateinit var settingsIV: ImageView
     lateinit var popupMenu:PopupMenu
 
+    var supplier: ParseObject? = null
+    lateinit var pref: MyPreferences
+    var objIdSet: Set<String>? = null
+
+    private lateinit var successResultDialog: SuccessResultDialogFragment
+
     @SuppressLint("SimpleDateFormat")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_supplier)
+
         val toolbar: Toolbar = findViewById(R.id.myToolbar)
         setSupportActionBar(toolbar)
 //        val navView: BottomNavigationView = findViewById(R.id.nav_view)
@@ -57,6 +73,14 @@ class SupplierActivity : AppCompatActivity() {
 //        setupActionBarWithNavController(navController, appBarConfiguration)
 //        navView.setupWithNavController(navController)
 
+        val arguments = intent.extras
+        if(arguments != null) {
+            supplier = arguments.getParcelable<ParseObject>(SUPPLIER)
+        }
+
+        supplier?.let {
+            UIUtils.wasApprovalDialogShown(it.objectId)
+        }
 
     }
 
@@ -109,5 +133,18 @@ class SupplierActivity : AppCompatActivity() {
         val intent = Intent(this, SelectOrganizationActivity::class.java)
         startActivity(intent)
 
+    }
+
+    private fun showSuccessDialog(){
+        successResultDialog =
+            SuccessResultDialogFragment.newInstance(
+                TypeDialogFragment.RequestApprovedAdmin
+            ) {
+                supplier?.let{
+                    UIUtils.saveApprovalDialogShownEvent(it.objectId)
+                }
+            }
+
+        successResultDialog.show(supportFragmentManager, this.toString())
     }
 }

@@ -71,5 +71,14 @@
         <item>Назад</item>
     </string-array>
 
+<!--    Info-->
+
+    <string-array name="WaitAdministratorApproval">
+        <item>Дождитесь одобрения администратором</item>
+        <item>Для входа через аккаунт role name необходимо одобрение администратором</item>
+        <item>Ок</item>
+        <item>Назад</item>
+    </string-array>
+
 
 </resources>

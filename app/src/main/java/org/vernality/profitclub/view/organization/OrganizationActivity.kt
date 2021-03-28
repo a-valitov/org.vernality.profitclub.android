@@ -17,26 +17,51 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.parse.ParseObject
 import com.parse.ParseQuery
 import com.parse.ParseUser
+import org.koin.android.ext.android.get
 import org.vernality.profitclub.R
 import org.vernality.profitclub.model.data.Action
 import org.vernality.profitclub.model.data.Organization
+import org.vernality.profitclub.utils.ui.MyPreferences
+import org.vernality.profitclub.utils.ui.UIUtils
+import org.vernality.profitclub.utils.ui.WAS_ADMIN_APPROVAL_SHOWN
 import org.vernality.profitclub.view.activities.SelectOrganizationActivity
+import org.vernality.profitclub.view.fragments.SuccessResultDialogFragment
+import org.vernality.profitclub.view.fragments.TypeDialogFragment
 import java.lang.reflect.Field
 import java.text.DateFormat
 import java.util.*
 
+const val ORGANIZATION = "organization"
 
 class OrganizationActivity : AppCompatActivity() {
 
     lateinit var settingsIV: ImageView
     lateinit var popupMenu:PopupMenu
 
+    var organization: ParseObject? = null
+    lateinit var pref: MyPreferences
+    var objIdSet: Set<String>? = null
+
+    private lateinit var successResultDialog: SuccessResultDialogFragment
+
+
     @SuppressLint("SimpleDateFormat")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_organization)
+
+        val arguments = intent.extras
+        if(arguments != null) {
+            organization = arguments.getParcelable<ParseObject>(ORGANIZATION)
+        }
+
+        organization?.let {
+            if(UIUtils.wasApprovalDialogShown(it.objectId)) showSuccessDialog()
+        }
+
         val toolbar: Toolbar = findViewById(R.id.myToolbar)
         setSupportActionBar(toolbar)
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
@@ -106,5 +131,18 @@ class OrganizationActivity : AppCompatActivity() {
         val intent = Intent(this, SelectOrganizationActivity::class.java)
         startActivity(intent)
 
+    }
+
+    private fun showSuccessDialog(){
+        successResultDialog =
+            SuccessResultDialogFragment.newInstance(
+                TypeDialogFragment.RequestApprovedAdmin
+            ) {
+                organization?.let{
+                    UIUtils.saveApprovalDialogShownEvent(it.objectId)
+                }
+            }
+
+        successResultDialog.show(supportFragmentManager, this.toString())
     }
 }

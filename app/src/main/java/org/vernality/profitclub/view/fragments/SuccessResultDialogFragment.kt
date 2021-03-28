@@ -21,7 +21,7 @@ import org.vernality.profitclub.view_model.Role
 enum class TypeDialogFragment{
     Registration, RoleApproveAdmin, LogOrgAccount, ResetPassword, RequestApprovedAdmin,
     ApproveAction, ApproveRequestIntoOrg, SubmitCommercialOffer, SubmitAction,
-    ApproveDelivery
+    ApproveDelivery, WaitAdministratorApproval
 }
 
 
@@ -59,8 +59,6 @@ private var actionListener: ()->Unit) : SupportBlurDialogFragment() {
         initRole()
 
         initTitlesOnViews()
-
-
 
 //        dialog?.window?.setDimAmount(1f)
 
@@ -105,7 +103,7 @@ private var actionListener: ()->Unit) : SupportBlurDialogFragment() {
         when(typeOrg){
             Role.Member -> role = resources.getString(R.string.of_members)
             Role.Supplier -> {role = requireActivity().getString(R.string.of_suppliers)
-            println("----- role = "+ role)}
+            }
             Role.Organization -> role = resources.getString(R.string.of_organizations)
         }
     }
@@ -116,7 +114,6 @@ private var actionListener: ()->Unit) : SupportBlurDialogFragment() {
 
 
     fun setTitleOnViews(array: Array<String>){
-        println("------setTitleOnViews")
         mesageTV.setText(array[0])
         subMesageTV.setText(array[1].replace("name", name?:"поставщика")
             .replace("role", role?:"") )
