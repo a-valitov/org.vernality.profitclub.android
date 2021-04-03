@@ -3,11 +3,13 @@ package org.vernality.profitclub.view.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
+import kotlinx.android.synthetic.main.item_list_member_short.view.*
 import kotlinx.android.synthetic.main.item_list_org_for_member_recyclerview.view.*
 import kotlinx.android.synthetic.main.item_processing_list_recyclerview.view.*
 import org.vernality.profitclub.model.data.Member
 import org.vernality.profitclub.model.data.Organization
 import org.vernality.profitclub.model.data.Supplier
+import org.vernality.profitclub.utils.ui.UIUtils
 import org.vernality.profitclub.view_model.MyOrganizationsListFragmentViewModel.*
 
 class MyRolesListDataAdapter(
@@ -21,7 +23,7 @@ class MyRolesListDataAdapter(
     private val data: MyOrganizationsData,
     private val listenerForOrganization: OnListItemClickListener<Organization>,
     private val listenerForSupplier: OnListItemClickListener<Supplier>,
-    private val listenerForMember: OnListItemClickListener<Organization>
+    private val listenerForMember: OnListItemClickListener<Member>
 ) {
 
 
@@ -49,7 +51,7 @@ class MyRolesListDataAdapter(
             view.tv_INN_value.setText(organization.inn)
             view.tv_contact_person_value.setText(organization.contactName)
             view.tv_phone_value.setText(organization.phone)
-            view.tv_status.setText(organization.statusString)
+            UIUtils.paintStatusText(view.tv_status, organization.statusString)
             view.setOnClickListener { openMyOrganization(organization) }
             rootLayoutOrganizations.addView(view)
 
@@ -72,7 +74,7 @@ class MyRolesListDataAdapter(
             view.tv_INN_value.setText(supplier.inn)
             view.tv_contact_person_value.setText(supplier.contactName)
             view.tv_phone_value.setText(supplier.phone)
-            view.tv_status.setText(supplier.statusString)
+            UIUtils.paintStatusText(view.tv_status, supplier.statusString)
             view.setOnClickListener { openMySupplier(supplier) }
             rootLayoutSuppliers.addView(view)
     }
@@ -89,12 +91,12 @@ class MyRolesListDataAdapter(
         }
     }
 
-    private fun setDataInItemMember(view: View, organization: Organization){
-        view.tv_name_of_organization_member.setText(organization.name)
-        view.tv_phone_value_member.setText(organization.phone)
-        view.tv_contact_person_value_member.setText(organization.contactName)
-        view.setOnClickListener { openMyMember(organization) }
-        rootLayoutSuppliers.addView(view)
+    private fun setDataInItemMember(view: View, member: Member){
+        val name = member.firstName + " " + member.lastName
+        view.tv_member_name.setText(name)
+        UIUtils.paintStatusText(view.tv_member_status, member.statusString)
+        view.setOnClickListener { openMyMember(member) }
+        rootLayoutMembers.addView(view)
     }
 
     private fun openMyOrganization(organization: Organization) {
@@ -105,8 +107,8 @@ class MyRolesListDataAdapter(
         listenerForSupplier.onItemClick(supplier)
     }
 
-    private fun openMyMember(organization: Organization) {
-        listenerForMember.onItemClick(organization)
+    private fun openMyMember(member: Member) {
+        listenerForMember.onItemClick(member)
     }
 
     interface OnListItemClickListener<T> {

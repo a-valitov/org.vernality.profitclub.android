@@ -148,6 +148,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_status"
             android:text="@string/status"
+            android:textSize="16sp"
             android:paddingBottom="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

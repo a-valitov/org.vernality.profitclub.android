@@ -1,6 +1,7 @@
 package org.vernality.profitclub.view.fragments
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.*
@@ -14,6 +15,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import org.vernality.profitclub.R
 import org.vernality.profitclub.model.data.AppState
 import org.vernality.profitclub.model.data.Organization
+import org.vernality.profitclub.view.activities.SelectOrganizationActivity
 import org.vernality.profitclub.view.adapters.ListOrgForMemberRVAdapter
 import org.vernality.profitclub.view_model.SelectOrgForMemberFragmentViewModel
 
@@ -34,6 +36,7 @@ class SelectOrgForMemberFragment : Fragment() {
     lateinit var backCL: ConstraintLayout
     lateinit var userName: TextView
     private lateinit var errorResultDialog: ErrorResultDialogFragment
+    private lateinit var successResultDialog: SuccessResultDialogFragment
 
     private val observer = Observer<AppState> { renderData(it) }
 
@@ -52,16 +55,19 @@ class SelectOrgForMemberFragment : Fragment() {
         }
 
     // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var firstName: String? = null
+    private var lastName: String? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            firstName = it.getString(MEMBER_FIRST_NAME)
+            lastName = it.getString(MEMBER_LAST_NAME)
         }
+        val intFirstName = firstName
+        val intLastName = lastName
+        if(!intFirstName.isNullOrEmpty() && !intLastName.isNullOrEmpty()) viewModel.setName(intFirstName, intLastName)
     }
 
     override fun onCreateView(
@@ -107,11 +113,11 @@ class SelectOrgForMemberFragment : Fragment() {
         when (appState) {
             is AppState.Success<*> -> {
 
-                val successResultDialog
-                        = SuccessResultDialogFragment.newInstance(TypeDialogFragment.LogOrgAccount
-                ) { navigateTo() }
+                successResultDialog =
+                    SuccessResultDialogFragment.newInstance(TypeDialogFragment.RoleApproveAdmin
+                    ) { navigateTo() }
 
-                successResultDialog.show(parentFragmentManager, this@SelectOrgForMemberFragment.toString())
+                successResultDialog.show(parentFragmentManager, this.toString())
 //                val successResultDialog
 //                        = SuccessResultDialogFragment.newInstance(TypeDialogFragment.Registration)
 //                successResultDialog.apply{
@@ -156,7 +162,10 @@ class SelectOrgForMemberFragment : Fragment() {
 
 
     fun navigateTo(){
-
+        val intent = Intent(requireActivity(), SelectOrganizationActivity::class.java).apply { addFlags(
+            Intent.FLAG_ACTIVITY_CLEAR_TOP
+        ) }
+        startActivity(intent)
     }
 
 

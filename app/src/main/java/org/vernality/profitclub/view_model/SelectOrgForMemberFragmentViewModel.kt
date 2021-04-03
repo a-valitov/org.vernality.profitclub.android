@@ -8,6 +8,7 @@ import io.reactivex.observers.DisposableCompletableObserver
 import io.reactivex.observers.DisposableObserver
 import org.koin.core.inject
 import org.vernality.profitclub.model.data.AppState
+import org.vernality.profitclub.model.data.Member
 import org.vernality.profitclub.model.data.Organization
 import org.vernality.profitclub.model.repository.RepositoryImplementation
 import org.vernality.profitclub.view.activities.DataRoleSaver
@@ -15,6 +16,9 @@ import org.vernality.profitclub.view.activities.DataRoleSaver
 
 class SelectOrgForMemberFragmentViewModel(appContext: Application) : BaseViewModel<AppState>(appContext) {
 
+
+    lateinit var firstName: String
+    lateinit var lastName: String
 
     var member = DataRoleSaver.member
 
@@ -28,6 +32,11 @@ class SelectOrgForMemberFragmentViewModel(appContext: Application) : BaseViewMod
 
     val listLiveData: MutableLiveData<AppState> by lazy {
         MutableLiveData<AppState>()
+    }
+
+    fun setName(firstName: String, lastName: String){
+        member = Member().apply { this.firstName = firstName
+        this.lastName = lastName}
     }
 
 

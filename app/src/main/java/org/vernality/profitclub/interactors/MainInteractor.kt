@@ -223,8 +223,8 @@ class MainInteractor(
 
         println("-----getDataForMyOrganizations() started")
         return Observable.zip(
-            repository.getMyOrganizations(), repository.getMySuppliers(), repository.getOrganizationsForMyMembers(),
-            Function3{a:List<Organization>, b: List<Supplier>, c:List<Organization> ->
+            repository.getMyOrganizations(), repository.getMySuppliers(), repository.getMyMembers(),
+            Function3{a:List<Organization>, b: List<Supplier>, c:List<Member> ->
 
                 a.forEach {
                     println("-----my organizations name = "+it.name)

@@ -31,7 +31,8 @@ import org.vernality.profitclub.view_model.*
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
-
+val MEMBER_FIRST_NAME = "memberFirstName"
+val MEMBER_LAST_NAME = "memberLastName"
 
 /**
  * A simple [Fragment] subclass.
@@ -39,6 +40,7 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class EnterMemberDataFragment : Fragment() {
+
 
     val compos = CompositeDisposable()
 
@@ -54,7 +56,7 @@ class EnterMemberDataFragment : Fragment() {
     private lateinit var member:Member
 
     lateinit var sendDataBtn:  MaterialButton
-    lateinit var firstNameOET: TextInputEditText
+    lateinit var firstNameET: TextInputEditText
     lateinit var lastNameET: TextInputEditText
     lateinit var privacyPolicyTV: TextView
     lateinit var exit: ConstraintLayout
@@ -100,14 +102,14 @@ class EnterMemberDataFragment : Fragment() {
     }
 
     private fun setFields(member: Member) {
-        firstNameOET.setText(member.firstName)
+        firstNameET.setText(member.firstName)
         lastNameET.setText(member.lastName)
     }
 
 
     fun init(root:View){
         sendDataBtn = root.btn_send
-        firstNameOET= root.findViewById(R.id.et_enter_first_name)
+        firstNameET= root.findViewById(R.id.et_enter_first_name)
         lastNameET= root.findViewById(R.id.et_enter_last_name)
         privacyPolicyTV = root.findViewById(R.id.tv_privacy_policy)
         exit = root.exit_enter_role
@@ -117,7 +119,7 @@ class EnterMemberDataFragment : Fragment() {
         loadingLayout = root.loading_frame_layout
 
 
-        setRxToNameOfOrgET(firstNameOET)
+        setRxToNameOfOrgET(firstNameET)
         setRxToINNET(lastNameET)
 
         setListenerExit(exit)
@@ -225,9 +227,13 @@ class EnterMemberDataFragment : Fragment() {
 
     private fun setListenerSendDataBtn(sendDataBTN: MaterialButton) {
         sendDataBTN.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putString(MEMBER_FIRST_NAME, firstNameET.text.toString())
+            bundle.putString(MEMBER_LAST_NAME, lastNameET.text.toString())
 
+            findNavController().navigate(R.id.action_enterMemberFragment_to_selectOrgForMemberFragment, bundle)
 
-            viewModel.getLiveDataAndStartGetResult().observe(requireActivity(), observer)
+//            viewModel.getLiveDataAndStartGetResult().observe(requireActivity(), observer)
 
         }
     }

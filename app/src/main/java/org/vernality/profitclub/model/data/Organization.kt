@@ -7,10 +7,6 @@ import com.parse.ParseObject
 @ParseClassName("Organization")
 class Organization: ParseObject(), BusinessRole {
 
-    enum class OrganizationStatus{
-        onReview, approved, rejected, excluded
-    }
-
     val id: String?
         get() = getString("objectId")
 

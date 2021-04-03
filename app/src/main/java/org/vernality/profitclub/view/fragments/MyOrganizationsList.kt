@@ -21,9 +21,7 @@ import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.vernality.profitclub.R
 import org.vernality.profitclub.interactors.MainInteractor
-import org.vernality.profitclub.model.data.AppState
-import org.vernality.profitclub.model.data.Organization
-import org.vernality.profitclub.model.data.Supplier
+import org.vernality.profitclub.model.data.*
 import org.vernality.profitclub.model.repository.RepositoryImplementation
 import org.vernality.profitclub.utils.DataSaver
 import org.vernality.profitclub.view.activities.EnterRoleActivity
@@ -31,8 +29,11 @@ import org.vernality.profitclub.view.activities.MainActivity
 import org.vernality.profitclub.view.activities.OnBackPresser
 import org.vernality.profitclub.view.adapters.MyOrganizationsListRVAdapter
 import org.vernality.profitclub.view.adapters.MyRolesListDataAdapter
+import org.vernality.profitclub.view.member.MEMBER
 import org.vernality.profitclub.view.member.MemberActivity
+import org.vernality.profitclub.view.organization.ORGANIZATION
 import org.vernality.profitclub.view.organization.OrganizationActivity
+import org.vernality.profitclub.view.supplier.SUPPLIER
 import org.vernality.profitclub.view.supplier.SupplierActivity
 import org.vernality.profitclub.view_model.MyOrganizationsListFragmentViewModel
 import java.lang.reflect.Field
@@ -97,12 +98,13 @@ class DataProcessingFragment : Fragment(), OnBackPressedListener {
             override fun onItemClick(organization: Organization) {
                 DataSaver.setCurrentBusinessRole(organization)
                 viewModel.setOrganization(organization)
-                val successResultDialogFragment
-                        = SuccessResultDialogFragment.newInstance(TypeDialogFragment.LogOrgAccount)
-                {navigateToMyOrganization()}
-                successResultDialogFragment.setName(organization.name)
-                successResultDialogFragment.setRole(organization)
-                successResultDialogFragment.show(parentFragmentManager, this.toString())
+
+                val status = OrganizationStatus.approved.name
+                if(organization.statusString.equals(status)){
+                    showDialogLogAccount(TypeDialogFragment.LogOrgAccount, organization, organization.name, {navigateToMyOrganization(organization)})
+                } else{
+                    showInfoDialog(organization, organization.name)
+                }
 
 
                 Toast.makeText(requireActivity(),organization.name, Toast.LENGTH_SHORT).show()
@@ -114,28 +116,34 @@ class DataProcessingFragment : Fragment(), OnBackPressedListener {
     private val onSupplierListItemClickListener: MyRolesListDataAdapter.OnListItemClickListener<Supplier> =
         object : MyRolesListDataAdapter.OnListItemClickListener<Supplier> {
             override fun onItemClick(supplier: Supplier) {
-                Toast.makeText(requireActivity(),"clicked on "+supplier.name, Toast.LENGTH_SHORT).show()
 //                viewModel.setOrganization(organization)
 //                navigateTo()
                 DataSaver.setCurrentBusinessRole(supplier)
-                val successResultDialogFragment
-                        = SuccessResultDialogFragment.newInstance(TypeDialogFragment.LogOrgAccount)
-                {navigateToMySupplier()}
-                successResultDialogFragment.setName(supplier.name)
-                successResultDialogFragment.setRole(supplier)
-                successResultDialogFragment.show(parentFragmentManager, this.toString())
+                val status = OrganizationStatus.approved.name
+                if(supplier.statusString.equals(status)){
+                    showDialogLogAccount(TypeDialogFragment.LogOrgAccount, supplier, supplier.name, {navigateToMySupplier(supplier)})
+                } else{
+                    showInfoDialog(supplier, supplier.name)
+                }
+
 
             }
         }
 
-    private val onMemberListItemClickListener: MyRolesListDataAdapter.OnListItemClickListener<Organization> =
-        object : MyRolesListDataAdapter.OnListItemClickListener<Organization> {
-            override fun onItemClick(organization: Organization) {
-                DataSaver.setCurrentBusinessRole(organization)
-                navigateToMyMember()
-                Toast.makeText(requireActivity(),organization.name, Toast.LENGTH_SHORT).show()
+    private val onMemberListItemClickListener: MyRolesListDataAdapter.OnListItemClickListener<Member> =
+        object : MyRolesListDataAdapter.OnListItemClickListener<Member> {
+            override fun onItemClick(member: Member) {
+                DataSaver.setCurrentBusinessRole(member)
+
 //                viewModel.setOrganization(organization)
 //                navigateTo()
+
+                val status = OrganizationStatus.approved.name
+                if(member.statusString.equals(status)){
+                    showDialogLogAccount(TypeDialogFragment.LogOrgAccount, member, member.name, {navigateToMyMember(member)})
+                } else{
+                    showInfoDialog(member, member.name)
+                }
             }
         }
 
@@ -217,7 +225,7 @@ class DataProcessingFragment : Fragment(), OnBackPressedListener {
                     layoutSuppliersList,
                     R.layout.item_processing_list_recyclerview,
                     layoutMembersList,
-                    R.layout.item_list_org_for_member_recyclerview,
+                    R.layout.item_list_member_short,
                     data,
                     onOrganizationListItemClickListener,
                     onSupplierListItemClickListener,
@@ -312,20 +320,23 @@ class DataProcessingFragment : Fragment(), OnBackPressedListener {
         Toast.makeText(requireActivity(), "TV resume clicked ", Toast.LENGTH_LONG).show()
     }
 
-    fun navigateToMyOrganization(){
+    fun navigateToMyOrganization(organization: Organization){
         val intent = Intent(requireActivity(), OrganizationActivity::class.java)
+        intent.putExtra(ORGANIZATION, organization)
         requireActivity().startActivity(intent)
 
     }
 
-    fun navigateToMyMember(){
+    fun navigateToMyMember(member: Member){
         val intent = Intent(requireActivity(), MemberActivity::class.java)
+        intent.putExtra(MEMBER, member)
         requireActivity().startActivity(intent)
 
     }
 
-    fun navigateToMySupplier(){
+    fun navigateToMySupplier(supplier: Supplier){
         val intent = Intent(requireActivity(), SupplierActivity::class.java)
+        intent.putExtra(SUPPLIER,supplier)
         requireActivity().startActivity(intent)
 
     }
@@ -376,5 +387,23 @@ class DataProcessingFragment : Fragment(), OnBackPressedListener {
 
 
         snackbar.show()
+    }
+
+    fun <T>showInfoDialog(role: T, name: String?){
+        val successResultDialogFragment
+                = SuccessResultDialogFragment.newInstance(TypeDialogFragment.WaitAdministratorApproval)
+        {}
+        successResultDialogFragment.setName(name)
+        successResultDialogFragment.setRole(role)
+        successResultDialogFragment.show(parentFragmentManager, this.toString())
+    }
+
+    fun <T> showDialogLogAccount(typeDialogFragment: TypeDialogFragment, role: T, name: String?, actionListener: ()->Unit){
+        val successResultDialogFragment
+                = SuccessResultDialogFragment.newInstance(TypeDialogFragment.LogOrgAccount)
+        {actionListener}
+        successResultDialogFragment.setName(name)
+        successResultDialogFragment.setRole(role)
+        successResultDialogFragment.show(parentFragmentManager, this.toString())
     }
 }

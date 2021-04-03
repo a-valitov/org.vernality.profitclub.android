@@ -50,6 +50,10 @@
     <color name="colorBackgroundGrayMiddle">#AEAEAE</color>
     <color name="colorBackgroundGrayDark">#808080</color>
 
+    <color name="colorStatusOnReview"> #F5C891</color>
+    <color name="colorStatusRejected">#ED4337</color>
+    <color name="colorStatusExcluded">#ED4337</color>
+
 
 
 

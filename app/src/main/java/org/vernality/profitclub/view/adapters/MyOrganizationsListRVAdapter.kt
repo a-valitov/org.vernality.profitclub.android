@@ -8,6 +8,8 @@ import kotlinx.android.synthetic.main.item_processing_list_recyclerview.view.*
 import org.vernality.profitclub.R
 import org.vernality.profitclub.model.data.CommercialOffer
 import org.vernality.profitclub.model.data.Organization
+import org.vernality.profitclub.model.data.OrganizationStatus
+import org.vernality.profitclub.utils.ui.UIUtils
 import org.vernality.profitclub.view.organization.adapter.SuppliesListRVAdapter
 
 public class MyOrganizationsListRVAdapter(
@@ -52,28 +54,8 @@ public class MyOrganizationsListRVAdapter(
 
         }
 
-        private fun setStatusColor(organization: Organization) = when (organization.statusString) {
-            Organization.OrganizationStatus.onReview.name -> {
-                itemView.tv_status.setTextColor(itemView.resources.getColor(R.color.colorRequestUnderConsideration))
+        private fun setStatusColor(organization: Organization) = UIUtils.paintStatusText(itemView.tv_status, organization.statusString)
 
-            }
-            Organization.OrganizationStatus.approved.name -> {
-                itemView.tv_status.setTextColor(itemView.resources.getColor(R.color.colorRequestApproved))
-
-            }
-            Organization.OrganizationStatus.rejected.name -> {
-                itemView.tv_status.setTextColor(itemView.resources.getColor(R.color.colorRequestRejected))
-
-            }
-            Organization.OrganizationStatus.excluded.name -> {
-                itemView.tv_status.setTextColor(itemView.resources.getColor(R.color.colorRequestExcluded))
-
-            }
-            else -> {
-                itemView.tv_status.setTextColor(itemView.resources.getColor(R.color.colorRequestApproved))
-
-            }
-        }
     }
 
     private fun openOffer(organization: Organization) {

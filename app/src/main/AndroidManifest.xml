@@ -17,12 +17,14 @@
 
         <activity android:name=".view.supplier.SupplierActivity"
             android:theme="@style/AppTheme.DarkStatusBarNoTranslucentNavigation"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustPan"
+            android:noHistory="true">
 
         </activity>
 
         <activity android:name=".view.member.MemberActivity"
-            android:theme="@style/AppTheme.DarkStatusBarNoTranslucentNavigation">
+            android:theme="@style/AppTheme.DarkStatusBarNoTranslucentNavigation"
+            android:noHistory="true">
 
         </activity>
 
@@ -39,6 +41,7 @@
         <activity
             android:name=".view.organization.OrganizationActivity"
             android:label="@string/title_activity_organization"
+            android:noHistory="true"
             android:theme="@style/AppTheme.DarkStatusBarNoTranslucentNavigation">
 
         </activity>

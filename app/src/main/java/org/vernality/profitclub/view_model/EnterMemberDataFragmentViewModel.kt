@@ -4,9 +4,11 @@ import android.annotation.SuppressLint
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import io.reactivex.Completable
 import io.reactivex.observers.DisposableCompletableObserver
 import org.vernality.profitclub.model.data.*
 import org.vernality.profitclub.utils.ui.UIUtils
+import org.vernality.profitclub.utils.ui.addStreamsIO_UI
 import org.vernality.profitclub.view.activities.DataRoleSaver
 
 enum class FieldMember{FirstName, LastName}
@@ -33,7 +35,15 @@ class EnterMemberDataFragmentViewModel(appContext: Application) : BaseViewModel<
     @SuppressLint("CheckResult")
     private fun getResult(){
 
-        liveDataForViewToObserve.value = AppState.Success<Unit>(Unit)
+        val completable: Completable
+
+//        completable = interactor.becameMemberOfOrganization(member)
+//        }
+//
+//        completable
+//            .addStreamsIO_UI()
+//            .doOnSubscribe { liveDataForViewToObserve.value = AppState.Loading(null) }
+//            .subscribeWith(getObserver())
 
     }
 

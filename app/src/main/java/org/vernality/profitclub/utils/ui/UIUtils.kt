@@ -7,11 +7,13 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.TextView
 import androidx.core.content.ContextCompat.startActivity
-import androidx.navigation.Navigation
 import org.koin.core.KoinComponent
+import org.koin.core.get
 import org.koin.core.inject
 import org.vernality.profitclub.R
+import org.vernality.profitclub.model.data.OrganizationStatus
 import org.vernality.profitclub.utils.ui.RegistrationStatus.*
 import org.vernality.profitclub.view.fragments.SuccessResultDialogFragment
 import org.vernality.profitclub.view.fragments.TypeDialogFragment
@@ -69,6 +71,7 @@ class UIUtils {
                 TypeDialogFragment.ApproveDelivery -> return configureApproveDeliveryDialog(fragment)
                 TypeDialogFragment.RequestApprovedAdmin -> return configureRequestApprovedAdminDialog(fragment)
                 TypeDialogFragment.SubmitAction -> return configureSubmitActionDialog(fragment)
+                TypeDialogFragment.WaitAdministratorApproval -> return configureWaitApprovalDialog(fragment)
                 else -> throw Throwable("недопустимый тип диалогового фрагмента")
 
             }
@@ -127,6 +130,55 @@ class UIUtils {
             return fragment.apply {
                 setTitleOnViews(resources.getStringArray(R.array.SubmitAction))
             }
+        }
+
+        private fun configureWaitApprovalDialog(fragment: SuccessResultDialogFragment): SuccessResultDialogFragment{
+            return fragment.apply {
+                setTitleOnViews(resources.getStringArray(R.array.WaitAdministratorApproval))
+                backTV?.visibility = View.GONE
+            }
+        }
+
+        fun paintStatusText(textView: TextView, status: String?){
+            when(status){
+                OrganizationStatus.onReview.name -> {
+                    textView.setText(status)
+                textView.setTextColor(textView.context.getColor(R.color.colorStatusOnReview))}
+                OrganizationStatus.rejected.name, OrganizationStatus.excluded.name -> {
+                    textView.setText(status)
+                    textView.setTextColor(textView.context.getColor(R.color.colorStatusRejected))}
+                OrganizationStatus.approved.name -> textView.visibility = View.INVISIBLE
+                else -> textView.visibility = View.INVISIBLE
+
+            }
+        }
+
+        fun wasApprovalDialogShown(id: String): Boolean{
+            val pref = get<MyPreferences> ()
+            val objIdSet = pref.getStringSet(WAS_ADMIN_APPROVAL_SHOWN)
+            return if(objIdSet != null && objIdSet.isNotEmpty()){
+                !objIdSet.contains(id)
+            } else true
+        }
+
+        fun saveApprovalDialogShownEvent(id: String){
+
+            val pref = get<MyPreferences> ()
+            val objIdSet = pref.getStringSet(WAS_ADMIN_APPROVAL_SHOWN)
+
+            var objIdSetTemp = objIdSet
+            if(objIdSetTemp != null && objIdSetTemp.size > 0){
+                if(!objIdSetTemp.contains(id)) {
+                    pref.setStringSet(WAS_ADMIN_APPROVAL_SHOWN, objIdSetTemp.plus(id))
+
+                } else {}
+            } else {
+                val objIdSetTemp = HashSet<String>()
+                objIdSetTemp.add(id)
+                pref.setStringSet(WAS_ADMIN_APPROVAL_SHOWN, objIdSetTemp)
+
+            }
+
         }
 
     }
