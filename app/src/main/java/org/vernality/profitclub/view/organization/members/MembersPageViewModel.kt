@@ -7,9 +7,11 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import io.reactivex.observers.DisposableCompletableObserver
 import io.reactivex.observers.DisposableObserver
+import io.reactivex.observers.DisposableSingleObserver
 import org.vernality.profitclub.model.data.AppState
 import org.vernality.profitclub.model.data.CommercialOffer
 import org.vernality.profitclub.model.data.Member
+import org.vernality.profitclub.model.data.Organization
 import org.vernality.profitclub.utils.ui.addStreamsIO_UI
 import org.vernality.profitclub.view_model.BaseViewModel
 import timber.log.Timber
@@ -18,11 +20,11 @@ class MembersPageViewModel(appContext: Application) : BaseViewModel<AppState>(ap
 
     private val liveDataForMemberResult: MutableLiveData<AppState> = MutableLiveData()
 
-    fun getLiveDataAndStartGetResult(page:Int): LiveData<AppState> {
+    fun getLiveDataAndStartGetResult(page:Int, organization: Organization): LiveData<AppState> {
 
         when(page){
-            0 -> getResultForMembers()
-            1 -> getResultForRequestMembers()
+            0 -> getResultForMembers(organization)
+            1 -> getResultForRequestMembers(organization)
         }
 
 
@@ -30,37 +32,44 @@ class MembersPageViewModel(appContext: Application) : BaseViewModel<AppState>(ap
         return liveDataForViewToObserve
     }
 
-    private fun getResultForMembers(){
+    private fun getResultForMembers(organization: Organization){
         compositeDisposable.add(
-            interactor.getMembers()
+            interactor.getMembers(organization)
                 .addStreamsIO_UI()
                 .doOnSubscribe { liveDataForViewToObserve.value = AppState.Loading(null) }
                 .subscribeWith(getObserver())
         )
     }
 
-    private fun getResultForRequestMembers(){
+    private fun getResultForRequestMembers(organization: Organization){
         compositeDisposable.add(
-            interactor.getRequestMembers()
+            interactor.getRequestMembers(organization)
                 .addStreamsIO_UI()
                 .doOnSubscribe { liveDataForViewToObserve.value = AppState.Loading(null) }
                 .subscribeWith(getObserver())
         )
     }
 
-    private fun getObserver(): DisposableObserver<AppState> {
-        return object : DisposableObserver<AppState>() {
 
-            override fun onNext(state: AppState) {
+
+    private fun getObserver(): DisposableSingleObserver<AppState> {
+        return object : DisposableSingleObserver<AppState>() {
+
+            override fun onStart() {
+                super.onStart()
+                println("onStart into SuppliesFragmentViewModel")
+            }
+
+            override fun onSuccess(state: AppState) {
                 liveDataForViewToObserve.value = state
+                println("onSuccess into SuppliesFragmentViewModel")
             }
 
             override fun onError(e: Throwable) {
+                println("onError into SuppliesFragmentViewModel")
                 liveDataForViewToObserve.value = AppState.Error(e)
             }
 
-            override fun onComplete() {
-            }
         }
     }
 

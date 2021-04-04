@@ -100,14 +100,13 @@ class DataProcessingFragment : Fragment(), OnBackPressedListener {
                 viewModel.setOrganization(organization)
 
                 val status = OrganizationStatus.approved.name
-                if(organization.statusString.equals(status)){
-                    showDialogLogAccount(TypeDialogFragment.LogOrgAccount, organization, organization.name, {navigateToMyOrganization(organization)})
-                } else{
-                    showInfoDialog(organization, organization.name)
-                }
+//                if(organization.statusString.equals(status)){
+//                    showDialogLogAccount(TypeDialogFragment.LogOrgAccount, organization, organization.name, {navigateToMyOrganization(organization)})
+//                } else{
+//                    showInfoDialog(organization, organization.name)
+//                }
+                showDialogLogAccount(TypeDialogFragment.LogOrgAccount, organization, organization.name, {navigateToMyOrganization(organization)})
 
-
-                Toast.makeText(requireActivity(),organization.name, Toast.LENGTH_SHORT).show()
 //                viewModel.setOrganization(organization)
 //                navigateTo()
             }
@@ -120,11 +119,12 @@ class DataProcessingFragment : Fragment(), OnBackPressedListener {
 //                navigateTo()
                 DataSaver.setCurrentBusinessRole(supplier)
                 val status = OrganizationStatus.approved.name
-                if(supplier.statusString.equals(status)){
-                    showDialogLogAccount(TypeDialogFragment.LogOrgAccount, supplier, supplier.name, {navigateToMySupplier(supplier)})
-                } else{
-                    showInfoDialog(supplier, supplier.name)
-                }
+//                if(supplier.statusString.equals(status)){
+//                    showDialogLogAccount(TypeDialogFragment.LogOrgAccount, supplier, supplier.name, {navigateToMySupplier(supplier)})
+//                } else{
+//                    showInfoDialog(supplier, supplier.name)
+//                }
+                showDialogLogAccount(TypeDialogFragment.LogOrgAccount, supplier, supplier.name, {navigateToMySupplier(supplier)})
 
 
             }
@@ -138,12 +138,13 @@ class DataProcessingFragment : Fragment(), OnBackPressedListener {
 //                viewModel.setOrganization(organization)
 //                navigateTo()
 
-                val status = OrganizationStatus.approved.name
-                if(member.statusString.equals(status)){
-                    showDialogLogAccount(TypeDialogFragment.LogOrgAccount, member, member.name, {navigateToMyMember(member)})
-                } else{
-                    showInfoDialog(member, member.name)
-                }
+//                val status = OrganizationStatus.approved.name
+//                if(member.statusString.equals(status)){
+//                    showDialogLogAccount(TypeDialogFragment.LogOrgAccount, member, member.name, {navigateToMyMember(member)})
+//                } else{
+//                    showInfoDialog(member, member.name)
+//                }
+                showDialogLogAccount(TypeDialogFragment.LogOrgAccount, member, member.name, {navigateToMyMember(member)})
             }
         }
 
@@ -400,8 +401,7 @@ class DataProcessingFragment : Fragment(), OnBackPressedListener {
 
     fun <T> showDialogLogAccount(typeDialogFragment: TypeDialogFragment, role: T, name: String?, actionListener: ()->Unit){
         val successResultDialogFragment
-                = SuccessResultDialogFragment.newInstance(TypeDialogFragment.LogOrgAccount)
-        {actionListener}
+                = SuccessResultDialogFragment.newInstance(TypeDialogFragment.LogOrgAccount, actionListener)
         successResultDialogFragment.setName(name)
         successResultDialogFragment.setRole(role)
         successResultDialogFragment.show(parentFragmentManager, this.toString())

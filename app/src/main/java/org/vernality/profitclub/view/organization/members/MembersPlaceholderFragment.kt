@@ -12,14 +12,15 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.list_layout.view.*
-import kotlinx.android.synthetic.main.list_layout.view.loading_frame_layout
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.vernality.profitclub.R
 import org.vernality.profitclub.model.data.AppState
 import org.vernality.profitclub.model.data.Member
+import org.vernality.profitclub.model.data.Organization
 import org.vernality.profitclub.view.fragments.ErrorResultDialogFragment
 import org.vernality.profitclub.view.fragments.SuccessResultDialogFragment
 import org.vernality.profitclub.view.fragments.TypeDialogFragment
+import org.vernality.profitclub.view.organization.OrganizationActivity
 import org.vernality.profitclub.view.organization.adapter.MembersListRVAdapter
 import org.vernality.profitclub.view.organization.adapter.MembersRequestListRVAdapter
 
@@ -30,6 +31,7 @@ import org.vernality.profitclub.view.organization.adapter.MembersRequestListRVAd
 class MembersPlaceholderFragment : Fragment() {
 
     private var page:Int = 0
+    private lateinit var organization: Organization
 
     private val viewModel by viewModel<MembersPageViewModel>()
 
@@ -118,9 +120,12 @@ class MembersPlaceholderFragment : Fragment() {
         rv = root.rv_list
         rv.layoutManager = LinearLayoutManager(requireActivity())
 
+        val activity: OrganizationActivity = activity as OrganizationActivity
+        val organization: Organization = activity.getMyOrganization()
+
         viewModel.page.observe(viewLifecycleOwner, Observer<Int> {
             page = it
-            viewModel.getLiveDataAndStartGetResult(page).observe(requireActivity(), observer)
+            viewModel.getLiveDataAndStartGetResult(page, organization).observe(requireActivity(), observer)
         })
     }
 
@@ -177,6 +182,13 @@ class MembersPlaceholderFragment : Fragment() {
                 errorResultDialog.show(parentFragmentManager, this.toString())
             }
         }
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+
+
     }
 
 

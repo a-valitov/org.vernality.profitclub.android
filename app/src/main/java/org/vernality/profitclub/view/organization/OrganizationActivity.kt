@@ -8,18 +8,25 @@ import android.view.ContextThemeWrapper
 import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.appcompat.widget.Toolbar
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.setMargins
+import androidx.fragment.app.FragmentManager
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.snackbar.Snackbar
 import com.parse.ParseObject
 import com.parse.ParseQuery
 import com.parse.ParseUser
+import kotlinx.android.synthetic.main.fragment_my_organizations_list.view.*
 import org.koin.android.ext.android.get
 import org.vernality.profitclub.R
 import org.vernality.profitclub.model.data.Action
@@ -28,6 +35,7 @@ import org.vernality.profitclub.utils.ui.MyPreferences
 import org.vernality.profitclub.utils.ui.UIUtils
 import org.vernality.profitclub.utils.ui.WAS_ADMIN_APPROVAL_SHOWN
 import org.vernality.profitclub.view.activities.SelectOrganizationActivity
+import org.vernality.profitclub.view.fragments.OnBackPressedListener
 import org.vernality.profitclub.view.fragments.SuccessResultDialogFragment
 import org.vernality.profitclub.view.fragments.TypeDialogFragment
 import java.lang.reflect.Field
@@ -36,14 +44,18 @@ import java.util.*
 
 const val ORGANIZATION = "organization"
 
-class OrganizationActivity : AppCompatActivity() {
+class OrganizationActivity : OrganizationContainer, AppCompatActivity()  {
 
     lateinit var settingsIV: ImageView
     lateinit var popupMenu:PopupMenu
 
+    lateinit var layoutPlaceSnack: CoordinatorLayout
+
     var organization: ParseObject? = null
     lateinit var pref: MyPreferences
     var objIdSet: Set<String>? = null
+
+    var isBackPress: Boolean = false
 
     private lateinit var successResultDialog: SuccessResultDialogFragment
 
@@ -88,6 +100,8 @@ class OrganizationActivity : AppCompatActivity() {
         settingsIV = findViewById(R.id.iv_more)
 
         initPopupMenu(settingsIV)
+
+        layoutPlaceSnack = findViewById(R.id.place_snack)
 
         settingsIV.setOnClickListener {
 
@@ -145,4 +159,51 @@ class OrganizationActivity : AppCompatActivity() {
 
         successResultDialog.show(supportFragmentManager, this.toString())
     }
+
+    override fun onBackPressed() {
+
+        if(!isBackPress){
+            isBackPress = true
+            val snackbar =
+                Snackbar.make(layoutPlaceSnack,"", Snackbar.LENGTH_SHORT)
+
+            snackbar.addCallback(object : Snackbar.Callback(){
+                override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                    super.onDismissed(transientBottomBar, event)
+                    setIsBackPress()
+                }
+            })
+            snackbar.setText(getString(R.string.back_pressed_retry))
+            var view = snackbar.view
+            val tv =
+                view.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView
+            tv.textAlignment = View.TEXT_ALIGNMENT_CENTER
+            snackbar.view.setBackground(resources.getDrawable(R.drawable.card_info_lite))
+            val params = view.layoutParams as CoordinatorLayout.LayoutParams
+            params.gravity = Gravity.TOP
+            params.setMargins(800)
+
+
+            snackbar.show()
+
+        } else {
+            onBackPressed()
+        }
+
+    }
+
+    fun setIsBackPress() {
+        isBackPress = false
+    }
+
+    override fun getMyOrganization(): Organization {
+        return organization as Organization
+    }
+
+
+}
+
+interface OrganizationContainer{
+
+    fun getMyOrganization(): Organization
 }
