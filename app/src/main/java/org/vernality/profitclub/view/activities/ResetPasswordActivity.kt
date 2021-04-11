@@ -12,7 +12,7 @@ import org.vernality.profitclub.model.data.Supplier
 import org.vernality.profitclub.view.fragments.OnBackPressedListener
 
 
-public class ResetPasswordActivity : AppCompatActivity() {
+public class ResetPasswordActivity : BaseActivity() {
 
     var isBackPress: Boolean = false
 

@@ -14,7 +14,7 @@ import org.vernality.profitclub.utils.ui.RegistrationStatus
 import org.vernality.profitclub.utils.ui.UIUtils
 import org.vernality.profitclub.view_model.Role
 
-class ContainerActivity : AppCompatActivity() {
+class ContainerActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

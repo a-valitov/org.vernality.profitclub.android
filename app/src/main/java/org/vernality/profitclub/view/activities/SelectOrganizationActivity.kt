@@ -9,11 +9,10 @@ import org.vernality.profitclub.R
 import org.vernality.profitclub.view.fragments.OnBackPressedListener
 
 
-class SelectOrganizationActivity : AppCompatActivity(), OnBackPresser {
+class SelectOrganizationActivity : OnBackPresserActivity(), OnBackPresser {
 
     lateinit var view: View
 
-    var isBackPress: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,42 +22,4 @@ class SelectOrganizationActivity : AppCompatActivity(), OnBackPresser {
 
     }
 
-
-
-
-
-    override fun onBackPressed() {
-
-        if(!isBackPress){
-            isBackPress = true
-            val fm: FragmentManager = supportFragmentManager
-            var backPressedListener: OnBackPressedListener? = null
-            for (fragment in fm.fragments) {
-                if(fragment is NavHostFragment){
-                    val childFm = fragment.childFragmentManager
-                    for(childFragment in childFm.fragments){
-                        if(childFragment is OnBackPressedListener){
-                            backPressedListener = childFragment
-                        }
-                    }
-                }
-
-            }
-
-            if (backPressedListener != null) {
-                backPressedListener.onBackPressed(this)
-            } else {
-                super.onBackPressed()
-            }
-        } else {
-            super.onBackPressed()
-        }
-
-
-
-    }
-
-    override fun setIsBackPress() {
-        isBackPress = false
-    }
 }
