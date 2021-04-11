@@ -100,12 +100,12 @@ class DataProcessingFragment : Fragment(), OnBackPressedListener {
                 viewModel.setOrganization(organization)
 
                 val status = OrganizationStatus.approved.name
-//                if(organization.statusString.equals(status)){
-//                    showDialogLogAccount(TypeDialogFragment.LogOrgAccount, organization, organization.name, {navigateToMyOrganization(organization)})
-//                } else{
-//                    showInfoDialog(organization, organization.name)
-//                }
-                showDialogLogAccount(TypeDialogFragment.LogOrgAccount, organization, organization.name, {navigateToMyOrganization(organization)})
+                if(organization.statusString.equals(status)){
+                    showDialogLogAccount(TypeDialogFragment.LogOrgAccount, organization, organization.name, {navigateToMyOrganization(organization)})
+                } else{
+                    showInfoDialog(organization, organization.name)
+                }
+//                showDialogLogAccount(TypeDialogFragment.LogOrgAccount, organization, organization.name, {navigateToMyOrganization(organization)})
 
 //                viewModel.setOrganization(organization)
 //                navigateTo()
