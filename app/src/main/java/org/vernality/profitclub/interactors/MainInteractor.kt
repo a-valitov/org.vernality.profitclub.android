@@ -128,29 +128,30 @@ class MainInteractor(
 //    }
 
 
-    fun getMembers():Observable<AppState> {
+    fun getMembers(organization: Organization):Single<AppState> {
         val membersList = listOf<org.vernality.profitclub.model.data.Member>(
             Member().apply {
                 name = "Jack"
-                firstName="Jack"
-                lastName="More"
+                firstName = "Jack"
+                lastName = "More"
             },
             Member().apply {
                 name = "Nick"
-                firstName="Nick"
-                lastName="More"
+                firstName = "Nick"
+                lastName = "More"
             },
             Member().apply {
                 name = "Bob"
-                firstName="Bob"
-                lastName="More"
+                firstName = "Bob"
+                lastName = "More"
             }
         )
 
-        return Observable.just(AppState.Success<List<org.vernality.profitclub.model.data.Member>>(membersList))
+        return repository.getMembersOfOrganization(organization)
+            .map { list -> AppState.Success<List<Member>>(list) }
     }
 
-    fun getRequestMembers():Observable<AppState> {
+    fun getRequestMembers(organization: Organization):Single<AppState>  {
         val membersList = listOf<org.vernality.profitclub.model.data.Member>(
             Member().apply {
                 name = "Donald"
@@ -169,7 +170,8 @@ class MainInteractor(
             }
         )
 
-        return Observable.just(AppState.Success<List<org.vernality.profitclub.model.data.Member>>(membersList))
+        return return repository.getRequestOfOrganization(organization)
+            .map { list -> AppState.Success<List<Member>>(list) }
     }
 
 

@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import fr.tvbarthel.lib.blurdialogfragment.BlurDialogEngine
 import fr.tvbarthel.lib.blurdialogfragment.SupportBlurDialogFragment
@@ -38,6 +40,9 @@ private var actionListener: ()->Unit) : SupportBlurDialogFragment() {
     private lateinit var mesageTV: TextView
     private lateinit var subMesageTV: TextView
     private lateinit var actionTV: TextView
+    private lateinit var card: CardView
+    private lateinit var actionLayout: View
+    private lateinit var backLayout: View
     lateinit var backTV: TextView
 
     private var name: String? = null
@@ -68,16 +73,21 @@ private var actionListener: ()->Unit) : SupportBlurDialogFragment() {
     }
 
     private fun init(root: View){
+
         mesageTV = root.tv_message
         subMesageTV = root.tv_subMessage
         actionTV = root.tv_action
+        card = root.card
+        actionLayout = root.linearLayout_Ok
+        backLayout = root.linearLayout_back
+
         backTV = root.tv_back
 
-        setListenerOnBack(backTV)
+        setListenerOnBack(backLayout)
     }
 
     fun setListenerOnAction(func: ()->Unit){
-        actionTV.setOnClickListener {
+        actionLayout.setOnClickListener {
             func()
             dismiss()
         }

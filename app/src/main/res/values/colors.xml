@@ -55,6 +55,11 @@
     <color name="colorStatusExcluded">#ED4337</color>
 
 
+    <color name="colorLightBlue">#1565C0</color>
+    <color name="colorDarkBlue">#0D47A1</color>
+    <color name="colorBlue400">#26C6DA</color>
+
+
 
 
 </resources>

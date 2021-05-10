@@ -6,9 +6,13 @@ import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.View
 import android.widget.TextView
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat.startActivity
+import androidx.core.view.setMargins
+import com.google.android.material.snackbar.Snackbar
 import org.koin.core.KoinComponent
 import org.koin.core.get
 import org.koin.core.inject
@@ -179,6 +183,30 @@ class UIUtils {
 
             }
 
+        }
+
+
+        fun showSnackbar(layoutPlaceSnack: View, text: String, context: Context, func: ()->Unit ): Snackbar {
+            val snackbar =
+                Snackbar.make(layoutPlaceSnack,"", Snackbar.LENGTH_SHORT)
+
+            snackbar.addCallback(object : Snackbar.Callback(){
+                override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                    super.onDismissed(transientBottomBar, event)
+                    func()
+                }
+            })
+            snackbar.setText(text)
+            var view = snackbar.view
+            val tv =
+                view.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView
+            tv.textAlignment = View.TEXT_ALIGNMENT_CENTER
+            snackbar.view.setBackground(context.resources.getDrawable(R.drawable.card_info_lite))
+            val params = view.layoutParams as CoordinatorLayout.LayoutParams
+            params.gravity = Gravity.TOP
+            params.setMargins(800)
+
+            return snackbar
         }
 
     }

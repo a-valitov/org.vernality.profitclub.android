@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".view.organization.OrganizationActivity"
     tools:ignore="ExtraText"
+    android:id="@+id/place_snack"
     android:background="@color/colorDialogLine"
     app:statusBarBackground="@color/colorPrimary"
     android:theme="@style/AppTheme.DarkStatusBarNoTranslucentNavigation"

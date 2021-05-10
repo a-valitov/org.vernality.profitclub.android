@@ -8,9 +8,13 @@ import android.view.ContextThemeWrapper
 import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.appcompat.widget.Toolbar
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.setMargins
+import com.google.android.material.snackbar.Snackbar
 import com.parse.ParseObject
 import org.koin.android.ext.android.get
 import org.vernality.profitclub.R
@@ -34,6 +38,8 @@ class MemberActivity : AppCompatActivity() {
     lateinit var pref: MyPreferences
     var objIdSet: Set<String>? = null
 
+    lateinit var layoutPlaceSnack: CoordinatorLayout
+    var isBackPress: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +66,8 @@ class MemberActivity : AppCompatActivity() {
         settingsIV = findViewById(R.id.iv_more)
 
         initPopupMenu(settingsIV)
+
+        layoutPlaceSnack = findViewById(R.id.place_snack)
 
         settingsIV.setOnClickListener {
 
@@ -118,5 +126,24 @@ class MemberActivity : AppCompatActivity() {
 
         successResultDialog.show(supportFragmentManager, this.toString())
 
+    }
+
+    override fun onBackPressed() {
+
+        if(!isBackPress){
+            isBackPress = true
+            val snackbar = UIUtils.showSnackbar(layoutPlaceSnack, getString(R.string.back_pressed_retry),
+            this, {setIsBackPress()})
+
+            snackbar.show()
+
+        } else {
+            onBackPressed()
+        }
+
+    }
+
+    fun setIsBackPress() {
+        isBackPress = false
     }
 }
