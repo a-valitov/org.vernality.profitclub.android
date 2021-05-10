@@ -208,6 +208,7 @@
     <string name="_3">Ошибка подключения</string>
     <string name="_101">Неверный логин или пароль</string>
     <string name="_70">Не удалось выйти из профиля</string>
+    <string name="dialog_message_device_is_offline">Ошибка загрузки. Проверьте подключение к сети и повторите попытку</string>
 
 
 </resources>

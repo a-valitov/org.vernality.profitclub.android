@@ -8,7 +8,7 @@ import org.vernality.profitclub.model.data.Organization
 import org.vernality.profitclub.model.data.Supplier
 
 
-public class EnterRoleActivity : AppCompatActivity() {
+public class EnterRoleActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
