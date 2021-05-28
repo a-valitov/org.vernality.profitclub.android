@@ -29,6 +29,7 @@ import org.koin.android.ext.android.get
 import org.vernality.profitclub.R
 import org.vernality.profitclub.model.data.Action
 import org.vernality.profitclub.model.data.Organization
+import org.vernality.profitclub.model.data.Supplier
 import org.vernality.profitclub.utils.ui.MyPreferences
 import org.vernality.profitclub.utils.ui.UIUtils
 import org.vernality.profitclub.utils.ui.WAS_ADMIN_APPROVAL_SHOWN
@@ -86,7 +87,7 @@ class SupplierActivity : AppCompatActivity() {
         }
 
         supplier?.let {
-            UIUtils.wasApprovalDialogShown(it.objectId)
+            if(!UIUtils.wasApprovalDialogShown(it.objectId)) showSuccessDialog()
         }
 
     }
@@ -157,39 +158,40 @@ class SupplierActivity : AppCompatActivity() {
         successResultDialog.show(supportFragmentManager, this.toString())
     }
 
-    override fun onBackPressed() {
+//    override fun onBackPressed() {
+//
+//        if(!isBackPress){
+//            isBackPress = true
+//            val snackbar =
+//                Snackbar.make(layoutPlaceSnack,"", Snackbar.LENGTH_SHORT)
+//
+//            snackbar.addCallback(object : Snackbar.Callback(){
+//                override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+//                    super.onDismissed(transientBottomBar, event)
+//                    setIsBackPress()
+//                }
+//            })
+//            snackbar.setText(getString(R.string.back_pressed_retry))
+//            var view = snackbar.view
+//            val tv =
+//                view.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView
+//            tv.textAlignment = View.TEXT_ALIGNMENT_CENTER
+//            snackbar.view.setBackground(resources.getDrawable(R.drawable.card_info_lite))
+//            val params = view.layoutParams as CoordinatorLayout.LayoutParams
+//            params.gravity = Gravity.TOP
+//            params.setMargins(800)
+//
+//
+//            snackbar.show()
+//
+//        } else {
+//
+//        }
+//
+//    }
+//
+//    fun setIsBackPress() {
+//        isBackPress = false
+//    }
 
-        if(!isBackPress){
-            isBackPress = true
-            val snackbar =
-                Snackbar.make(layoutPlaceSnack,"", Snackbar.LENGTH_SHORT)
-
-            snackbar.addCallback(object : Snackbar.Callback(){
-                override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                    super.onDismissed(transientBottomBar, event)
-                    setIsBackPress()
-                }
-            })
-            snackbar.setText(getString(R.string.back_pressed_retry))
-            var view = snackbar.view
-            val tv =
-                view.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView
-            tv.textAlignment = View.TEXT_ALIGNMENT_CENTER
-            snackbar.view.setBackground(resources.getDrawable(R.drawable.card_info_lite))
-            val params = view.layoutParams as CoordinatorLayout.LayoutParams
-            params.gravity = Gravity.TOP
-            params.setMargins(800)
-
-
-            snackbar.show()
-
-        } else {
-            onBackPressed()
-        }
-
-    }
-
-    fun setIsBackPress() {
-        isBackPress = false
-    }
 }

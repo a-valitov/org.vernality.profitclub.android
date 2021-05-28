@@ -199,7 +199,7 @@ class EnterOrganizationDataFragment : Fragment() {
                 @Throws(Exception::class)
                 override fun accept(charSequence: CharSequence?) {
                     //Add your logic to work on the Charsequence
-                    if(charSequence!!.isEmpty())Toast.makeText(requireActivity(), "password 2 enter", Toast.LENGTH_LONG).show()
+//                    if(charSequence!!.isEmpty())Toast.makeText(requireActivity(), "password 2 enter", Toast.LENGTH_LONG).show()
                     viewModel.setNameOfOrganization(charSequence.toString())
                 }
             })
@@ -213,7 +213,7 @@ class EnterOrganizationDataFragment : Fragment() {
                 @Throws(Exception::class)
                 override fun accept(charSequence: CharSequence?) {
                     //Add your logic to work on the Charsequence
-                    if(charSequence!!.isEmpty())Toast.makeText(requireActivity(), "password 2 enter", Toast.LENGTH_LONG).show()
+//                    if(charSequence!!.isEmpty())Toast.makeText(requireActivity(), "password 2 enter", Toast.LENGTH_LONG).show()
                     viewModel.setINN(charSequence.toString())
                 }
             })
@@ -227,7 +227,7 @@ class EnterOrganizationDataFragment : Fragment() {
                 @Throws(Exception::class)
                 override fun accept(charSequence: CharSequence?) {
                     //Add your logic to work on the Charsequence
-                    if(charSequence!!.isEmpty())Toast.makeText(requireActivity(), "password 2 enter", Toast.LENGTH_LONG).show()
+//                    if(charSequence!!.isEmpty())Toast.makeText(requireActivity(), "password 2 enter", Toast.LENGTH_LONG).show()
                     viewModel.setFCS(charSequence.toString())
                 }
             })
@@ -241,7 +241,7 @@ class EnterOrganizationDataFragment : Fragment() {
                 @Throws(Exception::class)
                 override fun accept(charSequence: CharSequence?) {
                     //Add your logic to work on the Charsequence
-                    if(charSequence!!.isEmpty())Toast.makeText(requireActivity(), "password 2 enter", Toast.LENGTH_LONG).show()
+//                    if(charSequence!!.isEmpty())Toast.makeText(requireActivity(), "password 2 enter", Toast.LENGTH_LONG).show()
                     viewModel.setPhone(charSequence.toString())
                 }
             })
@@ -263,21 +263,21 @@ class EnterOrganizationDataFragment : Fragment() {
 
     private fun setListenerExit(exit: View) {
         exit.setOnClickListener {
-            Toast.makeText(requireActivity(), "exit is checked", Toast.LENGTH_LONG).show()
+            activity?.onBackPressed()
         }
     }
 
 
     private fun setListenerPrivacyPolicy(policy: View){
         policy.setOnClickListener {
-            Toast.makeText(requireActivity(), "privacy policy is checked", Toast.LENGTH_LONG).show()
+//            Toast.makeText(requireActivity(), "privacy policy is checked", Toast.LENGTH_LONG).show()
             viewModel.openPagePrivacyPolicy()
         }
     }
 
     private fun setListenerAgreeCB(agreeCB: CheckBox) {
         agreeCB.setOnClickListener {
-            Toast.makeText(requireActivity(), "Organization is checked", Toast.LENGTH_LONG).show()
+//            Toast.makeText(requireActivity(), "Organization is checked", Toast.LENGTH_LONG).show()
             viewModel.setAgree()
         }
 

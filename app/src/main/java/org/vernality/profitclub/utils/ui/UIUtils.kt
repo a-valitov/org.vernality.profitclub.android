@@ -161,8 +161,8 @@ class UIUtils {
             val pref = get<MyPreferences> ()
             val objIdSet = pref.getStringSet(WAS_ADMIN_APPROVAL_SHOWN)
             return if(objIdSet != null && objIdSet.isNotEmpty()){
-                !objIdSet.contains(id)
-            } else true
+                objIdSet.contains(id)
+            } else false
         }
 
         fun saveApprovalDialogShownEvent(id: String){

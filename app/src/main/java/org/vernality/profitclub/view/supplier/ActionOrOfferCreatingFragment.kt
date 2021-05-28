@@ -42,7 +42,7 @@ class ActionOrOfferCreatingFragment : Fragment() {
         createOfferBTN.setOnClickListener{ navigateToFragmentOnCreatingOffer() }
         createActionBTN.setOnClickListener{ navigateToFragmentOnCreatingAction() }
 
-        if(checkingFirstLoginToAccountOfThisOrganization()) showSuccessDialog()
+//        if(checkingFirstLoginToAccountOfThisOrganization()) showSuccessDialog()
 
     }
 

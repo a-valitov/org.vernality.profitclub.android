@@ -71,7 +71,7 @@ class OrganizationActivity : OrganizationContainer, AppCompatActivity()  {
         }
 
         organization?.let {
-            if(UIUtils.wasApprovalDialogShown(it.objectId)) showSuccessDialog()
+            if(!UIUtils.wasApprovalDialogShown(it.objectId)) showSuccessDialog()
         }
 
         val toolbar: Toolbar = findViewById(R.id.myToolbar)
@@ -160,41 +160,41 @@ class OrganizationActivity : OrganizationContainer, AppCompatActivity()  {
         successResultDialog.show(supportFragmentManager, this.toString())
     }
 
-    override fun onBackPressed() {
+//    override fun onBackPressed() {
+//
+//        if(!isBackPress){
+//            isBackPress = true
+//            val snackbar =
+//                Snackbar.make(layoutPlaceSnack,"", Snackbar.LENGTH_SHORT)
+//
+//            snackbar.addCallback(object : Snackbar.Callback(){
+//                override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+//                    super.onDismissed(transientBottomBar, event)
+//                    setIsBackPress()
+//                }
+//            })
+//            snackbar.setText(getString(R.string.back_pressed_retry))
+//            var view = snackbar.view
+//            val tv =
+//                view.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView
+//            tv.textAlignment = View.TEXT_ALIGNMENT_CENTER
+//            snackbar.view.setBackground(resources.getDrawable(R.drawable.card_info_lite))
+//            val params = view.layoutParams as CoordinatorLayout.LayoutParams
+//            params.gravity = Gravity.TOP
+//            params.setMargins(800)
+//
+//
+//            snackbar.show()
+//
+//        } else {
+//            onBackPressed()
+//        }
+//
+//    }
 
-        if(!isBackPress){
-            isBackPress = true
-            val snackbar =
-                Snackbar.make(layoutPlaceSnack,"", Snackbar.LENGTH_SHORT)
-
-            snackbar.addCallback(object : Snackbar.Callback(){
-                override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                    super.onDismissed(transientBottomBar, event)
-                    setIsBackPress()
-                }
-            })
-            snackbar.setText(getString(R.string.back_pressed_retry))
-            var view = snackbar.view
-            val tv =
-                view.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView
-            tv.textAlignment = View.TEXT_ALIGNMENT_CENTER
-            snackbar.view.setBackground(resources.getDrawable(R.drawable.card_info_lite))
-            val params = view.layoutParams as CoordinatorLayout.LayoutParams
-            params.gravity = Gravity.TOP
-            params.setMargins(800)
-
-
-            snackbar.show()
-
-        } else {
-            onBackPressed()
-        }
-
-    }
-
-    fun setIsBackPress() {
-        isBackPress = false
-    }
+//    fun setIsBackPress() {
+//        isBackPress = false
+//    }
 
     override fun getMyOrganization(): Organization {
         return organization as Organization

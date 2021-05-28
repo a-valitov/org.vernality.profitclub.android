@@ -99,7 +99,7 @@ class RoleSelectFragment : Fragment() {
     fun renderData(appState: AppState) {
         when (appState) {
             is AppState.Success<*> -> {
-                Toast.makeText(requireActivity(), "Registration is success", Toast.LENGTH_LONG).show()
+//                Toast.makeText(requireActivity(), "Registration is success", Toast.LENGTH_LONG).show()
 
 //                viewModel.clearResult()
                 navigateTo()
@@ -172,7 +172,7 @@ class RoleSelectFragment : Fragment() {
 
     private fun setListenerResumeBtn(resumeBTN: MaterialButton) {
         resumeBTN.setOnClickListener {
-            Toast.makeText(requireActivity(), "button resume is checked", Toast.LENGTH_LONG).show()
+//            Toast.makeText(requireActivity(), "button resume is checked", Toast.LENGTH_LONG).show()
 
 
             viewModel.getLiveDataAndStartGetResult().observe(requireActivity(), observer)
@@ -183,7 +183,7 @@ class RoleSelectFragment : Fragment() {
 
     private fun setListenerParticipant(participantCB: CheckBox) {
         participantCB.setOnClickListener {
-            Toast.makeText(requireActivity(), "Participant is checked", Toast.LENGTH_LONG).show()
+//            Toast.makeText(requireActivity(), "Participant is checked", Toast.LENGTH_LONG).show()
             viewModel.setRoleParticipant()
             setCheckBoxGroup(participantCB)
         }
@@ -192,7 +192,7 @@ class RoleSelectFragment : Fragment() {
 
     private fun setListenerOrganization(organizationCB: CheckBox) {
         organizationCB.setOnClickListener {
-            Toast.makeText(requireActivity(), "Organization is checked", Toast.LENGTH_LONG).show()
+//            Toast.makeText(requireActivity(), "Organization is checked", Toast.LENGTH_LONG).show()
             viewModel.setRoleOrganization()
             setCheckBoxGroup(organizationCB)
         }
@@ -201,7 +201,7 @@ class RoleSelectFragment : Fragment() {
 
     private fun setListenerProvider(providerCB: CheckBox) {
         providerCB.setOnClickListener {
-            Toast.makeText(requireActivity(), "Provider is checked", Toast.LENGTH_LONG).show()
+//            Toast.makeText(requireActivity(), "Provider is checked", Toast.LENGTH_LONG).show()
             viewModel.setRoleProvider()
             setCheckBoxGroup(providerCB)
         }
@@ -210,7 +210,7 @@ class RoleSelectFragment : Fragment() {
 
     private fun setListenerExit(exit: View) {
         exit.setOnClickListener {
-            Toast.makeText(requireActivity(), "exit is checked", Toast.LENGTH_LONG).show()
+            activity?.onBackPressed()
         }
     }
 

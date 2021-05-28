@@ -5,10 +5,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_list_members.view.*
+import kotlinx.android.synthetic.main.item_list_stocks.view.*
 import org.vernality.profitclub.R
 import org.vernality.profitclub.model.data.Action
 import org.vernality.profitclub.model.data.Member
 import org.vernality.profitclub.model.data.Organization
+import org.vernality.profitclub.utils.ui.setImageToImageView
 
 public class MembersListRVAdapter(
     private val listener: OnListItemClickListener
@@ -45,6 +47,11 @@ public class MembersListRVAdapter(
             itemView.tv_members_name.setText(member.firstName+" "+member.lastName)
 //            itemView.tv_members_date.setText(member.createdAt.toString())
             itemView.setOnClickListener { openMember(member) }
+
+            val imageFile = member.imageFile
+            if(imageFile != null){
+                itemView.iv_membersImage.setImageToImageView(imageFile.data)
+            }
         }
 
 

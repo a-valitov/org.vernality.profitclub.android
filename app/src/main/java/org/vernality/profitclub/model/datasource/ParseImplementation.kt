@@ -213,7 +213,8 @@ class ParseImplementation() : DataSource {
                 val currentUser = ParseUser.getCurrentUser()
                 if (currentUser != null) {
                     val relation: ParseRelation<Organization> = currentUser.getRelation(KEY_ORGANIZATIONS)
-                    it.onNext(relation.query.find())
+                    if(!it.isDisposed)
+                        it.onNext(relation.query.find())
                 }else {
                     // Вызов окна входа
                     println("------необходимо войти в систему---")
@@ -221,7 +222,8 @@ class ParseImplementation() : DataSource {
 
             }catch (e: ParseException) {
                 println("++++++ intersept error code = ${e.code}")
-                it.onError(Throwable(getErrorsMessage(e.code).let { if(it.isEmpty()) e.message else it}))
+                if(!it.isDisposed)
+                    it.onError(Throwable(getErrorsMessage(e.code).let { if(it.isEmpty()) e.message else it}))
             }
 
         }
@@ -234,7 +236,8 @@ class ParseImplementation() : DataSource {
                 val currentUser = ParseUser.getCurrentUser()
                 if (currentUser != null) {
                     val relation: ParseRelation<Supplier> = currentUser.getRelation(KEY_SUPPLIERS)
-                    it.onNext(relation.query.find())
+                    if(!it.isDisposed)
+                        it.onNext(relation.query.find())
                 }else {
                     // Вызов окна входа
                     println("------необходимо войти в систему---")
@@ -242,7 +245,8 @@ class ParseImplementation() : DataSource {
 
             }catch (e: ParseException) {
                 println("++++++ intersept error code = ${e.code}")
-                it.onError(Throwable(getErrorsMessage(e.code).let { if(it.isEmpty()) e.message else it}))
+                if(!it.isDisposed)
+                    it.onError(Throwable(getErrorsMessage(e.code).let { if(it.isEmpty()) e.message else it}))
             }
 
         }
@@ -255,7 +259,8 @@ class ParseImplementation() : DataSource {
                 val currentUser = ParseUser.getCurrentUser()
                 if (currentUser != null) {
                     val relation: ParseRelation<Member> = currentUser.getRelation(KEY_MEMBER)
-                    it.onNext(relation.query.find())
+                    if(!it.isDisposed)
+                        it.onNext(relation.query.find())
                 }else {
                     // Вызов окна входа
                     println("------необходимо войти в систему---")
@@ -263,7 +268,8 @@ class ParseImplementation() : DataSource {
 
             }catch (e: ParseException) {
                 println("++++++ intersept error code = ${e.code}")
-                it.onError(Throwable(getErrorsMessage(e.code).let { if(it.isEmpty()) e.message else it}))
+                if(!it.isDisposed)
+                    it.onError(Throwable(getErrorsMessage(e.code).let { if(it.isEmpty()) e.message else it}))
             }
 
         }
@@ -357,7 +363,10 @@ class ParseImplementation() : DataSource {
                 if (currentUser != null) {
 
                     val query: ParseQuery<Action> = ParseQuery.getQuery(Action::class.java)
-                    val actions = query.find().apply { forEach { action ->
+
+                    val actions = query.find()
+
+                    actions.apply { forEach { action ->
 
                         action.supplier?.fetchIfNeeded<Supplier>()
 
@@ -387,8 +396,20 @@ class ParseImplementation() : DataSource {
 
                     val relation = organization.getRelation<Member>(KEY_MEMBERS)
                     val query: ParseQuery<Member> = relation.getQuery()
-                    query.whereEqualTo(KEY_APPROVED, KEY_STATUS_STRING)
-                    it.onSuccess( query.find() )
+                    query.whereEqualTo(KEY_STATUS_STRING, KEY_APPROVED)
+                    val members = query.find()
+
+                    members.apply{ forEach { member ->
+
+                        val parseFile = member.imageFile
+
+                        val image = parseFile?.data
+
+                        member.image = image
+
+                    } }
+
+                    it.onSuccess( members )
 
                 }else {
                     // Вызов окна входа
@@ -412,8 +433,20 @@ class ParseImplementation() : DataSource {
 
                     val relation = organization.getRelation<Member>(KEY_MEMBERS)
                     val query: ParseQuery<Member> = relation.getQuery()
-                    query.whereEqualTo(KEY_ON_REVIEW, KEY_STATUS_STRING)
-                    it.onSuccess( query.find() )
+//                    query.whereEqualTo(KEY_STATUS_STRING, KEY_ON_REVIEW)
+                    val members = query.find()
+
+                    members.apply{ forEach { member ->
+
+                        val parseFile = member.imageFile
+
+                        val image = parseFile?.data
+
+                        member.image = image
+
+                    } }
+
+                    it.onSuccess( members )
 
                 }else {
                     // Вызов окна входа
@@ -436,7 +469,27 @@ class ParseImplementation() : DataSource {
                 if (currentUser != null)
                 {
                     val query: ParseQuery<CommercialOffer> = ParseQuery.getQuery(CommercialOffer::class.java)
-                    it.onSuccess(query.find())
+                    val offersList = query.find()
+                    for(offer in offersList ){
+                        val parseFile = offer.getParseFile("imageFile")
+
+                        parseFile?.getDataInBackground(GetDataCallback { data, e ->
+                            if (e == null) {
+                                val image = data
+                                offer.image = image
+
+                                // data has the bytes for the resume
+                            } else {
+                                // something went wrong
+                                val error = e
+                            }
+                        })
+
+                        val image = parseFile?.data
+                        offer.image = image
+                    }
+
+                    it.onSuccess(offersList)
 
                 } else {
                     // Вызов окна входа
@@ -466,13 +519,11 @@ class ParseImplementation() : DataSource {
                     val acl = ParseACL()
                     acl.publicReadAccess = true
                     acl.setRoleWriteAccess(KEY_ADMINISTRATOR, true)
-
                     action.acl = acl
 
-                    val parseFile: ParseFile = ParseFile(KEY_IMAGE_PNG,action.image)
-                    parseFile.save()
-
-                    action.put(KEY_IMAGE_FILE, parseFile)
+//                    val parseFile: ParseFile = ParseFile(KEY_IMAGE_PNG, action.image)
+//                    parseFile.save()
+//                    action.put(KEY_IMAGE_FILE, parseFile)
 
                     action.save()
 
@@ -500,7 +551,7 @@ class ParseImplementation() : DataSource {
                 if (currentUser != null) {
                     offer.put(KEY_SUPPLIER, supplier)
                     offer.getRelation<ParseUser>(KEY_USER).add(currentUser)
-                    offer.put(KEY_STATUS_STRING, KEY_APPROVED)
+//                    offer.put(KEY_STATUS_STRING, KEY_APPROVED)
 
                     val acl = ParseACL()
                     acl.publicReadAccess = true
@@ -509,7 +560,6 @@ class ParseImplementation() : DataSource {
 
                     val parseFile: ParseFile = ParseFile(KEY_IMAGE_PNG, offer.image)
                     parseFile.save()
-
                     offer.put(KEY_IMAGE_FILE, parseFile)
 
                     val parseFileList = mutableListOf<ParseFile>()

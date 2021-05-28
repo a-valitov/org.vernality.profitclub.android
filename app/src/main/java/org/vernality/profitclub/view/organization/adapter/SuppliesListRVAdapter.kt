@@ -47,9 +47,9 @@ public class SuppliesListRVAdapter(
 
         fun bind(commercialOffer: CommercialOffer) {
             itemView.tv_message_offer.setText(commercialOffer.message)
-            val imageFile = commercialOffer.imageFile
+            val imageFile = commercialOffer.image
             if(imageFile != null){
-                itemView.iv_offerImage.setImageToImageView(imageFile.data)
+                itemView.iv_offerImage.setImageToImageView(imageFile)
             }
 
             itemView.tv_nameSupplier.setText(commercialOffer.contact)

@@ -104,8 +104,6 @@ class SuppliesFragment : Fragment() {
         val root = inflater.inflate(R.layout.list_layout, container, false)
 
         init(root)
-
-        viewModel.getLiveDataAndStartGetResult().observe(requireActivity(), observer)
         Timber.d("onCreateView end")
         return root
     }
@@ -114,6 +112,8 @@ class SuppliesFragment : Fragment() {
         loadingLayout = root.loading_frame_layout
         rv = root.rv_list
         rv.layoutManager = LinearLayoutManager(requireActivity())
+
+        viewModel.getLiveDataAndStartGetResult().observe(viewLifecycleOwner, observer)
 
     }
 

@@ -25,7 +25,7 @@
             android:layout_marginBottom="31dp"
             android:scaleType="centerCrop"
             app:shapeAppearance="@style/ShapeAppearance.App.CornerImageView"
-            android:src="@drawable/a" />
+            android:background="@color/colorBackgroundGrayLight" />
 
         <LinearLayout
             android:layout_width="match_parent"

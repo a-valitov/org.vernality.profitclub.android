@@ -4,9 +4,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.item_list_members.view.*
 import kotlinx.android.synthetic.main.item_list_members_requests.view.*
+import kotlinx.android.synthetic.main.item_list_members_requests.view.iv_membersImage
+import kotlinx.android.synthetic.main.item_list_members_requests.view.tv_members_name
 import org.vernality.profitclub.R
 import org.vernality.profitclub.model.data.Member
+import org.vernality.profitclub.utils.ui.setImageToImageView
 
 public class MembersRequestListRVAdapter(
     private val itemListener: OnListItemClickListener,
@@ -45,6 +49,11 @@ public class MembersRequestListRVAdapter(
             itemView.setOnClickListener { openMember(member) }
             itemView.tv_approve.setOnClickListener { approveMember(member) }
             itemView.tv_reject.setOnClickListener { rejectMember(member) }
+
+            val imageFile = member.imageFile
+            if(imageFile != null){
+                itemView.iv_membersImage.setImageToImageView(imageFile.data)
+            }
         }
 
     }

@@ -23,7 +23,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="15dp"
             android:layout_marginBottom="11dp"
-            android:src="@drawable/a" />
+            android:background="@color/colorBackgroundGrayLight" />
 
         <LinearLayout
             android:layout_width="match_parent"
