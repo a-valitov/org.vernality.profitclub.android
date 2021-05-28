@@ -55,7 +55,7 @@ class MemberActivity : AppCompatActivity() {
         }
 
         member?.let {
-           if(UIUtils.wasApprovalDialogShown(it.objectId)) showSuccessDialog()
+           if(!UIUtils.wasApprovalDialogShown(it.objectId)) showSuccessDialog()
         }
 
 
@@ -128,22 +128,22 @@ class MemberActivity : AppCompatActivity() {
 
     }
 
-    override fun onBackPressed() {
-
-        if(!isBackPress){
-            isBackPress = true
-            val snackbar = UIUtils.showSnackbar(layoutPlaceSnack, getString(R.string.back_pressed_retry),
-            this, {setIsBackPress()})
-
-            snackbar.show()
-
-        } else {
-            onBackPressed()
-        }
-
-    }
-
-    fun setIsBackPress() {
-        isBackPress = false
-    }
+//    override fun onBackPressed() {
+//
+//        if(!isBackPress){
+//            isBackPress = true
+//            val snackbar = UIUtils.showSnackbar(layoutPlaceSnack, getString(R.string.back_pressed_retry),
+//            this, {setIsBackPress()})
+//
+//            snackbar.show()
+//
+//        } else {
+//            onBackPressed()
+//        }
+//
+//    }
+//
+//    fun setIsBackPress() {
+//        isBackPress = false
+//    }
 }

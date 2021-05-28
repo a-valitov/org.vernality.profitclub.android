@@ -247,7 +247,7 @@ class DataProcessingFragment : Fragment(), OnBackPressedListener {
                 loadingLayout.visibility = View.GONE
                 errorResultDialog =
                     ErrorResultDialogFragment.newInstance(description = appState.error.message.toString())
-                Toast.makeText(requireActivity(), "Error \n ${appState.error}", Toast.LENGTH_LONG).show()
+//                Toast.makeText(requireActivity(), "Error \n ${appState.error}", Toast.LENGTH_LONG).show()
                 errorResultDialog.show(parentFragmentManager, this.toString())
             }
         }

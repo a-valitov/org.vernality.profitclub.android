@@ -56,8 +56,7 @@
 
         <activity
             android:name=".view.activities.SelectOrganizationActivity"
-            android:theme="@style/AppTheme.DarkStatusBar"
-            android:noHistory="true">
+            android:theme="@style/AppTheme.DarkStatusBar">
 
         </activity>
 
