@@ -191,7 +191,7 @@ class DataProcessingFragment : Fragment(), OnBackPressedListener {
         addIV.setOnClickListener {
             val intent = Intent(requireActivity(), EnterRoleActivity::class.java)
             startActivity(intent)
-            Toast.makeText(requireActivity(), "add clicked", Toast.LENGTH_LONG).show()
+//            Toast.makeText(requireActivity(), "add clicked", Toast.LENGTH_LONG).show()
         }
         settingsIV.setOnClickListener {
 
@@ -281,7 +281,7 @@ class DataProcessingFragment : Fragment(), OnBackPressedListener {
         popupMenu.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.item_menu_exit -> {
-                    Toast.makeText(requireActivity(), "exit clicked", Toast.LENGTH_LONG).show()
+//                    Toast.makeText(requireActivity(), "exit clicked", Toast.LENGTH_LONG).show()
                     viewModel.getLiveDataAndStartGetResultForLogOut().observe(requireActivity(), observerForLogOutResult)
                     true
                 }
