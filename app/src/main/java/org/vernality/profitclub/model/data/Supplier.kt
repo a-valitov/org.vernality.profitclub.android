@@ -20,8 +20,8 @@ class Supplier: ParseObject(), BusinessRole {
         set(value){ if(value != null) put("contact", value)}
 
     var phone: String?
-        get() = getString("contact")
-        set(value){ if(value != null) put("contact", value)}
+        get() = getString("phone")
+        set(value){ if(value != null) put("phone", value)}
 
     var inn: String?
         get() = getString("inn")
