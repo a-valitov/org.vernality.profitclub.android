@@ -64,7 +64,20 @@ class ActionsPlaceholderFragment : Fragment() {
             override fun onClick(link: String?) {
                 Toast.makeText(requireActivity(),"actions link clicked", Toast.LENGTH_SHORT).show()
 
-                link?.let{UIUtils.openWebPage(requireActivity(), it)}
+                if(link.isNullOrEmpty()){
+                    Toast.makeText(requireActivity(), "There is no web link for this Action", Toast.LENGTH_LONG).show()
+                    return
+                }
+
+                val formattedLink = if(!link.startsWith("http")) {
+                    "http://$link"
+                } else {
+                    link
+                }
+
+                formattedLink.let{UIUtils.openWebPage(requireActivity(), it)}
+
+                //TODO: return from browser to a list of Actions, not to list of user's Roles
             }
 
         }
