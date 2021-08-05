@@ -75,7 +75,7 @@
 
     <string-array name="WaitAdministratorApproval">
         <item>Дождитесь одобрения администратором</item>
-        <item>Для входа через аккаунт role name необходимо одобрение администратором</item>
+        <item>Для входа через аккаунт role name необходимо одобрение approver</item>
         <item>Ок</item>
         <item>Назад</item>
     </string-array>

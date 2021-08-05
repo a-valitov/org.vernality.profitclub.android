@@ -119,12 +119,12 @@ class DataProcessingFragment : Fragment(), OnBackPressedListener {
 //                navigateTo()
                 DataSaver.setCurrentBusinessRole(supplier)
                 val status = OrganizationStatus.approved.name
-//                if(supplier.statusString.equals(status)){
-//                    showDialogLogAccount(TypeDialogFragment.LogOrgAccount, supplier, supplier.name, {navigateToMySupplier(supplier)})
-//                } else{
-//                    showInfoDialog(supplier, supplier.name)
-//                }
-                showDialogLogAccount(TypeDialogFragment.LogOrgAccount, supplier, supplier.name, {navigateToMySupplier(supplier)})
+                if(supplier.statusString.equals(status)){
+                    showDialogLogAccount(TypeDialogFragment.LogOrgAccount, supplier, supplier.name, {navigateToMySupplier(supplier)})
+                } else{
+                    showInfoDialog(supplier, supplier.name)
+                }
+                //showDialogLogAccount(TypeDialogFragment.LogOrgAccount, supplier, supplier.name, {navigateToMySupplier(supplier)})
 
 
             }
@@ -138,13 +138,13 @@ class DataProcessingFragment : Fragment(), OnBackPressedListener {
 //                viewModel.setOrganization(organization)
 //                navigateTo()
 
-//                val status = OrganizationStatus.approved.name
-//                if(member.statusString.equals(status)){
-//                    showDialogLogAccount(TypeDialogFragment.LogOrgAccount, member, member.name, {navigateToMyMember(member)})
-//                } else{
-//                    showInfoDialog(member, member.name)
-//                }
-                showDialogLogAccount(TypeDialogFragment.LogOrgAccount, member, member.name, {navigateToMyMember(member)})
+                val status = OrganizationStatus.approved.name
+                if(member.statusString.equals(status)){
+                    showDialogLogAccount(TypeDialogFragment.LogOrgAccount, member, member.name, {navigateToMyMember(member)})
+                } else{
+                    showInfoDialog(member, member.name)
+                }
+                //showDialogLogAccount(TypeDialogFragment.LogOrgAccount, member, member.name, {navigateToMyMember(member)})
             }
         }
 
