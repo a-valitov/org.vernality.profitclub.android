@@ -48,6 +48,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_enter_login"
+            android:visibility="gone"
             android:layout_width="353dp"
             android:layout_height="46dp"
             android:layout_marginBottom="20dp"

@@ -8,7 +8,7 @@ import org.vernality.profitclub.model.data.User
 import org.vernality.profitclub.utils.ui.UIUtils
 import org.vernality.profitclub.utils.ui.addStreamsIO_UI
 
-enum class Field{Login, Gmail, Password, Password2}
+enum class Field{Gmail, Password, Password2}
 
 enum class Result{
     Success, Error;
@@ -52,10 +52,10 @@ class RegistrationFragmentViewModel(appContext: Application) : BaseViewModel<App
         }
     }
 
-    fun setLogin(login: String){
-        user.login = login
-
-    }
+//    fun setLogin(login: String){
+//        user.login = login
+//
+//    }
 
     fun setGmail(gmail: String){
         user.email = gmail
@@ -95,21 +95,21 @@ class RegistrationFragmentViewModel(appContext: Application) : BaseViewModel<App
 
 
     private fun checkFields():Boolean =
-        checkLogin(user.login)
-        && checkGmail(user.email)
+        //checkLogin(user.login)
+        checkGmail(user.email)
         && checkPassword(user.password)
         && checkFinishPassword(user.password2)
 
 
-    private fun checkLogin(login: String?):Boolean{
-        if(!login.isNullOrEmpty() && !login.isNullOrBlank()){
-            return true
-        } else {
-            liveDataForViewToObserve.value = AppState.Error(Throwable("Необходимо ввести логин"))
-            return false
-        }
-
-    }
+//    private fun checkLogin(login: String?):Boolean{
+//        if(!login.isNullOrEmpty() && !login.isNullOrBlank()){
+//            return true
+//        } else {
+//            liveDataForViewToObserve.value = AppState.Error(Throwable("Необходимо ввести логин"))
+//            return false
+//        }
+//
+//    }
 
     private fun checkGmail(gmail: String?):Boolean{
         if(!gmail.isNullOrBlank()){
