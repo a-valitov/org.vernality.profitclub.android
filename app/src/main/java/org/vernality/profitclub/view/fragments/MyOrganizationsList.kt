@@ -105,18 +105,13 @@ class DataProcessingFragment : Fragment(), OnBackPressedListener {
                 } else{
                     showInfoDialog(organization, organization.name)
                 }
-//                showDialogLogAccount(TypeDialogFragment.LogOrgAccount, organization, organization.name, {navigateToMyOrganization(organization)})
-
-//                viewModel.setOrganization(organization)
-//                navigateTo()
+/
             }
         }
 
     private val onSupplierListItemClickListener: MyRolesListDataAdapter.OnListItemClickListener<Supplier> =
         object : MyRolesListDataAdapter.OnListItemClickListener<Supplier> {
             override fun onItemClick(supplier: Supplier) {
-//                viewModel.setOrganization(organization)
-//                navigateTo()
                 DataSaver.setCurrentBusinessRole(supplier)
                 val status = OrganizationStatus.approved.name
                 if(supplier.statusString.equals(status)){
@@ -124,7 +119,6 @@ class DataProcessingFragment : Fragment(), OnBackPressedListener {
                 } else{
                     showInfoDialog(supplier, supplier.name)
                 }
-                //showDialogLogAccount(TypeDialogFragment.LogOrgAccount, supplier, supplier.name, {navigateToMySupplier(supplier)})
 
 
             }
@@ -135,16 +129,12 @@ class DataProcessingFragment : Fragment(), OnBackPressedListener {
             override fun onItemClick(member: Member) {
                 DataSaver.setCurrentBusinessRole(member)
 
-//                viewModel.setOrganization(organization)
-//                navigateTo()
-
                 val status = OrganizationStatus.approved.name
                 if(member.statusString.equals(status)){
                     showDialogLogAccount(TypeDialogFragment.LogOrgAccount, member, member.name, {navigateToMyMember(member)})
                 } else{
                     showInfoDialog(member, member.name)
                 }
-                //showDialogLogAccount(TypeDialogFragment.LogOrgAccount, member, member.name, {navigateToMyMember(member)})
             }
         }
 
