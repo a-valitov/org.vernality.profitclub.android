@@ -10,7 +10,7 @@ import org.vernality.profitclub.utils.ui.*
 import org.vernality.profitclub.utils.ui.ErrorsUtils.Companion.getErrorsMessage
 
 
-class ParseImplementation() : DataSource {
+class ParseImplementation : DataSource {
 
     override fun getData(password: String, email: String): User? {
 
@@ -49,7 +49,7 @@ class ParseImplementation() : DataSource {
         return Completable.create {
 
             try {
-                ParseUser.logOut();
+                ParseUser.logOut()
                 if(null == ParseUser.getCurrentUser()) it.onComplete()
                 else it.onError(Throwable(getErrorsMessage(ERROR_70)))
             }catch (e: ParseException) {
@@ -395,11 +395,11 @@ class ParseImplementation() : DataSource {
                 if (currentUser != null) {
 
                     val relation = organization.getRelation<Member>(KEY_MEMBERS)
-                    val query: ParseQuery<Member> = relation.getQuery()
+                    val query: ParseQuery<Member> = relation.query
                     query.whereEqualTo(KEY_STATUS_STRING, KEY_APPROVED)
                     val members = query.find()
 
-                    members.apply{ forEach { member ->
+                    members.onEach { member ->
 
                         val parseFile = member.imageFile
 
@@ -407,7 +407,7 @@ class ParseImplementation() : DataSource {
 
                         member.image = image
 
-                    } }
+                    }
 
                     it.onSuccess( members )
 
@@ -432,11 +432,11 @@ class ParseImplementation() : DataSource {
                 if (currentUser != null) {
 
                     val relation = organization.getRelation<Member>(KEY_MEMBERS)
-                    val query: ParseQuery<Member> = relation.getQuery()
-//                    query.whereEqualTo(KEY_STATUS_STRING, KEY_ON_REVIEW)
+                    val query: ParseQuery<Member> = relation.query
+                    query.whereEqualTo(KEY_STATUS_STRING, KEY_ON_REVIEW)
                     val members = query.find()
 
-                    members.apply{ forEach { member ->
+                    members.onEach { member ->
 
                         val parseFile = member.imageFile
 
@@ -444,7 +444,7 @@ class ParseImplementation() : DataSource {
 
                         member.image = image
 
-                    } }
+                    }
 
                     it.onSuccess( members )
 
