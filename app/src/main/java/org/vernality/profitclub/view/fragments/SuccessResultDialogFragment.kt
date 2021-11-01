@@ -47,6 +47,7 @@ private var actionListener: ()->Unit) : SupportBlurDialogFragment() {
 
     private var name: String? = null
     private var role: String? = null
+    private var approver: String? = null
     private var typeOrg: Role? = null
 
     override fun onCreateView(
@@ -111,10 +112,9 @@ private var actionListener: ()->Unit) : SupportBlurDialogFragment() {
 
     private fun initRole(){
         when(typeOrg){
-            Role.Member -> role = resources.getString(R.string.of_members)
-            Role.Supplier -> {role = requireActivity().getString(R.string.of_suppliers)
-            }
-            Role.Organization -> role = resources.getString(R.string.of_organizations)
+            Role.Member -> { role = resources.getString(R.string.of_members); approver = "организации" }
+            Role.Supplier -> {role = requireActivity().getString(R.string.of_suppliers); approver = "администратора"}
+            Role.Organization -> {role = resources.getString(R.string.of_organizations); approver = "администратора"}
         }
     }
 
@@ -125,8 +125,8 @@ private var actionListener: ()->Unit) : SupportBlurDialogFragment() {
 
     fun setTitleOnViews(array: Array<String>){
         mesageTV.setText(array[0])
-        subMesageTV.setText(array[1].replace("name", name?:"поставщика")
-            .replace("role", role?:"") )
+        subMesageTV.setText(array[1].replace("name", name?:"организации")
+            .replace("role", role?:"").replace("approver", approver?:"") )
         actionTV.setText(array[2])
         backTV.setText(array[3])
     }

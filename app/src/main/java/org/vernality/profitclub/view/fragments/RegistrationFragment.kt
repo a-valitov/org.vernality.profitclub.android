@@ -86,7 +86,6 @@ class RegistrationFragment : Fragment() {
 
 
     fun init(root:View){
-        val loginET = root.et_enter_login
         val gmailET = root.et_enter_gmail
         val editPassword1ET = root.et_enter_password
         val editPassword2ET = root.et_confirm_password
@@ -94,7 +93,6 @@ class RegistrationFragment : Fragment() {
         val enterAccountTV = root.tv_enter
         loadingLayout = root.loading_frame_layout
 
-        setRxToLoginET(loginET)
         setRxToGmailET(gmailET)
         setRxToPass1ET(editPassword1ET)
         setRxToPass2ET(editPassword2ET)
@@ -214,21 +212,6 @@ class RegistrationFragment : Fragment() {
 
         compos.add(disposableGmail)
     }
-
-    private fun setRxToLoginET(loginET: TextInputEditText) {
-        val disposableLogin: Disposable = RxTextView.textChanges(loginET)
-            .subscribe(object : Consumer<CharSequence?> {
-                @Throws(Exception::class)
-                override fun accept(charSequence: CharSequence?) {
-                    //Add your logic to work on the Charsequence
-                    //Toast.makeText(requireActivity(), "password 1 enter", Toast.LENGTH_LONG).show()
-                    viewModel.setLogin(charSequence.toString())
-                }
-            })
-
-        compos.add(disposableLogin)
-    }
-
 
 
     override fun onDestroyView() {
